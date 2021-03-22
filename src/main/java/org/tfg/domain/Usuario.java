@@ -1,6 +1,7 @@
 package org.tfg.domain;
 
 import java.time.LocalDate;
+import java.util.Collection;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Usuario {
@@ -30,5 +32,8 @@ public class Usuario {
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Rol rol;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	private Collection<Publicacion> publicaciones;
 	
 }

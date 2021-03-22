@@ -20,7 +20,7 @@ public class Rol {
 	@Column(unique = true)
 	String tipo;
 	
-	@OneToMany(mappedBy = "rol",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "rol", cascade = CascadeType.ALL)
 	private Collection<Usuario> usuarios;
 	
 	
