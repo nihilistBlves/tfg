@@ -36,4 +36,10 @@ public class Usuario {
 	@OneToMany(cascade = CascadeType.ALL)
 	private Collection<Publicacion> publicaciones;
 	
+	@OneToMany(cascade = CascadeType.ALL)
+	private Collection<Comentario> comentariosHechos;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	private Collection<Wave> wavesDados;
+	
 }

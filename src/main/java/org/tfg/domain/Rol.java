@@ -23,5 +23,8 @@ public class Rol {
 	@OneToMany(mappedBy = "rol", cascade = CascadeType.ALL)
 	private Collection<Usuario> usuarios;
 	
+	@OneToMany(mappedBy = "rol", cascade = CascadeType.ALL)
+	private Collection<Admin> admins;
+	
 	
 }
