@@ -1,5 +1,7 @@
 package org.tfg.domain;
 
+import java.time.LocalDate;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +17,9 @@ public class Comentario {
 	private Long id;
 	
 	private String texto;
+	
+	private LocalDate fechaPublicacion;
+
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Usuario comentador;

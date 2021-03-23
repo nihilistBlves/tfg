@@ -1,5 +1,6 @@
 package org.tfg.domain;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
@@ -22,6 +23,8 @@ public class Publicacion {
 	//private MultipartFile contenido;
 	
 	private String descripcion;
+	
+	private LocalDate fechaPublicacion;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Usuario duenioPublicacion;

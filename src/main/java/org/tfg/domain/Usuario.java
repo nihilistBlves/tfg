@@ -28,6 +28,7 @@ public class Usuario {
 	private String nombre;
 	private String apellidos;
 	private LocalDate fechaNacimiento;
+	private LocalDate fechaCreacion;
 	private String extensionImg;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
