@@ -19,12 +19,53 @@ public class Comentario {
 	private String texto;
 	
 	private LocalDate fechaPublicacion;
-
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Usuario comentador;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Publicacion publicacionComentada;
+
+	public Comentario(String texto, LocalDate fechaPublicacion, Usuario comentador, Publicacion publicacionComentada) {
+		super();
+		this.texto = texto;
+		this.fechaPublicacion = fechaPublicacion;
+		this.comentador = comentador;
+		this.publicacionComentada = publicacionComentada;
+	}
+
+	public String getTexto() {
+		return texto;
+	}
+
+	public void setTexto(String texto) {
+		this.texto = texto;
+	}
+
+	public LocalDate getFechaPublicacion() {
+		return fechaPublicacion;
+	}
+
+	public void setFechaPublicacion(LocalDate fechaPublicacion) {
+		this.fechaPublicacion = fechaPublicacion;
+	}
+
+	public Usuario getComentador() {
+		return comentador;
+	}
+
+	public void setComentador(Usuario comentador) {
+		this.comentador = comentador;
+	}
+
+	public Publicacion getPublicacionComentada() {
+		return publicacionComentada;
+	}
+
+	public void setPublicacionComentada(Publicacion publicacionComentada) {
+		this.publicacionComentada = publicacionComentada;
+	}
+	
+	
 	
 }

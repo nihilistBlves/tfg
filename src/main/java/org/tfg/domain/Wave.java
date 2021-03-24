@@ -23,5 +23,36 @@ public class Wave {
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Publicacion publicacionWaved;
+
+	public Wave(LocalDate fechaLike, Usuario daWave, Publicacion publicacionWaved) {
+		super();
+		this.fechaLike = fechaLike;
+		this.daWave = daWave;
+		this.publicacionWaved = publicacionWaved;
+	}
+
+	public LocalDate getFechaLike() {
+		return fechaLike;
+	}
+
+	public void setFechaLike(LocalDate fechaLike) {
+		this.fechaLike = fechaLike;
+	}
+
+	public Usuario getDaWave() {
+		return daWave;
+	}
+
+	public void setDaWave(Usuario daWave) {
+		this.daWave = daWave;
+	}
+
+	public Publicacion getPublicacionWaved() {
+		return publicacionWaved;
+	}
+
+	public void setPublicacionWaved(Publicacion publicacionWaved) {
+		this.publicacionWaved = publicacionWaved;
+	}
 	
 }
