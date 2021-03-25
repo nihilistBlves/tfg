@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="./js/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="./js/popper.min.js"></script>
+    <script type="text/javascript" src="./js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./js/registro.js"></script>
+    <script src="./js/all.min.js"></script>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/login.css">
+    <link rel="stylesheet" href="./css/principal.css">
+    <link rel="stylesheet" href="./css/registro.css">
+    <link rel="stylesheet" href="./css/all.min.css">
+    <script>
+      $( document ).ready(function() {
+        $( "#login" ).load( "./formularios/login.html" );
+
+        $( "#registro" ).load( "./formularios/registro.html" );
+
+
+        $( "#buscar" ).click(function() {
+          //Simple
+          window.location.href = "buscar.html";
+          //Pestaña
+          //  window.open("http://www.google.com");
+          //Ventana
+          //window.open("http://www.google.com", "Tu Titulo", "width=500, height=500")
+          });
+
+      });
+    </script>
+  
+</head>
+<body>
+ 
+    <section class="hero">
+        <div class="content">
+          <div class="navegador">
+             <button type="button" class="btn btn-dark text-light" data-toggle="modal" data-target="#exampleModal">Login</button>
+             <button type="button" class="btn btn-dark text-light" data-toggle="modal" data-target="#dos">Registro</button>
+          </div>
+         <div class="title">
+          <img src="./img/logotipo.png" alt="logo"><h1>Wave it!</h1>
+          <div class="buscar">
+            <button type="button" class="btn btn-dark text-light" id="buscar">Buscar</button>
+          </div>
+         </div>
+
+        <div class="waves"></div>
+      </section>
+
+<!-- --------------------------------------------
+-------------------------------------------- -->
+<section id="login"></section>
+<section id="registro"></section>
+       
+</body>
+</html>
+
+
+
+
+
+
+
+<!-- 
+https://techmidpoint.com/pure-css-wave-background-animation/
+https://plantillashtmlgratis.com/categoria/efectos-css/efectos-de-agua-css/ -->
