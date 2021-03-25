@@ -179,5 +179,9 @@ public class Usuario {
 		this.seguidos = seguidos;
 	}
 	
+	public boolean isAdmin() {
+		return (this.getRol()!= null && this.getRol().getTipo().equals("admin"));
+	}
+	
 	
 }
