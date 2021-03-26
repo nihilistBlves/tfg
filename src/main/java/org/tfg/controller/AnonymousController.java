@@ -14,9 +14,7 @@ public class AnonymousController {
 
 	@GetMapping("/")
 	public String index(ModelMap m, HttpSession s) throws DangerException {
-		
-		
-		return "/home/index";
+		return "/home/home";
 	}
 	
 	@PostMapping("/login")
