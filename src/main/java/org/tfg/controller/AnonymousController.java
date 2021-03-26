@@ -17,14 +17,14 @@ public class AnonymousController {
 		return "/home/home";
 	}
 	
-	@PostMapping("/login")
+	@GetMapping("/login")
 	public String loginPost(ModelMap m) {
-		return "";
+		return "/home/login";
 	}
 	
-	@PostMapping("/registro")
+	@GetMapping("/registro")
 	public String registroPost() {
-		return "";
+		return "/home/registro";
 	}
 	
 }
