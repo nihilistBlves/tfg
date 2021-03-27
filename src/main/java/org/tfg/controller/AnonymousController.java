@@ -26,8 +26,8 @@ public class AnonymousController {
 		return "/home/home";
 	}
 
-	@RequestMapping("/login.do")
-	public @ResponseBody String loginGet(ModelMap m) {
+	@GetMapping("/login")
+	public String loginGet() {
 		return "/home/login";
 	}
 	

@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="/css/principal.css">
 <link rel="stylesheet" href="/css/registro.css">
 <!-- ---------------------------------------------- -->
-<script src="/jquery/jquery-3.6.0.min.js"></script>
+<script type="application/javascript" src="/jquery/jquery-3.6.0.min.js"></script>
 <script src="/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/jquery/registro.js"></script>
 <script type="text/javascript" src="/jquery/popper.min.js"></script>
@@ -21,12 +21,11 @@
 
 <script>
       $( document ).ready(function() {
-    	  
-        $( "#btnlog" ).onclick(function(){
-        	$( "#login" ).load("login.do");
-        });
+    	 
+        $( "#login" ).load("login");
+        
 
-        $( "#registro" ).load("registro.do");
+        $( "#registro" ).load("registro");
 
 
         $( "#buscar" ).click(function() {
