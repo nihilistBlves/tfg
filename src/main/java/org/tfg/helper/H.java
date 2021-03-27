@@ -20,15 +20,15 @@ public class H {
 		}
 		System.err.println("ROL="+rolActual);
 
-		if ((rolActual=="anon" ||  rolActual=="auth") 	&& rolExigido=="admin") {
+		if ((rolActual=="anon" || rolActual=="auth") && rolExigido=="admin") {
 			throw new DangerException("Rol inadecuado");
 		}
 		
-		if ((rolActual=="anon" ) 						&& rolExigido=="auth") {
+		if ((rolActual=="anon") && rolExigido=="auth") {
 			throw new DangerException("Rol inadecuado");
 		}
 		
-		if ((rolActual!="anon" ) 						&& rolExigido=="anon") {
+		if ((rolActual!="anon") && rolExigido=="anon") {
 			throw new DangerException("Rol inadecuado");
 		}
 		
