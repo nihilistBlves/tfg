@@ -1,23 +1,69 @@
-<html>
-<head>
-	<title>WaveIt!</title>
-</head>
-<body>
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-5">
-				<form method="post">
-					Nombre <input type="text" name="nombre">
-					Apellidos <input type="text" name="apellidos">
-					Fecha de nacimiento <input type="date" name="fNacimiento">
-					Nombre Usuario <input type="text" name="nUsuario">
-					Email <input type="text" name="email">
-					ContraseÃ±a <input type="password" name="pass">
-					Repita su contraseÃ±a <input type="password" name="passConfirm">
-					<input type="submit" value="Registrar">
-				</form>
-			</div>
-		</div>
-	</div>
-</body>
-</html>
+<div class="modal fade" id="dos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+                        <form method="post" name="formulario" >
+                            <div class="row justify-content-center">
+                                <div class="form-group col-10">
+                                    <label class="text-secondary" for="nombre">Nombre</label>
+
+                                    <input type="text" class="form-control" name="nombre" id="nombre"
+                                        placeholder="Escriba su nombre..." onkeyup="validarNombre(this)">
+                                    <div class="invalid-feedback">Rellene este campo</div>
+                                    <div class="valid-feedback"> Campo completado!</div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="form-group col-10">
+                                    <label class="text-secondary" for="Apellido">Apellido</label>
+                                    <input type="text" class="form-control " name="Apellido" id="Apellido"
+                                        placeholder="Escriba sus apellidos..." onkeyup="validarApellido(this)">
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="form-group col-10">
+                                    <label class="text-secondary" for="edad">Edad</label>
+                                    <input type="date" class="form-control" name="edad" id="edad"
+                                        placeholder="Escriba su edad..." min="1970-01-01" max="2020-01-01"
+                                        onchange="validarFecha(this)">
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="form-group col-10">
+                                    <label class="text-secondary" for="pass">Contraseña</label>
+                                    <input type="password" class="form-control" name="pass" id="pass" placeholder="Escriba su contraseña..." onkeyup="validarPssw(this)">
+                                    <span id="ver" onmouseover="ver(document.formulario.pass)"
+                                        onmouseout="ocultar(document.formulario.pass)"><i class="fas fa-eye"></i></span>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="form-group col-10">
+                                    <label class="text-secondary" for="repass">Repita Contraseña</label>
+                                    <input type="password" class="form-control" name="repass" id="repass" placeholder="Repita su contraseña..." onkeyup=" validarRepetir(document.formulario.repass,document.formulario.pass)">
+                                    <span id="ver" onmouseover="ver(document.formulario.repass)"
+                                        onmouseout="ocultar(document.formulario.repass)"><i
+                                            class="fas fa-eye"></i></span>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="form-group col-10 text-left">
+                                    <label class="text-secondary" for="email">Email</label>
+                                    <input type="text" class="form-control" name="email" id="email"
+                                        placeholder="Escriba su email..." onkeyup="validarEmail(this)">
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="form-group col-3">
+                                    <button class="btn  btn-secondary justify-content-center " onmouseover="comprobarTodo(this.form)" name="aceptar" id="aceptar">Registrar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!--             
+                    <span class="text-secondary text-center">¿Ya estás registrado?</span>
+                    <button class="btn btn-secondary">Login</button> -->
+        
+        </div>
+    </div>
+</div>

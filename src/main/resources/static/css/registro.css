@@ -1,0 +1,62 @@
+#form{
+    height: 600px;
+    box-shadow: 0px 0px 6px 6px rgb(173, 24, 69);
+    /* border-radius: 44px; */
+    background-color: white;
+}
+input,input:active{
+    /* margin-left:80px; */
+    /* margin-top:15px;
+    width: 20px; */
+    
+    
+    border:none;
+    border-bottom: 1px solid #ffa000;
+    box-shadow: 0 1px 0 0 #ffa000;
+
+}.form-control{
+    border:0;
+}
+/* https://qastack.mx/programming/14820952/change-bootstrap-input-focus-blue-glow       //para quitar el borde en bootstrap*/
+/* https://ajgallego.gitbook.io/bootstrap-4/componentes-responsive/formularios    //para poner las validaciones o no  */
+.form-control:focus{
+   
+    -webkit-box-shadow: none;
+    outline: -webkit-focus-ring-color auto 0px;
+
+    }
+
+#aceptar{
+    /* margin-left:160px; */
+    /* margin-top: -10px; */
+    margin-top: 20px;
+
+}
+label{
+    /* margin-left:100px; */
+    font-weight: bold;
+    margin-top: 15px;
+    
+    
+}
+
+#ver{
+   border-radius: 15%;
+   border-color: solid black;
+   margin-top: -32px;
+   margin-left:310px;
+   padding-bottom: 1px;
+   position: absolute;
+   top:80px;
+   left:50px;
+  
+
+}
+
+.form-group{
+    height: 72px;
+   
+}
+.fa-eye{
+   color:gray;
+}
