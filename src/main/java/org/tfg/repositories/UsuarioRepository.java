@@ -8,5 +8,6 @@ import org.tfg.domain.Usuario;
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 	
 	public Usuario getByLoginName(String loginName);
+	public Usuario getByEmail(String email);
 
 }
