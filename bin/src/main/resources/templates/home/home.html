@@ -1,37 +1,70 @@
 <html>
 <head>
 
-	<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>WaveIt!</title>
+
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="/bootstrap/css/bootstrap-icons.css">
+<link rel="stylesheet" href="/css/login.css">
+<link rel="stylesheet" href="/css/principal.css">
+<link rel="stylesheet" href="/css/registro.css">
+<!-- ---------------------------------------------- -->
+<script type="application/javascript" src="/jquery/jquery-3.6.0.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/jquery/registro.js"></script>
+<script type="text/javascript" src="/jquery/popper.min.js"></script>
+
+
+
+<script>
+      $( document ).ready(function() {
+    	 
+        $( "#login" ).load("login");
+        
+
+        $( "#registro" ).load("registro");
+
+
+        $( "#buscar" ).click(function() {
+          //Simple
+          window.location.href = "buscar.html";
+          //Pestaña
+          //  window.open("http://www.google.com");
+          //Ventana
+          //window.open("http://www.google.com", "Tu Titulo", "width=500, height=500")
+          });
+
+      });
+    </script>
     
-    <title>WaveIt!</title>
     
-	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/css/home.css">
-	<script src="/jquery/jquery-3.6.0.min.js" ></script>
-	<script src="/bootstrap/js/bootstrap.min.js"></script>
-	
 </head>
 <body>
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-12 navegador d-flex justify-content-end">
-				<a href="#"><button class="boton-nav">LOGIN</button></a>
-				<a href="#"><button class="boton-nav">REGISTRO</button></a>
+
+
+	<section class="hero">
+		<div class="content">
+			<div class="navegador">
+				<button type="button" class="btn btn-dark text-light"
+					data-toggle="modal" data-target="#exampleModal" id="btnlog">Login</button>
+				<button type="button" class="btn btn-dark text-light"
+					data-toggle="modal" data-target="#dos">Registro</button>
 			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12 marco d-flex align-items-center justify-content-center">
-				<div>
-					<span class="titulo">
-						<img src="/img/logotipo.png" class="logotipo">WaveIt!
-					</span>
-				</div>
-				<div>
-					<a href="#"><button class="boton-nav">BUSCAR</button></a>
+			<div class="title">
+				<img src="./img/logotipo.png" alt="logo">
+				<h1>Wave it!</h1>
+				<div class="buscar">
+					<button type="button" class="btn btn-dark text-light" id="buscar">Buscar</button>
 				</div>
 			</div>
+
+			<div class="waves"></div>
 		</div>
-	</div>
+	</section>
+<section id="login"></section>
+<section id="registro"></section>
 </body>
 </html>
