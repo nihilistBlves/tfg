@@ -190,7 +190,8 @@
             console.log("Contraseña="+validarPssw(f.pass));
             console.log("Repetir="+validarRepetir(f.repass,f.pass));
             console.log("Correo="+validarEmail(f.email));
-*/
+            */
+           //Comprobacion git(BORRAR ESTE COMENTARIO)
 
             if(validarNombre(f.nombre)&& validarApellido(f.apellido) && validarFecha(f.edad) &&  validarRepetir(f.repass,f.pass) && validarEmail(f.email)){
                f.aceptar.className="btn btn-success";
