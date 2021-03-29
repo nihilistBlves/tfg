@@ -19,6 +19,10 @@
 
                 comprobar(obj,true);
                 return true;
+                
+                 comprobarTodo(document.formulario);
+                
+               
             }else{
 
                 comprobar(obj,false);
@@ -36,6 +40,10 @@
 
                 comprobar(obj,true);
                 return true;
+                
+                 comprobarTodo(document.formulario);
+                
+                
             }else{
 
                 comprobar(obj,false);
@@ -68,6 +76,9 @@
 
                 comprobar(obj,true);
                 return true;
+                
+                 comprobarTodo(document.formulario);
+                
             }
         }else{
             comprobar(obj,false);
@@ -104,11 +115,18 @@
 
                 seguridad=2;
                 comprobar(obj,true);
+                
+                 comprobarTodo(document.formulario);
+                
 
             }else if(mayus.test(pssw) && num.test(pssw) && low.test(pssw) && len.test(pssw) &&pssw.length>9){
 
                 seguridad=1;
                 comprobar(obj,false);
+                
+                 comprobarTodo(document.formulario);
+                
+                
             }else{
 
                 seguridad=0;
@@ -147,6 +165,10 @@
 
                 comprobar(obj,true);
                 return true;
+                
+                 comprobarTodo(document.formulario);
+                
+                
             }else{
 
                 comprobar(obj,false);
@@ -164,6 +186,8 @@
 
                 comprobar(obj,true);
                 return true;
+                comprobarTodo(document.formulario);
+                
 
             }else{
 
@@ -182,7 +206,7 @@
                  if(validarNombre(f.nombre)&& validarApellido(f.apellido) && validarFecha(f.edad) &&  validarRepetir(f.repass) && validarEmail(f.email)==true){
 
                 //f.aceptar.disabled="true";
-                f.aceptar.className="btn btn-success";
+                f.aceptar.className="btn btn-danger";
 
                 var boton=document.formulario.aceptar;
 
@@ -194,7 +218,7 @@
             }else{
                 
                     f.aceptar.disabled="true";
-                    f.aceptar.className="btn btn-danger";
+                    f.aceptar.className="btn btn-secondary";
             }
        
 
