@@ -179,7 +179,7 @@
 
             //if(validarNombre(f.nombre)){
 
-                 if(validarNombre()&& validarApellido() && validarFecha() && validarPssw() && validarRepetir() && validarEmail()==true){
+                 if(validarNombre(f.nombre)&& validarApellido(f.apellido) && validarFecha(f.edad) &&  validarRepetir(f.repass) && validarEmail(f.email)==true){
 
                 //f.aceptar.disabled="true";
                 f.aceptar.className="btn btn-success";
