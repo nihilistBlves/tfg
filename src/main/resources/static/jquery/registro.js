@@ -177,9 +177,9 @@
 
             console.log(validarNombre(f.nombre));
 
-            if(validarNombre(f.nombre)){
+            //if(validarNombre(f.nombre)){
 
-                // if(validarNombre()&& validarApellido() && validarFecha() && validarPssw() && validarRepetir() && validarEmail()==true){
+                 if(validarNombre()&& validarApellido() && validarFecha() && validarPssw() && validarRepetir() && validarEmail()==true){
 
                 //f.aceptar.disabled="true";
                 f.aceptar.className="btn btn-success";
