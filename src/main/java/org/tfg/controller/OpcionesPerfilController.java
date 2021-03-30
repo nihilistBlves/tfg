@@ -16,6 +16,7 @@ public class OpcionesPerfilController {
 	}
 	
 
+	
 	@GetMapping("editarPerfil")
 	public String editarPerfil() {
 		
