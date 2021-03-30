@@ -4,55 +4,56 @@
 
             $("#perfil").on("click", function () {
 
-                $("#opciones").load("./opciones/editarPerfil.html");
+                $("#opciones").load("/opcionesPerfil/editarPerfil");
 
+                
             });
 
             $("#gestionPass").on("click", function () {
 
-                $("#opciones").load("./opciones/gestionarCorreoPass.html");
+                $("#opciones").load("/opcionesPerfil/gestionarCorreoPass");
 
             });
 
             $("#seg").on("click", function () {
 
-                $("#opciones").load("./opciones/seguidoresSeguidos.html");
+                $("#opciones").load("/opcionesPerfil/seguidoresSeguidos");
 
             });
 
             $("#waves").on("click", function () {
 
-                $("#opciones").load("./opciones/tasaWaves.html");
+                $("#opciones").load("/opcionesPerfil/tasaWaves");
 
             });
 
             $("#favs").on("click", function () {
 
-                $("#opciones").load("./opciones/publicacionesFavoritas.html");
+                $("#opciones").load("/opcionesPerfil/publicacionesFavoritas");
 
             });
 
             $("#tipoCuenta").on("click", function () {
 
-                $("#opciones").load("./opciones/seleccionTipoCuenta.html");
+                $("#opciones").load("/opcionesPerfil/seleccionTipoCuenta");
 
             });
 
             $("#not").on("click", function () {
 
-                $("#opciones").load("./opciones/notificaciones.html");
+                $("#opciones").load("/opcionesPerfil/notificaciones");
 
             });
 
             $("#desactivar").on("click", function () {
 
-                $("#opciones").load("./opciones/desactivarCuenta.html");
+                $("#opciones").load("/opcionesPerfil/desactivarCuenta");
 
             });
 
             $("#eliminar").on("click", function () {
 
-                $("#opciones").load("./opciones/eliminarCuenta.html");
+                $("#opciones").load("eliminarCuenta");
 
             });
 
