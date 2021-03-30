@@ -142,17 +142,24 @@
         }
 
         function validarRepetir(obj,pass){
+            
 
-            if(obj.value==pass.value){
+            if(obj.value!=""){
 
-                comprobar(obj,true);
-                return true;
+                if(obj.value==pass.value){
+
+                    comprobar(obj,true);
+                    return true;
+                }else{
+
+                    comprobar(obj,false);
+                    return false;
+                }
             }else{
 
-                comprobar(obj,false);
-                return false;
-            }
-
+                    comprobar(obj,false);
+                    return false;
+                }
 
         }
 
@@ -173,28 +180,43 @@
             }
         }   
 
+
+
         function comprobarTodo(f){
+            //Comprobar datos
+            /*console.log("Nombre="+validarNombre(f.nombre));
+            console.log("Apellido="+ validarApellido(f.apellido));
+            console.log("Fecha="+validarFecha(f.edad));
+            console.log("Contraseña="+validarPssw(f.pass));
+            console.log("Repetir="+validarRepetir(f.repass,f.pass));
+            console.log("Correo="+validarEmail(f.email));
+*/
 
-            console.log(validarNombre(f.nombre));
+            if(validarNombre(f.nombre)&& validarApellido(f.apellido) && validarFecha(f.edad) &&  validarRepetir(f.repass,f.pass) && validarEmail(f.email)){
+               f.aceptar.className="btn btn-success";
+               f.aceptar.onclick=function(){
 
-            if(validarNombre(f.nombre)){
-
-                // if(validarNombre()&& validarApellido() && validarFecha() && validarPssw() && validarRepetir() && validarEmail()==true){
-
-                //f.aceptar.disabled="true";
-                f.aceptar.className="btn btn-success";
-
-                var boton=document.formulario.aceptar;
-
-                boton.onclick=function(){
-                    document.getElementsByName("formulario")[0].submit();
-                }
-               
-
-            }else{
+                    document.getElementsByName("formulario")[0].submit();  
+               }
                 
-                    f.aceptar.disabled="true";
-                    f.aceptar.className="btn btn-danger";
+
+            }else if(validarNombre(f.nombre)==false){
+
+                f.nombre.focus();
+
+            }else if(validarApellido(f.apellido)==false){
+
+                f.apellido.focus();
+
+            }else if(validarFecha(f.edad)==false || (typeof f.edad)==="undefined"){
+
+                f.edad.focus();
+
+            }else if(validarRepetir(f.repass,f.pass)==false){
+                f.repass.focus();
+            }else if(validarEmail(f.email)==false){
+
+                f.email.focus();
             }
        
 
