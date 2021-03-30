@@ -5,14 +5,14 @@
             <form method="post" name="formulario">
                 <div class="row justify-content-center">
                     <div class="form-group col-10">
-                        <label class="text-secondary" for="nombre">Nombre</label>
-                        <input type="text" class="form-control" name="nombre" id="nombre"
+                        <label class="text-secondary" for="nombreUsuario">Nombre Usuario</label>
+                        <input type="text" class="form-control" name="nombreUsuario" id="nombreUsuario"
                             placeholder="Escriba su nombre..." onkeyup="validarNombre(this)">
                         <div class="invalid-feedback">Rellene este campo</div>
                         <div class="valid-feedback"> Campo completado!</div>
                     </div>
                 </div>
-                <div class="row justify-content-center">
+                <!-- <div class="row justify-content-center">
                     <div class="form-group col-10">
                         <label class="text-secondary" for="Apellido">Apellido</label>
                         <input type="text" class="form-control " name="Apellido" id="Apellido"
@@ -20,12 +20,21 @@
                         <div class="invalid-feedback">Rellene este campo</div>
                         <div class="valid-feedback"> Campo completado!</div>
                     </div>
-                </div>
+                </div> -->
                 <div class="row justify-content-center">
                     <div class="form-group col-10">
                         <label class="text-secondary" for="edad">Edad</label>
                         <input type="date" class="form-control" name="edad" id="edad" placeholder="Escriba su edad..."
                             min="1970-01-01" max="2020-01-01" onchange="validarFecha(this)">
+                        <div class="invalid-feedback">Rellene este campo</div>
+                        <div class="valid-feedback"> Campo completado!</div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="form-group col-10 text-left">
+                        <label class="text-secondary" for="email">Email</label>
+                        <input type="text" class="form-control" name="email" id="email"
+                            placeholder="Escriba su email..." onkeyup="validarEmail(this)">
                         <div class="invalid-feedback">Rellene este campo</div>
                         <div class="valid-feedback"> Campo completado!</div>
                     </div>
@@ -40,7 +49,7 @@
                             <div class="invalid-feedback passWrong"></div>
                             <div class="valid-feedback passSuccess"></div>
                         <div class="container">
-                            <div class="progress barra" style="height: 3px;margin-top: 10px;">
+                            <div class="progress barra">
                                 <div class="progress-bar" name="progreso" id ="progreso" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                                  |
                                 </div>
@@ -61,7 +70,7 @@
                             <div class="invalid-feedback passWrong"></div>
                             <div class="valid-feedback passSuccess"></div>
                             <div class="container">
-                                <div class="progress barra" style="height: 3px;margin-top: 10px;">
+                                <div class="progress barra" >
                                     <div class="progress-bar" name="progresoRepass" id="progresoRepass" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                                     |
                                     </div>
@@ -71,18 +80,9 @@
                 </div>
 
                 <div class="row justify-content-center">
-                    <div class="form-group col-10 text-left">
-                        <label class="text-secondary" for="email">Email</label>
-                        <input type="text" class="form-control" name="email" id="email"
-                            placeholder="Escriba su email..." onkeyup="validarEmail(this)">
-                        <div class="invalid-feedback">Rellene este campo</div>
-                        <div class="valid-feedback"> Campo completado!</div>
-                    </div>
-                </div>
-                <div class="row justify-content-center">
                     <div class="form-group col-3">
                         <button class="btn  btn-secondary justify-content-center "
-                           name="aceptar" id="aceptar" onclick="comprobarTodo(this.form)">Registrar</button>
+                           name="aceptar" id="aceptar" disabled="true">Registrar</button>
                     </div>
                 </div>
             </form>
@@ -93,4 +93,4 @@
 
 <!--             
                     <span class="text-secondary text-center">¿Ya estás registrado?</span>
-                    <button class="btn btn-secondary">Login</button> --></div>
+                    <button class="btn btn-secondary">Login</button> -->
