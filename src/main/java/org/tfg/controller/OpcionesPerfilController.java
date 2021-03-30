@@ -14,7 +14,6 @@ public class OpcionesPerfilController {
 		return "perfil/opcionesPerfil";
 		
 	}
-	
 
 	
 	@GetMapping("editarPerfil")
