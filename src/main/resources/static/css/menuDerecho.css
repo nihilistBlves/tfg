@@ -1,13 +1,13 @@
-
-        .fondo {
+      .fondo {
             background-color: #f90d4e;
             height: 100vh;
             width: 100vw;
+            font-size: 18px;
         }
 
         .menu {
             position: fixed;
-            right:0;
+            right: 0;
             background-color: rgb(231, 231, 231);
             height: 100vh;
             box-shadow: -20px 0px #97153a93;
@@ -17,29 +17,31 @@
             background-color: #272636;
             height: 15vh;
             box-shadow: 0px 15px #17161f;
-            
+
         }
 
         .col-cabecera {
-            padding: 30px;
+            
+            padding: 20px;
+       
         }
 
         .link-titulo {
             font-size: 20px;
             color: white;
             text-decoration: none;
-            
+
         }
 
         .link-titulo:hover {
             color: white;
-            font-size: 22px;
+            font-size: 18px;
             text-decoration: none;
+            margin: 1px;
         }
 
-        span{
-            margin-left: 60px;
-        }
+        
+
         .imagen-titulo {
             transition: transform 1s;
         }
@@ -47,7 +49,7 @@
         .imagen-titulo:hover {
             transform: rotate(360deg);
         }
-     
+
         .link-menu {
             padding: 10px;
             margin-top: 50px;
@@ -70,3 +72,21 @@
             border-bottom: 1px solid #f90d4e;
             color: #f90d4e;
         }
+
+        #derecho{
+           float:right;
+           top:-900px;
+           
+           position:sticky;
+           background-color: transparent ;
+        
+        }
+    
+        #barra{
+
+        float: right;
+        top:-20px;
+        left:25px;
+        }
+
+
