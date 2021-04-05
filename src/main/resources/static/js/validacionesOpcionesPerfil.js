@@ -5,6 +5,7 @@ function validarLimite(txtArea){
 
 	if(longitud===0){
 
+		
 		var txtCont=document.createTextNode("0/300");
 		
 	}else{
