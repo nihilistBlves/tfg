@@ -2,11 +2,11 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
 
-            <form method="post" name="formulario">
+            <form method="post" name="formulario" action="/registro">
                 <div class="row justify-content-center">
                     <div class="form-group col-10">
                         <label class="text-secondary" for="nombreUsuario">Nombre Usuario</label>
-                        <input type="text" class="form-control" name="nombreUsuario" id="nombreUsuario"
+                        <input type="text" class="form-control" name="loginName" id="nombreUsuario"
                             placeholder="Escriba su nombre..." onkeyup="validarNombre(this)">
                         <div class="invalid-feedback">Rellene este campo</div>
                         <div class="valid-feedback"> Campo completado!</div>
@@ -42,7 +42,7 @@
                 <div class="row justify-content-center">
                     <div class="form-group col-10">
                         <label class="text-secondary" for="pass">Contraseña</label>
-                        <input type="password" class="form-control" name="pass" id="pass"
+                        <input type="password" class="form-control" name="password" id="pass"
                             placeholder="Escriba su contraseña..." onkeyup="validarPssw(this)">
                         <span id="ver" onmouseover="ver(document.formulario.pass)"
                             onmouseout="ocultar(document.formulario.pass)"><i class="fas fa-eye"></i></span>
@@ -61,7 +61,7 @@
                 <div class="row justify-content-center">
                     <div class="form-group col-10">
                         <label class="text-secondary" for="repass">Repita Contraseña</label>
-                        <input type="password" class="form-control" name="repass" id="repass"
+                        <input type="password" class="form-control" name="passConfirm" id="repass"
                             placeholder="Repita su contraseña..."
                             onkeyup=" validarRepetir(document.formulario.repass,document.formulario.pass)">
                         <span id="ver" onmouseover="ver(document.formulario.repass)"

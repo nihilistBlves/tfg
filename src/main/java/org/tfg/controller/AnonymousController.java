@@ -1,5 +1,7 @@
 package org.tfg.controller;
 
+import java.time.LocalDate;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.tfg.domain.Usuario;
 import org.tfg.exception.DangerException;
 import org.tfg.helper.H;
 import org.tfg.helper.PRG;
@@ -45,11 +48,14 @@ public class AnonymousController {
 	}
 
 	@PostMapping("/registro")
-	public String registroPost(ModelMap m, @RequestParam("nUsuario") String loginName,
-			@RequestParam("pass") String pass, @RequestParam("passConfirm") String passConfirm,
-			@RequestParam("email") String email, @RequestParam("nombre") String nombre,
-			@RequestParam("apellidos") String apellidos, @RequestParam("fNacimiento") String fNacimiento) throws DangerException {
-
+	public String registroPost(ModelMap m, @RequestParam("loginName") String loginName,
+			@RequestParam("password") String pass, @RequestParam("passConfirm") String passConfirm,
+			@RequestParam("email") String email, /*@RequestParam("nombre") String nombre,*/
+			/*@RequestParam("apellido") String apellidos,*/ @RequestParam("edad") String fNacimiento) throws DangerException {
+		
+		if(pass != passConfirm) {
+			
+		}
 		if (usuarioRepository.getByLoginName(loginName) != null) {
 			PRG.error("Ya existe este nombre de usuario", "/login");
 		}
@@ -58,7 +64,19 @@ public class AnonymousController {
 		}
 		
 		
-		return "/home/registro";
+		Usuario usuario = new Usuario();
+		
+		usuario.setLoginName(loginName);
+		usuario.setPass(pass);
+		usuario.setEmail(email);
+		
+		LocalDate fecha= LocalDate.parse(fNacimiento);
+		
+		usuario.setFechaNacimiento(fecha);
+		
+		usuarioRepository.save(usuario);
+		
+		return "redirect:/";
 	}
 
 }
