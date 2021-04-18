@@ -266,7 +266,7 @@
             console.log("Correo="+validarEmail(f.email));
 */
 
-            if(validarNombre(f.nombre)&& validarApellido(f.apellido) && validarFecha(f.edad) &&  validarRepetir(f.repass,f.pass) && validarEmail(f.email)){
+            if(validarNombre(f.loginName)&& /*validarApellido(f.apellido) && */validarFecha(f.edad) &&  validarRepetir(f.passConfirm,f.password) && validarEmail(f.email)){
                f.aceptar.className="btn btn-success";
                f.aceptar.onclick=function(){
 
@@ -274,20 +274,20 @@
                }
                 
 
-            }else if(validarNombre(f.nombre)==false){
+            }else if(validarNombre(f.loginName)==false){
 
-                f.nombre.focus();
+                f.loginName.focus();
 
-            }else if(validarApellido(f.apellido)==false){
+            }/*else if(validarApellido(f.apellido)==false){
 
                 f.apellido.focus();
 
-            }else if(validarFecha(f.edad)==false || (typeof f.edad)==="undefined"){
+            }*/else if(validarFecha(f.edad)==false || (typeof f.edad)==="undefined"){
 
                 f.edad.focus();
 
-            }else if(validarRepetir(f.repass,f.pass)==false){
-                f.repass.focus();
+            }else if(validarRepetir(f.passConfirm,f.password)==false){
+                f.passConfirm.focus();
             }else if(validarEmail(f.email)==false){
 
                 f.email.focus();

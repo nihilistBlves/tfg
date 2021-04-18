@@ -1,4 +1,4 @@
-package org.tfg.services;
+package org.tfg.controller;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,9 +15,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class FileUploadController {
 
-	@GetMapping("/")
+	@GetMapping("/upload")
 	public String index() {
-		return "upload";
+		return "archivos/upload";
 	}
 
 	@PostMapping("/upload")
@@ -28,7 +28,7 @@ public class FileUploadController {
 		// con redirect atributes hacemos un sistema parecido a prg donde llevamos al usuario a otra pagina con un mensaje
 		if (file == null || file.isEmpty()) {
 			attributes.addFlashAttribute("message", "Por favor seleccione un archivo");
-			return "redirect:status";
+			return "redirect:archivos/status";
 		}
 		
 		//CREAR LA CARPETA Y RUTAS
@@ -52,7 +52,7 @@ public class FileUploadController {
 	
 	@GetMapping("/status")
 	public String status() {
-		return "status";
+		return "archivos/status";
 	}
 
 }

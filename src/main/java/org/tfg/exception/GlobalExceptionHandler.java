@@ -4,6 +4,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MultipartException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 @ControllerAdvice
@@ -31,5 +33,12 @@ public class GlobalExceptionHandler {
 	    s.setAttribute("_severity", "info");
 	    
 	    return new RedirectView("/info");
+	}
+	
+	@ExceptionHandler(MultipartException.class)
+	public String handleMultipart(MultipartException e, RedirectAttributes attributes) {
+		attributes.addFlashAttribute("message", e.getCause().getMessage());
+		
+		return "redirect:/status";
 	}
 }
