@@ -25,7 +25,7 @@ input,input:active{
     outline: -webkit-focus-ring-color auto 0px;
 
     }
-
+ 
 #aceptar{
     /* margin-left:160px; */
     /* margin-top: -10px; */
@@ -49,7 +49,7 @@ label{
    position: absolute;
    top:80px;
    left:50px;
-  
+
 
 }
 
@@ -62,4 +62,13 @@ i{
     
    font-size: 1em;
       
+}
+
+
+
+.barra{
+
+   height: 3px;
+   margin-top: 10px;
+   
 }

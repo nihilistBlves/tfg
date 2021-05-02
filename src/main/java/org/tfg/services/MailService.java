@@ -18,6 +18,7 @@ public class MailService {
 		
 		SimpleMailMessage email = new SimpleMailMessage();
 		
+		email.setFrom("waveit.notification@gmail.com");
 		email.setTo(destinatario);
 		email.setSubject(asunto);
 		email.setText(mensaje);

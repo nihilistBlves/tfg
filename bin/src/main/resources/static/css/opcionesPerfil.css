@@ -89,3 +89,11 @@
             background-color: rgb(252, 244, 246);
             border-radius: 10px;
         }
+
+        .contador{
+            color:grey;
+            position:relative;
+            bottom:10px;
+            right:80px;
+
+        }

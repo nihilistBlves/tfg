@@ -44,6 +44,7 @@ public class AnonymousController {
 	
 	@PostMapping("/login")
 	public String loginPost(ModelMap m, HttpSession s, @RequestParam("nUsuario") String loginName, @RequestParam("pass") String pass) {
+		
 		return "/home/login";
 	}
 
@@ -55,9 +56,9 @@ public class AnonymousController {
 
 	@PostMapping("/registro")
 	public String registroPost(ModelMap m, @RequestParam("loginName") String loginName,
-			@RequestParam("password") String pass, @RequestParam("passConfirm") String passConfirm,
+			@RequestParam("password") String pass, @RequestParam("repass") String passConfirm,
 			@RequestParam("email") String email, /*@RequestParam("nombre") String nombre,*/
-			/*@RequestParam("apellido") String apellidos,*/ @RequestParam("edad") String fNacimiento) throws DangerException {
+			/*@RequestParam("apellido") String apellidos,*/ @RequestParam("fechaNacimiento") String fNacimiento) throws DangerException {
 		
 		if(pass != passConfirm) {
 			
@@ -88,7 +89,8 @@ public class AnonymousController {
 		//Cabecera del email
 		String cabecera="Email de prueba";
 		//cuerpo del email
-		String cuerpo="Hola este es un mensaje de prueba";
+		//editar para crear plantilla
+		String cuerpo="<h1>Hola Dani</h1>"+"<br>"+"Te hasregistrado ypienso comerme a tu perrito<b>=D</b>";
 		
 		//EnviarEmail
 		ms.enviarEmail(email, cabecera, cuerpo);
