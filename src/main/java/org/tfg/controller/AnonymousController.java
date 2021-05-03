@@ -43,7 +43,19 @@ public class AnonymousController {
 	}
 	
 	@PostMapping("/login")
-	public String loginPost(ModelMap m, HttpSession s, @RequestParam("nUsuario") String loginName, @RequestParam("pass") String pass) {
+	public String loginPost(ModelMap m, HttpSession s, @RequestParam("loginName") String loginName, @RequestParam("password") String pass) throws DangerException {
+		
+		
+		
+		if(usuarioRepository.getByLoginName(loginName) !=null ) {
+
+			m.put("nombre","ja");
+			
+			return "/usuario/buscar";
+		}else {
+		PRG.error("Ya existe este nombre de usuario", "/login");
+		}
+		
 		
 		return "/home/login";
 	}

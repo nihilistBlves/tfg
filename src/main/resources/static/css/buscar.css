@@ -1,0 +1,124 @@
+@charset "ISO-8859-1";
+
+        body{
+            background-color: rgb(216, 10, 72);
+        }
+        .triangulo_derecho{
+            width: 0;
+            height: 0;
+            right:0;  
+            border-top: 400px solid rgb(250, 248, 248); 
+            border-left: 300px solid transparent;   
+            border-bottom: 80px solid transparent; 
+            position: fixed;
+           
+        }
+
+        .triangulo-izquierdo {
+            width: 0;
+            height: 0;
+            border-top: 820px solid rgb(250, 248, 248); 
+            border-right: 400px solid transparent;      
+            border-bottom: 300px solid transparent; 
+            margin-left:-14px;    
+            margin-top: -7px;
+            position: fixed;
+        }
+        #Home,#Contacto,#Descubrir,#Acerca{
+           position:fixed;
+           text-decoration:none;
+           color: rgb(216, 10, 72);
+           font-size: 22px;
+           font-weight: bold;
+           text-shadow: 0px 0px 32px 110px #ff0000;
+           
+           
+        }
+        #Home{
+           top:80px;
+           left:180px;
+        }
+        #Contacto{
+            top:160px;
+            left:120px;
+        }
+        #Descubrir{
+            top:250px;
+            left:60px;
+        }
+        #Acerca{
+            top:320px;
+            left:10px;
+        }
+        #derecho{
+           float:right;
+           top:-900px;
+           
+           position:sticky;
+           background-color: transparent ;
+        
+        }
+        /* #aparecer{
+            float:right;
+        } */
+        #opcion{
+            margin-right:20px;
+            background-color:transparent;
+
+        }
+        #barra{
+
+           float: right;
+           top:-400px;
+        }
+        #contenedor>ul{
+            left:-40px;
+        }
+        #centro{
+            left:120px;
+           width: 300px;
+           height:640px;
+           /* background-color: rgb(201, 7, 65); */
+            
+          
+        }
+        #eleccion{
+            margin-top: 10px;
+            border:3px solid rgb(243, 7, 78) ;
+            /* border: 4px solid rgb(250, 250, 250);
+            background-color: rgb(247, 242, 244); */
+            height: 150px;
+            border-radius: 77px;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+        }
+        select{
+            margin: 22px;
+            border:none;
+        }
+        .card{
+            margin:22px;
+        }
+        #borde-perfil{
+            overflow: scroll;
+            overflow-x: hidden;
+            height: 480px;
+            
+        }
+        
+        #borde-perfil::-webkit-scrollbar {
+            width: 1em;
+           
+        }
+        
+        #borde-perfil::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            border-radius: 10px;
+        }
+        
+        #borde-perfil::-webkit-scrollbar-thumb {
+        background-color:  rgb(252, 244, 246);
+        
+        border-radius: 10px;
+        }
