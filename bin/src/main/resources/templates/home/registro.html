@@ -1,11 +1,11 @@
 <div class="modal fade" id="dos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form method="post" name="formulario">
+            <form method="post" name="formulario" action="/registro">
                 <div class="row justify-content-center">
                     <div class="form-group col-10">
                         <label class="text-secondary" for="nombreUsuario">Nombre Usuario</label>
-                        <input type="text" class="form-control" name="nombreUsuario" id="nombreUsuario"
+                        <input type="text" class="form-control" name="loginName" id="nombreUsuario"
                             placeholder="Escriba su nombre..." onkeyup="validarNombre(this)">
                         <div class="invalid-feedback">Rellene este campo</div>
                         <div class="valid-feedback"> Campo completado!</div>
@@ -23,7 +23,7 @@
                 <div class="row justify-content-center">
                     <div class="form-group col-10">
                         <label class="text-secondary" for="edad">Edad</label>
-                        <input type="date" class="form-control" name="edad" id="edad" placeholder="Escriba su edad..."
+                        <input type="date" class="form-control" name="fechaNacimiento" id="edad" placeholder="Escriba su edad..."
                             min="1970-01-01" max="2020-01-01" onchange="validarFecha(this)">
                         <div class="invalid-feedback">Rellene este campo</div>
                         <div class="valid-feedback"> Campo completado!</div>
@@ -41,7 +41,7 @@
                 <div class="row justify-content-center">
                     <div class="form-group col-10">
                         <label class="text-secondary" for="pass">Contraseña</label>
-                        <input type="password" class="form-control" name="pass" id="pass"
+                        <input type="password" class="form-control" name="password" id="pass"
                             placeholder="Escriba su contraseña..." onkeyup="validarPssw(this)">
                         <span id="ver" onmouseover="ver(document.formulario.pass)"
                             onmouseout="ocultar(document.formulario.pass)"><i class="bi bi-eye-fill"></i></span>

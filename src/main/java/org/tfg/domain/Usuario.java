@@ -30,6 +30,7 @@ public class Usuario {
 	private String apellidos;
 	private LocalDate fechaNacimiento;
 	private LocalDate fechaCreacion;
+	private boolean enabled;
 	//private String extensionImg;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
@@ -54,7 +55,7 @@ public class Usuario {
 	private Collection<Seguimiento> seguidos;
 
 	public Usuario(String loginName, String email, String pass, String nombre, String apellidos,
-			LocalDate fechaNacimiento, LocalDate fechaCreacion, Collection<Instrumento> instrumentos, Rol rol) {
+			LocalDate fechaNacimiento, LocalDate fechaCreacion, boolean enabled, Collection<Instrumento> instrumentos, Rol rol) {
 		super();
 		this.loginName = loginName;
 		this.email = email;
@@ -63,14 +64,16 @@ public class Usuario {
 		this.apellidos = apellidos;
 		this.fechaNacimiento = fechaNacimiento;
 		this.fechaCreacion = fechaCreacion;
+		this.enabled = false;
 		this.instrumentos = instrumentos;
 		this.rol = rol;
 	}
 
 	public Usuario() {
-		
+		super();
+		this.enabled = false;
 	}
-	
+
 	public String getLoginName() {
 		return loginName;
 	}
@@ -125,6 +128,14 @@ public class Usuario {
 
 	public void setFechaCreacion(LocalDate fechaCreacion) {
 		this.fechaCreacion = fechaCreacion;
+	}	
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public Collection<Instrumento> getInstrumentos() {
