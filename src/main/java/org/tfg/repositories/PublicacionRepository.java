@@ -8,10 +8,7 @@ import org.tfg.domain.Publicacion;
 import org.tfg.domain.Usuario;
 
 @Repository
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
-	
-	public Usuario getByLoginName(String loginName);
-	public Usuario getByEmail(String email);
-	
+public interface PublicacionRepository extends JpaRepository<Publicacion, Long> {
 
+	public List<Publicacion> getByDuenioPublicacion (Usuario usuario);
 }

@@ -1,11 +1,17 @@
 package org.tfg.controller;
 
+import java.io.File;
+import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,8 +62,21 @@ public class AnonymousController {
 		PRG.error("Ya existe este nombre de usuario", "/login");
 		}
 		
+		ArrayList <Usuario> allUsuarios = (ArrayList<Usuario>) usuarioRepository.findAll();
 		
-		return "/home/login";
+		for(Usuario usuario: allUsuarios) {
+			
+			if(usuario.getLoginName()==loginName && usuario.getPass()==pass) {
+				
+				//Caambiar para sacar auth de la base de datos
+				H.isRolOK("auth", s);
+				return "/home/home";
+			}
+			
+		}
+		
+		PRG.error("Nombre de usuario o contraseña erroneos", "/");
+		return "/home/registro";
 	}
 
 
@@ -71,6 +90,8 @@ public class AnonymousController {
 			@RequestParam("password") String pass, @RequestParam("repass") String passConfirm,
 			@RequestParam("email") String email, /*@RequestParam("nombre") String nombre,*/
 			/*@RequestParam("apellido") String apellidos,*/ @RequestParam("fechaNacimiento") String fNacimiento) throws DangerException {
+		
+		
 		
 		if(pass != passConfirm) {
 			
@@ -88,6 +109,9 @@ public class AnonymousController {
 		usuario.setLoginName(loginName);
 		usuario.setPass(pass);
 		usuario.setEmail(email);
+		
+		//Añadir el rol a los usuarios/admin etc
+		//usuario.setRol();
 		
 		LocalDate fecha= LocalDate.parse(fNacimiento);
 		
@@ -107,9 +131,17 @@ public class AnonymousController {
 		//EnviarEmail
 		ms.enviarEmail(email, cabecera, cuerpo);
 		
-		
+		File directorio = new File("/ruta/directorio_nuevo");
+        if (!directorio.exists()) {
+            if (directorio.mkdirs()) {
+                System.out.println("Directorio creado");
+            } else {
+                System.out.println("Error al crear directorio");
+            }
+        }
 		
 		return "redirect:/";
 	}
-
+	
+	
 }
