@@ -31,6 +31,10 @@ public class Rol {
 		this.tipo = tipo;
 	}
 
+	public Rol() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getTipo() {
 		return tipo;
 	}
