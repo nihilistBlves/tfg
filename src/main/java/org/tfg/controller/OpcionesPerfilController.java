@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.tfg.domain.Usuario;
+import org.tfg.exception.DangerException;
+import org.tfg.helper.PRG;
 import org.tfg.repositories.UsuarioRepository;
 
 @Controller
@@ -42,31 +45,34 @@ public class OpcionesPerfilController {
 			@RequestParam("nombre") String nombre, @RequestParam("apellidos") String apellidos,
 			@RequestParam("edad") String edad) throws IOException {
 
+		
+		//para descripcion esperamos a hablar los tres para hacer que al coger el id de la persona por su loginame 
+		//nos lleve a ciertos atributos de el perfil usuario donde meteriamos tambien el telefono ,correo y descripcion,pagina etc
 //	     	@RequestParam("descripcion") String descripcion
 
-//		Usuario usuario = usuarioRepository.getByLoginName("pepepe");
-//
-//		if (nombre != null) {
-//
-//			usuario.setNombre(nombre);
-//
-//			usuarioRepository.save(usuario);
-//		}
-//		if (apellidos != null) {
-//
-//			usuario.setApellidos(apellidos);
-//
-//			usuarioRepository.save(usuario);
-//
-//		}
-//		if (edad != null) {
-//
-//			LocalDate date = LocalDate.parse(edad);
-//			usuario.setFechaNacimiento(date);
-//
-//			usuarioRepository.save(usuario);
-//
-//		}
+		Usuario usuario = usuarioRepository.getByLoginName("pepepe");
+
+		if (nombre != null) {
+
+			usuario.setNombre(nombre);
+
+			usuarioRepository.save(usuario);
+		}
+		if (apellidos != null) {
+
+			usuario.setApellidos(apellidos);
+
+			usuarioRepository.save(usuario);
+
+		}
+		if (edad != null) {
+
+			LocalDate date = LocalDate.parse(edad);
+			usuario.setFechaNacimiento(date);
+
+			usuarioRepository.save(usuario);
+
+		}
 
 			//comprobamos si esta vacio o nulo
 		if (file == null || file.isEmpty()) {
@@ -108,14 +114,51 @@ public class OpcionesPerfilController {
 
 	}
 
-	@GetMapping("gestionarCorreoPass")
-	public String gestionarCorreoPass() {
+	@GetMapping("editarPass")
+	public String gestionarPass(@RequestParam("passActual") String pass,@RequestParam("passNueva") String newPass,
+			@RequestParam("repNueva") String newRePass) throws DangerException {
+		
+		Usuario usuario = usuarioRepository.getByLoginName("pepepe");
+		
+		if(usuario.getPass()==pass) {
+			
+			if(pass==newRePass) {
+				
+				usuario.setPass(newPass);
 
-		return "perfil/opciones/gestionarCorreoPass";
+				usuarioRepository.save(usuario);
+			}else {
+				PRG.error("La contraseña no coincide", "/login");
+			}
+			
+			
+		}else {
+			PRG.error("La nueva contraseña y la contraseña repetida nueva no coinciden", "/login");
+			
+		}
+		
+		return "perfil/opciones/pass";
+	}
+	
+	
+	@GetMapping("editarCorreo")
+	public String gestionarCorreo(@RequestParam("passActual") String email) {
+		
+		
+		Usuario usuario = usuarioRepository.getByLoginName("pepepe");
+		
+		usuario.setEmail(email);
+
+		usuarioRepository.save(usuario);
+
+		return "perfil/opciones/correo";
 	}
 
 	@GetMapping("seguidoresSeguidos")
-	public String seguidoresSeguidos() {
+	public String seguidoresSeguidos( ModelMap m) {
+		
+		//cargar usuarios de la bd y pasar a la vista
+		m.put("","");
 
 		return "perfil/opciones/seguidoresSeguidos";
 	}
@@ -132,10 +175,10 @@ public class OpcionesPerfilController {
 		return "perfil/opciones/publicacionesFavoritas";
 	}
 
-	@GetMapping("seleccionTipoCuenta")
+	@GetMapping("editarCuenta")
 	public String seleccionTipoCuenta() {
 
-		return "perfil/opciones/seleccionTipoCuenta";
+		return "perfil/opciones/cuenta";
 	}
 
 	@GetMapping("notificaciones")
@@ -144,15 +187,5 @@ public class OpcionesPerfilController {
 		return "perfil/opciones/notificaciones";
 	}
 
-	@GetMapping("desactivarCuenta")
-	public String desactivarCuenta() {
 
-		return "perfil/opciones/desactivarCuenta";
-	}
-
-	@GetMapping("eliminarCuenta")
-	public String eliminarCuenta() {
-
-		return "perfil/opciones/eliminarCuenta";
-	}
 }
