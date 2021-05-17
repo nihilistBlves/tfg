@@ -55,7 +55,7 @@ public class AnonymousController {
 		if (usuarioRepository.getByLoginName(loginName) != null && passwordEncoder.matches(pass, usuarioRepository.getByLoginName(loginName).getPass())) {
 			Usuario usuario = usuarioRepository.getByLoginName(loginName);
 			s.setAttribute("user", usuario);
-			returner = "redirect:/feed";
+			returner = "redirect:/"+loginName;
 		} else {
 			m.put("loginError", "El usuario no existe o la contraseña es incorrecta");
 			returner = "redirect:/";
@@ -75,14 +75,17 @@ public class AnonymousController {
 			@RequestParam("email") String email, @RequestParam("fechaNacimiento") String fNacimiento)
 			throws DangerException {
 
-		if (pass != passConfirm) {
-			PRG.error("Las contraseñas no coinciden", "/login");
+		
+		System.out.println(pass+passConfirm);
+		
+		if (!pass.equals(passConfirm)) {
+		PRG.error("Las contraseñas no coinciden", "/login");
 		}
 		if (usuarioRepository.getByLoginName(loginName) != null) {
-			PRG.error("Ya existe este nombre de usuario", "/login");
+//			PRG.error("Ya existe este nombre de usuario", "/login");
 		}
 		if (usuarioRepository.getByEmail(email) != null) {
-			PRG.error("Ya existe una cuenta asociada a este correo electrónico", "/login");
+//			PRG.error("Ya existe una cuenta asociada a este correo electrónico", "/login");
 		}
 
 		Usuario usuario = new Usuario();

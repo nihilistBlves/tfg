@@ -108,6 +108,7 @@ public class OpcionesPerfilController {
 				return "redirect:/status";
 				
 			}
+		
 		}
 
 //		return "perfil/opcionesPerfil";
