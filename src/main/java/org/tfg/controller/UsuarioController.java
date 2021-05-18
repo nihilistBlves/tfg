@@ -160,8 +160,14 @@ public class UsuarioController {
 	}
 
 	@GetMapping("editarPass")
-	public String gestionarPass(@RequestParam("passActual") String pass,@RequestParam("passNueva") String newPass,
-			@RequestParam("repNueva") String newRePass) throws DangerException {
+	public String gestionarPass() {
+		
+		return "perfil/opciones/pass";
+	} 
+	
+	@PostMapping("editarPass")
+	public String gestionarPass(@RequestParam("passActual") String pass,@RequestParam("pass") String newPass,
+			@RequestParam("repass") String newRePass) throws DangerException {
 		
 		Usuario usuario = usuarioRepository.getByLoginName("pepepe");
 		

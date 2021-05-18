@@ -159,11 +159,6 @@
         }
 
         function validarRepetir(obj,pass){
-            
-
-
-            
-
           
             var mayus = /^(?=.*[A-Z])/;
             var spe = /^(?=.*[!@#$%&*])/;
