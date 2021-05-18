@@ -59,20 +59,27 @@
 					<button type="button" class="btn btn-dark text-light" id="buscar">Buscar</button>
 				</div>
 			</div>
-
-			<div class="waves"></div>
 		</div>
+		<div class="waves"></div>
+
+
 	</section>
 	<section id="login"></section>
 	<section id="registro"></section>
-	<span th:if="${loginError != null}">
-		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-			aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<section id="error">
+		<div class="modal fade" id="errorModal" role="dialog"
+			aria-labelledby="errorModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">El usuario o la contraseña son
 					incorrectos</div>
 			</div>
 		</div>
-	</span>
+	</section>
+	<!-- 	<span th:if="${loginError != null}"> -->
+
+	<!-- 	</span> -->
+	<script th:if="${loginError != null}">
+		$('#errorModal').modal('show')
+	</script>
 </body>
 </html>

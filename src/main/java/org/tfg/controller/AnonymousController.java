@@ -34,6 +34,9 @@ public class AnonymousController {
 		if (s.getAttribute("user") != null) {
 			returner = "redirect:/feed";
 		} else {
+			if (s.getAttribute("loginError") != null) {
+				m.put("loginError", s.getAttribute("loginError"));
+			}
 			returner = "home/home";
 		}
 		return returner;
@@ -57,7 +60,7 @@ public class AnonymousController {
 			s.setAttribute("user", usuario);
 			returner = "redirect:/"+loginName;
 		} else {
-			m.put("loginError", "El usuario no existe o la contraseña es incorrecta");
+			s.setAttribute("loginError", "El usuario no existe o la contraseña es incorrecta");
 			returner = "redirect:/";
 		}
 		
