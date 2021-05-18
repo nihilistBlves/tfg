@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="/css/login.css">
 <link rel="stylesheet" href="/css/principal.css">
 <link rel="stylesheet" href="/css/registro.css">
+<link rel="stylesheet" href="/css/buscar.css">
 <!-- ---------------------------------------------- -->
 <script type="application/javascript" src="/jquery/jquery-3.6.0.min.js"></script>
 <script src="/bootstrap/js/bootstrap.min.js"></script>
@@ -20,27 +21,25 @@
 
 
 <script>
-      $( document ).ready(function() {
-    	 
-        $( "#login" ).load("login");
-        
+	$(document).ready(function() {
 
-        $( "#registro" ).load("registro");
+		$("#login").load("login");
+
+		$("#registro").load("registro");
+
+		$("#buscar").click(function() {
+			//Simple
+			window.location.href = "buscar.html";
+			//Pestaña
+			//  window.open("http://www.google.com");
+			//Ventana
+			//window.open("http://www.google.com", "Tu Titulo", "width=500, height=500")
+		});
+
+	});
+</script>
 
 
-        $( "#buscar" ).click(function() {
-          //Simple
-          window.location.href = "buscar.html";
-          //Pestaña
-          //  window.open("http://www.google.com");
-          //Ventana
-          //window.open("http://www.google.com", "Tu Titulo", "width=500, height=500")
-          });
-
-      });
-    </script>
-    
-    
 </head>
 <body>
 
@@ -60,11 +59,27 @@
 					<button type="button" class="btn btn-dark text-light" id="buscar">Buscar</button>
 				</div>
 			</div>
+		</div>
+		<div class="waves"></div>
 
-			<div class="waves"></div>
+
+	</section>
+	<section id="login"></section>
+	<section id="registro"></section>
+	<section id="error">
+		<div class="modal fade" id="errorModal" role="dialog"
+			aria-labelledby="errorModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">El usuario o la contraseña son
+					incorrectos</div>
+			</div>
 		</div>
 	</section>
-<section id="login"></section>
-<section id="registro"></section>
+	<!-- 	<span th:if="${loginError != null}"> -->
+
+	<!-- 	</span> -->
+	<script th:if="${loginError != null}">
+		$('#errorModal').modal('show')
+	</script>
 </body>
 </html>

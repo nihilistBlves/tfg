@@ -4,49 +4,49 @@ $(document).ready(function() {
 
 	$("#perfil").on("click", function() {
 
-		$("#opciones").load("/opcionesPerfil/editarPerfil");
+		$("#opciones").load("/editarPerfil");
 
 
 	});
 
 	$("#pass").on("click", function() {
 
-		$("#opciones").load("/opcionesPerfil/editarPass");
+		$("#opciones").load("/editarPass");
 
 	});
 
 	$("#correo").on("click", function() {
 
-		$("#opciones").load("/opcionesPerfil/editarCorreo");
+		$("#opciones").load("/editarCorreo");
 
 	});
 	$("#seg").on("click", function() {
 
-		$("#opciones").load("/opcionesPerfil/seguidoresSeguidos");
+		$("#opciones").load("/seguidoresSeguidos");
 
 	});
 
 	$("#waves").on("click", function() {
 
-		$("#opciones").load("/opcionesPerfil/tasaWaves");
+		$("#opciones").load("/tasaWaves");
 
 	});
 
 	$("#favs").on("click", function() {
 
-		$("#opciones").load("/opcionesPerfil/publicacionesFavoritas");
+		$("#opciones").load("/publicacionesFavoritas");
 
 	});
 
 	$("#cuenta").on("click", function() {
 
-		$("#opciones").load("/opcionesPerfil/editarCuenta");
+		$("#opciones").load("/editarCuenta");
 
 	});
 
 	$("#notificaciones").on("click", function() {
 
-		$("#opciones").load("/opcionesPerfil/notificaciones");
+		$("#opciones").load("/notificaciones");
 
 	});
 
