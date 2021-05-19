@@ -1,20 +1,29 @@
 package org.tfg.controller;
 
 import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.MessageSource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.WebRequest;
 import org.tfg.domain.Usuario;
+import org.tfg.domain.VerificationToken;
+import org.tfg.events.EventoVerificacion;
 import org.tfg.exception.DangerException;
-import org.tfg.helper.H;
 import org.tfg.helper.PRG;
 import org.tfg.repositories.UsuarioRepository;
+import org.tfg.repositories.VerificationTokenRepository;
 
 @Controller
 public class AnonymousController {
@@ -22,11 +31,27 @@ public class AnonymousController {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
+	@Autowired
+	private ApplicationEventPublisher eventPublisher;
+
+	@Autowired
+	private VerificationTokenRepository verificationTokenRepository;
+
+	@Autowired
+	private MessageSource messages;
+
 	@GetMapping("/")
 	public String index(ModelMap m, HttpSession s) throws DangerException {
-		H.isRolOK("anon", s);
-
-		return "/home/home";
+		String returner = "";
+		if (s.getAttribute("user") != null) {
+			returner = "redirect:/feed";
+		} else {
+			if (s.getAttribute("loginError") != null) {
+				m.put("loginError", s.getAttribute("loginError"));
+			}
+			returner = "home/home";
+		}
+		return returner;
 	}
 
 	@GetMapping("/login")
@@ -38,16 +63,25 @@ public class AnonymousController {
 	public String loginPost(ModelMap m, HttpSession s, @RequestParam("loginName") String loginName,
 			@RequestParam("password") String pass) throws DangerException {
 
-		if (usuarioRepository.getByLoginName(loginName) != null) {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-			m.put("nombre", "ja");
+		String returner = "";
 
-			return "/usuario/buscar";
+		if (usuarioRepository.getByLoginName(loginName) != null
+				&& passwordEncoder.matches(pass, usuarioRepository.getByLoginName(loginName).getPass())) {
+			Usuario usuario = usuarioRepository.getByLoginName(loginName);
+			if (!usuario.isEnabled()) {
+				s.setAttribute("loginError", "La cuenta no ha sido verificada");
+			} else {
+				s.setAttribute("user", usuario);
+				returner = "redirect:/" + loginName;
+			}
 		} else {
-			PRG.error("Ya existe este nombre de usuario", "/login");
+			s.setAttribute("loginError", "El usuario no existe o la contraseña es incorrecta");
+			returner = "redirect:/";
 		}
 
-		return "/home/login";
+		return returner;
 	}
 
 	@GetMapping("/registro")
@@ -58,25 +92,28 @@ public class AnonymousController {
 	@PostMapping("/registro")
 	public String registroPost(ModelMap m, @RequestParam("loginName") String loginName,
 			@RequestParam("password") String pass, @RequestParam("repass") String passConfirm,
-			@RequestParam("email") String email, /* @RequestParam("nombre") String nombre, */
-			/* @RequestParam("apellido") String apellidos, */ @RequestParam("fechaNacimiento") String fNacimiento)
-			throws DangerException {
+			@RequestParam("email") String email, @RequestParam("fechaNacimiento") String fNacimiento,
+			HttpServletRequest request) throws DangerException {
 
-		if (pass != passConfirm) {
-
+		if (!pass.equals(passConfirm)) {
+			PRG.error("Las contraseñas no coinciden", "/login");
 		}
 		if (usuarioRepository.getByLoginName(loginName) != null) {
 			PRG.error("Ya existe este nombre de usuario", "/login");
 		}
 		if (usuarioRepository.getByEmail(email) != null) {
-			PRG.error("Ya existe una cuenta con este correo electrónico", "/login");
+			PRG.error("Ya existe una cuenta asociada a este correo electrónico", "/login");
 		}
 
 		Usuario usuario = new Usuario();
 
 		usuario.setLoginName(loginName);
-		usuario.setPass(pass);
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		usuario.setPass(passwordEncoder.encode(pass));
 		usuario.setEmail(email);
+
+		// Añadir el rol a los usuarios/admin etc
+		// usuario.setRol();
 
 		LocalDate fecha = LocalDate.parse(fNacimiento);
 
@@ -84,18 +121,45 @@ public class AnonymousController {
 
 		usuarioRepository.save(usuario);
 
-		// Cargar el servicio del email
-		// MailService e= new MailService();
+		String appUrl = request.getContextPath();
 
-		// Cabecera del email
-		String cabecera = "Email de prueba";
-		// cuerpo del email
-		// editar para crear plantilla
-		String cuerpo = "<h1>Hola Dani</h1>" + "<br>" + "Te hasregistrado ypienso comerme a tu perrito<b>=D</b>";
+		eventPublisher.publishEvent(new EventoVerificacion(usuario, request.getLocale(), appUrl));
 
-		// EnviarEmail
-
+		/*
+		 * File directorio = new File("/ruta/directorio_nuevo"); if
+		 * (!directorio.exists()) { if (directorio.mkdirs()) {
+		 * System.out.println("Directorio creado"); } else {
+		 * System.out.println("Error al crear directorio"); } }
+		 */
 		return "redirect:/";
+	}
+
+	@GetMapping("/registroConfirmado")
+	public String confirmarRegistro(ModelMap m, @RequestParam("token") String token, WebRequest request) {
+
+		Locale locale = request.getLocale();
+
+		VerificationToken verificationToken = verificationTokenRepository.getByToken(token);
+
+		if (verificationToken == null) {
+			String message = "El link de verificacion al que has accedido no existe.";
+			m.addAttribute("message", message);
+			return "home/badUser";
+		}
+
+		Usuario usuario = verificationToken.getUsuario();
+		Calendar cal = Calendar.getInstance();
+
+		if ((verificationToken.getExpirationDate().getTime() - cal.getTime().getTime()) <= 0) {
+			String messageValue = "El link de verificacion al que has accedido ha caducado:";
+			m.addAttribute("message", messageValue);
+			return "home/badUser";
+		}
+
+		usuario.setEnabled(true);
+		usuarioRepository.save(usuario);
+		return "redirect:/login";
+
 	}
 
 }
