@@ -55,7 +55,7 @@ public class Usuario {
 	private Collection<Seguimiento> seguidos;
 
 	public Usuario(String loginName, String email, String pass, String nombre, String apellidos,
-			LocalDate fechaNacimiento, LocalDate fechaCreacion, boolean enabled, Collection<Instrumento> instrumentos, Rol rol) {
+			LocalDate fechaNacimiento, boolean enabled, Collection<Instrumento> instrumentos, Rol rol) {
 		super();
 		this.loginName = loginName;
 		this.email = email;
@@ -63,7 +63,7 @@ public class Usuario {
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.fechaNacimiento = fechaNacimiento;
-		this.fechaCreacion = fechaCreacion;
+		this.fechaCreacion = LocalDate.now();
 		this.enabled = false;
 		this.instrumentos = instrumentos;
 		this.rol = rol;
@@ -72,6 +72,7 @@ public class Usuario {
 	public Usuario() {
 		super();
 		this.enabled = false;
+		this.fechaCreacion = LocalDate.now();
 	}
 
 	public String getLoginName() {
