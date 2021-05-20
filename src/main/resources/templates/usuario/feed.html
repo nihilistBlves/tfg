@@ -1,0 +1,34 @@
+
+<div id="centro" class=" mx-auto col-6">
+	<div id="perfiles">
+		<div id="borde-perfil">
+			//cargar publicaciones
+			<div th:each="publicacion: ${publicaciones}">
+				<div class="card">
+					<div class="row no-gutters">
+						<div class="col-md-4">
+
+							<div th:if="${publicacion.contenido}">
+								<img  th:src="@{${publicacion.contenido}}" class="card-img">
+							</div>
+							<!-- <img src="../users/pepepe/post/libro4.PNG" class="card-img"> -->
+							<!-- <img src="./img/user.jpg" class="card-img"> -->
+						</div>
+						<div class="col-md-8">
+							<div class="card-body">
+								<div class="card-tittle">
+									<b th:text="${publicacion.duenioPublicacion.loginName}"></b>
+								</div>
+								<div class="card-text">
+									<p th:text="${publicacion.descripcion}"></p>
+									<p th:text="${publicacion.fechaPublicacion}"></p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>

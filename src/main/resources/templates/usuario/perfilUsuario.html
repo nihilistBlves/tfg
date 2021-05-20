@@ -1,19 +1,22 @@
 <div class="bg-light">
 
-	<img class="img-fluid" src="#">
+	<img class="img-fluid" src="#">Si la foto no existe poner una por
+	defecto
 
 	<section>
 
-		<h2 class="display-1" th:text="${usuario.loginName}"></h2>
-		<a href="menuOpciones" class="btn btn-outline-secondary">Editar Perfil</a> <br />
-		<p class="lead">numeroPublicaciones</p>
-		<a href="#" class="btn btn-outline-secondary">[Num]Seguidores</a> <a
-			href="#" class="btn btn-outline-secondary">[Num]Seguidos</a> <br />
-		<p class="lead">
-			<strong>Nombre</strong>
-		</p>
-		<br />
-		<p class="lead">CargarDescripcion</p>
+		<h3 class="lead">Nombre:</h3>
+		<p class="display-1" th:text="${usuario.loginName}"></p>
+		
+		<div class="numeroPublicaciones">
+		<p  class="bg-info">numeroPublicaciones</p>
+		<p  class="bg-info">[Num]Seguidores</p>
+		<p  class="bg-info">[Num]Seguidos</p> 
+		</div>
+		<a href="publicacion">Crear publicacion</a>
+		<div class="descripcion">
+		<p class="lead">CargarDescripcion pasar datos</p>
+		</div>
 
 
 	</section>
