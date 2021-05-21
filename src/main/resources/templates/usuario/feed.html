@@ -1,18 +1,28 @@
 
-<div id="centro" class=" mx-auto col-6">
+<div id="centro" class=" mx-auto ">
 	<div id="perfiles">
 		<div id="borde-perfil">
-			//cargar publicaciones
+<!-- 			cargar publicaciones -->
 			<div th:each="publicacion: ${publicaciones}">
 				<div class="card">
 					<div class="row no-gutters">
 						<div class="col-md-4">
 
-							<div th:if="${publicacion.contenido}">
-								<img  th:src="@{${publicacion.contenido}}" class="card-img">
+
+<!-- 							img solo desde static -->
+							<div th:if="${publicacion.tipoContenido}=='imagem'">
+								<img th:src="@{${publicacion.contenido}}" class="card-img">
 							</div>
-							<!-- <img src="../users/pepepe/post/libro4.PNG" class="card-img"> -->
-							<!-- <img src="./img/user.jpg" class="card-img"> -->
+
+
+
+<!-- 							Para video -->
+							<div th:if="${publicacion.tipoContenido}=='video'">
+							<video width="auto" height="240" controls
+								style="margin-left: auto; margin-right: auto; display: block;">
+								<source th:src="@{${publicacion.contenido}}" type="video/mp4">
+							</video>
+							</div>
 						</div>
 						<div class="col-md-8">
 							<div class="card-body">

@@ -1,6 +1,5 @@
 package org.tfg.domain;
 
-
 import java.time.LocalDate;
 import java.util.Collection;
 
@@ -12,8 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-
-
 //import org.springframework.web.multipart.MultipartFile;
 
 @Entity
@@ -22,46 +19,41 @@ public class Publicacion {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String contenido;
-	
+
 	private String descripcion;
-	
+
 	private LocalDate fechaPublicacion;
-	
+
+	private String tipoContenido;
+
 	@ManyToOne(cascade = CascadeType.MERGE)
 	private Usuario duenioPublicacion;
-	
+
 	@OneToMany(cascade = CascadeType.ALL)
 	private Collection<Comentario> comentarios;
-	
+
 	@OneToMany(cascade = CascadeType.ALL)
 	private Collection<Wave> waves;
 
-	
-
-
-
-	public Publicacion(Long id, String contenido, String descripcion, LocalDate fechaPublicacion,
+	public Publicacion(Long id, String contenido, String descripcion, LocalDate fechaPublicacion, String tipoContenido,
 			Usuario duenioPublicacion, Collection<Comentario> comentarios, Collection<Wave> waves) {
 		super();
 		this.id = id;
 		this.contenido = contenido;
 		this.descripcion = descripcion;
 		this.fechaPublicacion = fechaPublicacion;
+		this.tipoContenido = tipoContenido;
 		this.duenioPublicacion = duenioPublicacion;
 		this.comentarios = comentarios;
 		this.waves = waves;
 	}
-	
-	
 
 	public Publicacion() {
 		super();
-	
+
 	}
-
-
 
 	public String getDescripcion() {
 		return descripcion;
@@ -111,15 +103,20 @@ public class Publicacion {
 		this.id = id;
 	}
 
-
 	public String getContenido() {
 		return contenido.toString();
 	}
-
 
 	public void setContenido(String contenido) {
 		this.contenido = contenido;
 	}
 
-	
+	public String getTipoContenido() {
+		return tipoContenido;
+	}
+
+	public void setTipoContenido(String tipoContenido) {
+		this.tipoContenido = tipoContenido;
+	}
+
 }

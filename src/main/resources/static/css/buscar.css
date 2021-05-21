@@ -103,7 +103,8 @@
         #borde-perfil{
             overflow: scroll;
             overflow-x: hidden;
-            height: 480px;
+            height: auto;
+            width:800px;
             
         }
         

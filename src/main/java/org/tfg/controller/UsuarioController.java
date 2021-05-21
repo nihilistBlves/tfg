@@ -118,11 +118,13 @@ public class UsuarioController {
 						|| originalFilename.toLowerCase().endsWith(".jpeg")) {
 
 						// archivo en bytes se compara con 800kb
+					
+					
 					if (file.getSize() <= 800000) {
 
 						byte[] fileBytes = file.getBytes();
 
-						path = Paths.get("src//main//resources//users/pepepe/post");
+						path = Paths.get("src//main//resources/static/users/pepepe/posts/imgs");
 						String rutaRelativa = path.toFile().getAbsolutePath();
 						Path rutaCompleta = Paths.get(rutaRelativa + "//" + file.getOriginalFilename());
 						Files.write(rutaCompleta, fileBytes);
@@ -141,12 +143,12 @@ public class UsuarioController {
 
 						}
 						if (path != null) {
-							publicacion.setContenido("../users/pepepe/post"+"/"+file.getOriginalFilename());
+							publicacion.setContenido("/users/pepepe/posts/imgs"+"/"+file.getOriginalFilename());
 						}
 
 						publicacion.setFechaPublicacion(date);
 						publicacion.setDuenioPublicacion(usuario);
-
+						publicacion.setTipoContenido("imagen");
 						publicacionRepository.save(publicacion);
 						Collection<Publicacion> publicacionesActualizadas = usuario.getPublicaciones();
 						publicacionesActualizadas.add(publicacion);
@@ -166,12 +168,13 @@ public class UsuarioController {
 				}
 				if (originalFilename.toLowerCase().endsWith(".mp4") || originalFilename.toLowerCase().endsWith(".mov")
 						|| originalFilename.toLowerCase().endsWith(".mpg")) {
+					
 
-					if (file.getSize() <= 102400000) {
+					if (file.getSize() <= 1000000000) {
 
 						byte[] fileBytes = file.getBytes();
 
-						path = Paths.get("src//main//resources//users/pepepe/post");
+						path = Paths.get("src//main//resources/static/users/pepepe/posts/films");
 						String rutaRelativa = path.toFile().getAbsolutePath();
 						Path rutaCompleta = Paths.get(rutaRelativa + "//" + file.getOriginalFilename());
 						Files.write(rutaCompleta, fileBytes);
@@ -189,12 +192,12 @@ public class UsuarioController {
 
 						}
 						if (path != null) {
-							publicacion.setContenido(path.toString()+"/"+file.getOriginalFilename());
+							publicacion.setContenido("/users/pepepe/posts/films"+"/"+file.getOriginalFilename());
 						}
 
 						publicacion.setFechaPublicacion(date);
 						publicacion.setDuenioPublicacion(usuario);
-
+						publicacion.setTipoContenido("video");
 						publicacionRepository.save(publicacion);
 						Collection<Publicacion> publicacionesActualizadas = usuario.getPublicaciones();
 						publicacionesActualizadas.add(publicacion);
