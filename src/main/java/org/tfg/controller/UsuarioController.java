@@ -107,13 +107,15 @@ public class UsuarioController {
 			if ((!originalFilename.toLowerCase().endsWith(".png") && !originalFilename.toLowerCase().endsWith(".jpg")
 					&& !originalFilename.toLowerCase().endsWith(".jpeg"))
 					&& (!originalFilename.toLowerCase().endsWith(".mov") && !originalFilename.toLowerCase().endsWith(".mp4")
-							&& !originalFilename.toLowerCase().endsWith(".mpg"))) {
+							&& !originalFilename.toLowerCase().endsWith(".mpg"))
+					&&(!originalFilename.toLowerCase().endsWith(".ogg") && !originalFilename.toLowerCase().endsWith(".mp3"))) {
 
 				attributes.addFlashAttribute("message",
 						"Solo se permiten fotos con extension png,jpg,jpeg. Y para videos : mp4,mov,mpg");
 				return "redirect:/status";
 
 			} else {
+				
 				if (originalFilename.toLowerCase().endsWith(".png") || originalFilename.toLowerCase().endsWith(".jpg")
 						|| originalFilename.toLowerCase().endsWith(".jpeg")) {
 
@@ -122,9 +124,14 @@ public class UsuarioController {
 					
 					if (file.getSize() <= 800000) {
 
+
+						Usuario usuario = (Usuario) s.getAttribute("user");
+						LocalDate date = LocalDate.now();
+						Publicacion publicacion = new Publicacion();
+
 						byte[] fileBytes = file.getBytes();
 
-						path = Paths.get("src//main//resources/static/users/pepepe/posts/imgs");
+						path = Paths.get("src//main//resources/static/users/"+usuario.getLoginName()+"/posts/imgs");
 						String rutaRelativa = path.toFile().getAbsolutePath();
 						Path rutaCompleta = Paths.get(rutaRelativa + "//" + file.getOriginalFilename());
 						Files.write(rutaCompleta, fileBytes);
@@ -133,17 +140,12 @@ public class UsuarioController {
 						attributes.addFlashAttribute("message", "Archivo cargado correctamente [" + rutaCompleta + "]");
 						
 						
-						
-						Usuario usuario = (Usuario) s.getAttribute("user");
-						LocalDate date = LocalDate.now();
-						Publicacion publicacion = new Publicacion();
-
 						if (!texto.equals("")) {
 							publicacion.setDescripcion(texto);
 
 						}
 						if (path != null) {
-							publicacion.setContenido("/users/pepepe/posts/imgs"+"/"+file.getOriginalFilename());
+							publicacion.setContenido("/users/"+usuario.getLoginName()+"/posts/imgs"+"/"+file.getOriginalFilename());
 						}
 
 						publicacion.setFechaPublicacion(date);
@@ -154,7 +156,8 @@ public class UsuarioController {
 						publicacionesActualizadas.add(publicacion);
 						usuario.setPublicaciones(publicacionesActualizadas);
 						usuarioRepository.save(usuario);
-
+						
+						
 						return "redirect:/status";
 
 					}else {
@@ -172,27 +175,27 @@ public class UsuarioController {
 
 					if (file.getSize() <= 1000000000) {
 
-						byte[] fileBytes = file.getBytes();
-
-						path = Paths.get("src//main//resources/static/users/pepepe/posts/films");
-						String rutaRelativa = path.toFile().getAbsolutePath();
-						Path rutaCompleta = Paths.get(rutaRelativa + "//" + file.getOriginalFilename());
-						Files.write(rutaCompleta, fileBytes);
-
-						attributes.addFlashAttribute("message", "Archivo cargado correctamente [" + rutaCompleta + "]");
-						
-						
-						
 						Usuario usuario = (Usuario) s.getAttribute("user");
 						LocalDate date = LocalDate.now();
 						Publicacion publicacion = new Publicacion();
 
+						byte[] fileBytes = file.getBytes();
+
+						path = Paths.get("src//main//resources/static/users/"+usuario.getLoginName()+"/posts/films");
+						String rutaRelativa = path.toFile().getAbsolutePath();
+						Path rutaCompleta = Paths.get(rutaRelativa + "//" + file.getOriginalFilename());
+						Files.write(rutaCompleta, fileBytes);
+
+
+						attributes.addFlashAttribute("message", "Archivo cargado correctamente [" + rutaCompleta + "]");
+						
+						
 						if (!texto.equals("")) {
 							publicacion.setDescripcion(texto);
 
 						}
 						if (path != null) {
-							publicacion.setContenido("/users/pepepe/posts/films"+"/"+file.getOriginalFilename());
+							publicacion.setContenido("/users/"+usuario.getLoginName()+"/posts/films"+"/"+file.getOriginalFilename());
 						}
 
 						publicacion.setFechaPublicacion(date);
@@ -204,6 +207,54 @@ public class UsuarioController {
 						usuario.setPublicaciones(publicacionesActualizadas);
 						usuarioRepository.save(usuario);
 
+						return "redirect:/status";
+
+					}else {
+						
+						attributes.addFlashAttribute("message", "El video excede el tamaño permitido");
+
+						return "redirect:/status";
+						
+					}
+
+				}
+				
+				if (originalFilename.toLowerCase().endsWith(".mp3") || originalFilename.toLowerCase().endsWith(".ogg")) {
+					
+
+					if (file.getSize() <= 10000000) {
+
+						Usuario usuario = (Usuario) s.getAttribute("user");
+						LocalDate date = LocalDate.now();
+						Publicacion publicacion = new Publicacion();
+
+						byte[] fileBytes = file.getBytes();
+
+						path = Paths.get("src//main//resources/static/users/"+usuario.getLoginName()+"/posts/audios");
+						String rutaRelativa = path.toFile().getAbsolutePath();
+						Path rutaCompleta = Paths.get(rutaRelativa + "//" + file.getOriginalFilename());
+						Files.write(rutaCompleta, fileBytes);
+
+
+						attributes.addFlashAttribute("message", "Archivo cargado correctamente [" + rutaCompleta + "]");
+						
+						
+						if (!texto.equals("")) {
+							publicacion.setDescripcion(texto);
+
+						}
+						if (path != null) {
+							publicacion.setContenido("/users/"+usuario.getLoginName()+"/posts/audios"+"/"+file.getOriginalFilename());
+						}
+
+						publicacion.setFechaPublicacion(date);
+						publicacion.setDuenioPublicacion(usuario);
+						publicacion.setTipoContenido("audio");
+						publicacionRepository.save(publicacion);
+						Collection<Publicacion> publicacionesActualizadas = usuario.getPublicaciones();
+						publicacionesActualizadas.add(publicacion);
+						usuario.setPublicaciones(publicacionesActualizadas);
+						usuarioRepository.save(usuario);
 						return "redirect:/status";
 
 					}else {

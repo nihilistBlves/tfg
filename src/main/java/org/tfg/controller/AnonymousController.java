@@ -50,20 +50,21 @@ public class AnonymousController {
 	@PostMapping("/login")
 	public String loginPost(ModelMap m, HttpSession s, @RequestParam("loginName") String loginName,
 			@RequestParam("password") String pass) throws DangerException {
-		
+
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		
+
 		String returner = "";
 
-		if (usuarioRepository.getByLoginName(loginName) != null && passwordEncoder.matches(pass, usuarioRepository.getByLoginName(loginName).getPass())) {
+		if (usuarioRepository.getByLoginName(loginName) != null
+				&& passwordEncoder.matches(pass, usuarioRepository.getByLoginName(loginName).getPass())) {
 			Usuario usuario = usuarioRepository.getByLoginName(loginName);
 			s.setAttribute("user", usuario);
-			returner = "redirect:/"+loginName;
+			returner = "redirect:/" + loginName;
 		} else {
 			s.setAttribute("loginError", "El usuario no existe o la contraseña es incorrecta");
 			returner = "redirect:/";
 		}
-		
+
 		return returner;
 	}
 
@@ -78,11 +79,10 @@ public class AnonymousController {
 			@RequestParam("email") String email, @RequestParam("fechaNacimiento") String fNacimiento)
 			throws DangerException {
 
-		
-		System.out.println(pass+passConfirm);
-		
+		System.out.println(pass + passConfirm);
+
 		if (!pass.equals(passConfirm)) {
-		PRG.error("Las contraseñas no coinciden", "/login");
+			PRG.error("Las contraseñas no coinciden", "/login");
 		}
 		if (usuarioRepository.getByLoginName(loginName) != null) {
 //			PRG.error("Ya existe este nombre de usuario", "/login");
@@ -107,24 +107,26 @@ public class AnonymousController {
 
 		usuarioRepository.save(usuario);
 
-		// Cargar el servicio del email
-		// MailService e= new MailService();
-
-		// Cabecera del email
-		String cabecera = "Email de prueba";
-		// cuerpo del email
-		// editar para crear plantilla
-		String cuerpo = "<h1>Hola Dani</h1>" + "<br>" + "Te hasregistrado ypienso comerme a tu perrito<b>=D</b>";
-
-		// EnviarEmail
-		/*
-		 * mailService.enviarEmail(email, cabecera, cuerpo);
-		 * 
-		 * File directorio = new File("/ruta/directorio_nuevo"); if
-		 * (!directorio.exists()) { if (directorio.mkdirs()) {
-		 * System.out.println("Directorio creado"); } else {
-		 * System.out.println("Error al crear directorio"); } }
-		 */
+		File directorio = new File("src//main//resources/static/users/"+loginName);
+		File directorioPerfil = new File("src//main//resources/static/users/"+loginName+"/perfil");
+		File directorioPosts = new File("src//main//resources/static/users/"+loginName+"/posts");
+		File directorioPostsImgs = new File("src//main//resources/static/users/"+loginName+"/posts/imgs");
+		File directorioPostsAudios = new File("src//main//resources/static/users/"+loginName+"/posts/audios");
+		File directorioPostsFilms = new File("src//main//resources/static/users/"+loginName+"/posts/films");
+		
+		if (!directorio.exists()) {
+				directorio.mkdir();
+				directorioPerfil.mkdir();
+				directorioPosts.mkdir();
+				directorioPostsImgs.mkdir();
+				directorioPostsAudios.mkdir();
+				directorioPostsFilms.mkdir();
+				System.out.println("Directorio creado");
+			} else {
+				System.out.println("Error al crear directorio");
+			}
+		
+		
 		return "redirect:/";
 	}
 
