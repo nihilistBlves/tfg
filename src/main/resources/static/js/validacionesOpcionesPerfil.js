@@ -6,11 +6,11 @@ function validarLimite(txtArea) {
 	if (longitud === 0) {
 
 
-		var txtCont = document.createTextNode("0/300");
+		var txtCont = document.createTextNode("0/150");
 
 	} else {
 
-		var txtCont = document.createTextNode(longitud + "/300");
+		var txtCont = document.createTextNode(longitud + "/150");
 
 	}
 
@@ -18,7 +18,7 @@ function validarLimite(txtArea) {
 	/*console.log(txtArea);
 	console.log("contador:"+contador);
 	console.log(txtCont);*/
-	if (longitud <= 300) {
+	if (longitud <= 150) {
 
 		contador.removeChild(contador.childNodes[0]);
 		contador.appendChild(txtCont);

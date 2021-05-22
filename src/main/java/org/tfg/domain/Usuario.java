@@ -30,8 +30,17 @@ public class Usuario {
 	private String apellidos;
 	private LocalDate fechaNacimiento;
 	private LocalDate fechaCreacion;
+	private String descripcionPerfil;
 	//private String extensionImg;
 	
+	public String getDescripcionPerfil() {
+		return descripcionPerfil;
+	}
+
+	public void setDescripcionPerfil(String descripcionPerfil) {
+		this.descripcionPerfil = descripcionPerfil;
+	}
+
 	@ManyToMany(cascade = CascadeType.ALL)
 	private Collection<Instrumento> instrumentos;
 	
@@ -54,7 +63,7 @@ public class Usuario {
 	private Collection<Seguimiento> seguidos;
 
 	public Usuario(String loginName, String email, String pass, String nombre, String apellidos,
-			LocalDate fechaNacimiento, LocalDate fechaCreacion, Collection<Instrumento> instrumentos, Rol rol) {
+			LocalDate fechaNacimiento, LocalDate fechaCreacion, String descripcionPerfil,Collection<Instrumento> instrumentos, Rol rol) {
 		super();
 		this.loginName = loginName;
 		this.email = email;
@@ -63,6 +72,7 @@ public class Usuario {
 		this.apellidos = apellidos;
 		this.fechaNacimiento = fechaNacimiento;
 		this.fechaCreacion = fechaCreacion;
+		this.descripcionPerfil=descripcionPerfil;
 		this.instrumentos = instrumentos;
 		this.rol = rol;
 	}
