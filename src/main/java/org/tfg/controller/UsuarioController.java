@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.tomcat.jni.File;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,7 +50,7 @@ public class UsuarioController {
 			return "_t/frameFeed";
 
 		} else {
-			m.put("infoModal","Para acceder a este apartado debe estar logueado" );
+			m.put("infoModal", "Para acceder a este apartado debe estar logueado");
 			return "redirect:/";
 		}
 
@@ -75,6 +76,12 @@ public class UsuarioController {
 			// publicacionRepository.getByDuenioPublicacion(usuario);
 
 			// m.addAttribute("publicaciones",publicaciones);
+			
+	
+			//te falta pasar el usuario por el put y de ahi coger sus datos como descripcion foto y 
+			//sus publicaciones
+			
+			
 			m.addAttribute("usuario", userRequested);
 			m.put("view", "usuario/perfilUsuario");
 			returner = "_t/frameFeed";
@@ -99,31 +106,30 @@ public class UsuarioController {
 
 		Path path = null;
 		String originalFilename = file.getOriginalFilename();
-		
 
 		if (file != null) {
 
 //			System.out.println(file.getOriginalFilename() + file.getSize());
 			if ((!originalFilename.toLowerCase().endsWith(".png") && !originalFilename.toLowerCase().endsWith(".jpg")
 					&& !originalFilename.toLowerCase().endsWith(".jpeg"))
-					&& (!originalFilename.toLowerCase().endsWith(".mov") && !originalFilename.toLowerCase().endsWith(".mp4")
+					&& (!originalFilename.toLowerCase().endsWith(".mov")
+							&& !originalFilename.toLowerCase().endsWith(".mp4")
 							&& !originalFilename.toLowerCase().endsWith(".mpg"))
-					&&(!originalFilename.toLowerCase().endsWith(".ogg") && !originalFilename.toLowerCase().endsWith(".mp3"))) {
+					&& (!originalFilename.toLowerCase().endsWith(".ogg")
+							&& !originalFilename.toLowerCase().endsWith(".mp3"))) {
 
 				attributes.addFlashAttribute("message",
 						"Solo se permiten fotos con extension png,jpg,jpeg. Y para videos : mp4,mov,mpg");
 				return "redirect:/status";
 
 			} else {
-				
+
 				if (originalFilename.toLowerCase().endsWith(".png") || originalFilename.toLowerCase().endsWith(".jpg")
 						|| originalFilename.toLowerCase().endsWith(".jpeg")) {
 
-						// archivo en bytes se compara con 800kb
-					
-					
-					if (file.getSize() <= 800000) {
+					// archivo en bytes se compara con 800kb
 
+					if (file.getSize() <= 800000) {
 
 						Usuario usuario = (Usuario) s.getAttribute("user");
 						LocalDate date = LocalDate.now();
@@ -131,21 +137,20 @@ public class UsuarioController {
 
 						byte[] fileBytes = file.getBytes();
 
-						path = Paths.get("src//main//resources/static/users/"+usuario.getLoginName()+"/posts/imgs");
+						path = Paths.get("src//main//resources/static/users/" + usuario.getLoginName() + "/posts/imgs");
 						String rutaRelativa = path.toFile().getAbsolutePath();
 						Path rutaCompleta = Paths.get(rutaRelativa + "//" + file.getOriginalFilename());
 						Files.write(rutaCompleta, fileBytes);
 
-
 						attributes.addFlashAttribute("message", "Archivo cargado correctamente [" + rutaCompleta + "]");
-						
-						
+
 						if (!texto.equals("")) {
 							publicacion.setDescripcion(texto);
 
 						}
 						if (path != null) {
-							publicacion.setContenido("/users/"+usuario.getLoginName()+"/posts/imgs"+"/"+file.getOriginalFilename());
+							publicacion.setContenido("/users/" + usuario.getLoginName() + "/posts/imgs" + "/"
+									+ file.getOriginalFilename());
 						}
 
 						publicacion.setFechaPublicacion(date);
@@ -156,22 +161,20 @@ public class UsuarioController {
 						publicacionesActualizadas.add(publicacion);
 						usuario.setPublicaciones(publicacionesActualizadas);
 						usuarioRepository.save(usuario);
-						
-						
+
 						return "redirect:/status";
 
-					}else {
-						
+					} else {
+
 						attributes.addFlashAttribute("message", "La foto excede el tamaño permitido");
 
 						return "redirect:/status";
-						
+
 					}
 
 				}
 				if (originalFilename.toLowerCase().endsWith(".mp4") || originalFilename.toLowerCase().endsWith(".mov")
 						|| originalFilename.toLowerCase().endsWith(".mpg")) {
-					
 
 					if (file.getSize() <= 1000000000) {
 
@@ -181,21 +184,21 @@ public class UsuarioController {
 
 						byte[] fileBytes = file.getBytes();
 
-						path = Paths.get("src//main//resources/static/users/"+usuario.getLoginName()+"/posts/films");
+						path = Paths
+								.get("src//main//resources/static/users/" + usuario.getLoginName() + "/posts/films");
 						String rutaRelativa = path.toFile().getAbsolutePath();
 						Path rutaCompleta = Paths.get(rutaRelativa + "//" + file.getOriginalFilename());
 						Files.write(rutaCompleta, fileBytes);
 
-
 						attributes.addFlashAttribute("message", "Archivo cargado correctamente [" + rutaCompleta + "]");
-						
-						
+
 						if (!texto.equals("")) {
 							publicacion.setDescripcion(texto);
 
 						}
 						if (path != null) {
-							publicacion.setContenido("/users/"+usuario.getLoginName()+"/posts/films"+"/"+file.getOriginalFilename());
+							publicacion.setContenido("/users/" + usuario.getLoginName() + "/posts/films" + "/"
+									+ file.getOriginalFilename());
 						}
 
 						publicacion.setFechaPublicacion(date);
@@ -209,18 +212,18 @@ public class UsuarioController {
 
 						return "redirect:/status";
 
-					}else {
-						
+					} else {
+
 						attributes.addFlashAttribute("message", "El video excede el tamaño permitido");
 
 						return "redirect:/status";
-						
+
 					}
 
 				}
-				
-				if (originalFilename.toLowerCase().endsWith(".mp3") || originalFilename.toLowerCase().endsWith(".ogg")) {
-					
+
+				if (originalFilename.toLowerCase().endsWith(".mp3")
+						|| originalFilename.toLowerCase().endsWith(".ogg")) {
 
 					if (file.getSize() <= 10000000) {
 
@@ -230,21 +233,21 @@ public class UsuarioController {
 
 						byte[] fileBytes = file.getBytes();
 
-						path = Paths.get("src//main//resources/static/users/"+usuario.getLoginName()+"/posts/audios");
+						path = Paths
+								.get("src//main//resources/static/users/" + usuario.getLoginName() + "/posts/audios");
 						String rutaRelativa = path.toFile().getAbsolutePath();
 						Path rutaCompleta = Paths.get(rutaRelativa + "//" + file.getOriginalFilename());
 						Files.write(rutaCompleta, fileBytes);
 
-
 						attributes.addFlashAttribute("message", "Archivo cargado correctamente [" + rutaCompleta + "]");
-						
-						
+
 						if (!texto.equals("")) {
 							publicacion.setDescripcion(texto);
 
 						}
 						if (path != null) {
-							publicacion.setContenido("/users/"+usuario.getLoginName()+"/posts/audios"+"/"+file.getOriginalFilename());
+							publicacion.setContenido("/users/" + usuario.getLoginName() + "/posts/audios" + "/"
+									+ file.getOriginalFilename());
 						}
 
 						publicacion.setFechaPublicacion(date);
@@ -257,12 +260,12 @@ public class UsuarioController {
 						usuarioRepository.save(usuario);
 						return "redirect:/status";
 
-					}else {
-						
+					} else {
+
 						attributes.addFlashAttribute("message", "El video excede el tamaño permitido");
 
 						return "redirect:/status";
-						
+
 					}
 
 				}
@@ -270,11 +273,10 @@ public class UsuarioController {
 			}
 
 		}
-		
-		attributes.addFlashAttribute("message", "El video excede el tamaño permitido");
+
+		attributes.addFlashAttribute("message", "debede seleccionar un archivo");
 
 		return "redirect:/status";
-
 
 	}
 
@@ -299,64 +301,54 @@ public class UsuarioController {
 	@PostMapping("editarPerfil")
 	public String editarPerfil(@RequestParam("file") MultipartFile file, RedirectAttributes attributes,
 			@RequestParam("nombre") String nombre, @RequestParam("apellidos") String apellidos,
-			@RequestParam("edad") String edad) throws IOException {
+			@RequestParam("edad") String edad, @RequestParam("descripcion") String descripcion, HttpSession s)
+			throws IOException {
 
-		// para descripcion esperamos a hablar los tres para hacer que al coger el id de
-		// la persona por su loginame
-		// nos lleve a ciertos atributos de el perfil usuario donde meteriamos tambien
-		// el telefono ,correo y descripcion,pagina etc
-//	     	@RequestParam("descripcion") String descripcion
+		Usuario usuario = (Usuario) s.getAttribute("user");
+		String originalFilename = file.getOriginalFilename();
 
-		Usuario usuario = usuarioRepository.getByLoginName("pepepe");
-
-		if (nombre != null) {
-
+		if (nombre != null)
 			usuario.setNombre(nombre);
-
-			usuarioRepository.save(usuario);
-		}
-		if (apellidos != null) {
-
+		if (apellidos != null)
 			usuario.setApellidos(apellidos);
-
-			usuarioRepository.save(usuario);
-
-		}
 		if (edad != null) {
-
 			LocalDate date = LocalDate.parse(edad);
 			usuario.setFechaNacimiento(date);
-
-			usuarioRepository.save(usuario);
-
 		}
+		if (descripcion != null)
+			usuario.setDescripcionPerfil(descripcion);
 
-		// comprobamos si esta vacio o nulo
-		if (file == null || file.isEmpty()) {
+		usuarioRepository.save(usuario);
+
+//		 comprobamos si esta vacio o nulo
+		if (file.isEmpty()) {
 			attributes.addFlashAttribute("message", "Por favor seleccione un archivo");
 			return "redirect:/status";
 		} else {
-			// comprobamos el tamñao del archivo en KB
-			if (file.getSize() <= 400) {
+			// comprobamos el tamaño del archivo en bytes y aqui 800KB
+			if (file.getSize() <= 800000) {
 
 				// comprobamos la extension en la que termina el archivo
-				if (!file.getName().endsWith(".png") || !file.getName().endsWith(".jpg")
-						|| !file.getName().endsWith(".jpeg")) {
-
-					attributes.addFlashAttribute("message", "Solo se permiten fotos con extension png,jpg,jpeg");
-					return "redirect:/status";
-				} else {
+				if (originalFilename.toLowerCase().endsWith(".png") || originalFilename.toLowerCase().endsWith(".jpg")
+						|| originalFilename.toLowerCase().endsWith(".jpeg")) {
 
 					byte[] fileBytes = file.getBytes();
 
-					// hay que cambiar pepepe y poner el loginName que pasemos de la session
-					Path path = Paths.get("src//main//resources//static/users/pepepe");
+					Path path = Paths.get("src//main//resources//static/users/" + usuario.getLoginName() + "/perfil");
 					String rutaRelativa = path.toFile().getAbsolutePath();
 					Path rutaCompleta = Paths.get(rutaRelativa + "//" + file.getOriginalFilename());
 					Files.write(rutaCompleta, fileBytes);
 
+					usuario.setFotoPerfil(
+							"/users/" + usuario.getLoginName() + "/perfil" + "/" + file.getOriginalFilename());
+
 					attributes.addFlashAttribute("message", "Archivo cargado correctamente [" + rutaCompleta + "]");
 
+					return "redirect:/status";
+
+				} else {
+
+					attributes.addFlashAttribute("message", "Solo se permiten fotos con extension png,jpg,jpeg");
 					return "redirect:/status";
 				}
 
@@ -369,45 +361,65 @@ public class UsuarioController {
 
 		}
 
-//		return "perfil/opcionesPerfil";
-
 	}
 
 	@GetMapping("editarPass")
-	public String gestionarPass(@RequestParam("passActual") String pass, @RequestParam("passNueva") String newPass,
-			@RequestParam("repNueva") String newRePass) throws DangerException {
-
-		Usuario usuario = usuarioRepository.getByLoginName("pepepe");
-
-		if (usuario.getPass() == pass) {
-
-			if (pass == newRePass) {
-
-				usuario.setPass(newPass);
-
-				usuarioRepository.save(usuario);
-			} else {
-				PRG.error("La contraseña no coincide", "/login");
-			}
-
-		} else {
-			PRG.error("La nueva contraseña y la contraseña repetida nueva no coinciden", "/login");
-
-		}
+	public String gestionarPass() {
 
 		return "perfil/opciones/pass";
 	}
 
-	@GetMapping("editarCorreo")
-	public String gestionarCorreo(@RequestParam("passActual") String email) {
+	@PostMapping("editarPass")
+	public String gestionarPass(@RequestParam("passActual") String pass, @RequestParam("pass") String newPass,
+			@RequestParam("repass") String newRePass, HttpSession s) throws DangerException {
 
-		Usuario usuario = usuarioRepository.getByLoginName("pepepe");
+		Usuario usuario = (Usuario) s.getAttribute("user");
+
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+		if (encoder.matches(pass, usuario.getPass())) {
+
+			if (!encoder.matches(newPass, usuario.getPass())) {
+
+				if (newPass.contains(newRePass)) {
+
+					usuario.setPass(encoder.encode(newPass));
+					usuarioRepository.save(usuario);
+
+					// TODO Añadir correo de informacion de cambio de contraseña
+				} else {
+					PRG.error("La contraseña no coincide", "/editarPass");
+				}
+
+			} else {
+
+				PRG.error("La contraseña antigua y la nueva no deben ser iguales", "/editarPass");
+			}
+
+		} else {
+			PRG.error("La nueva contraseña y la contraseña repetida nueva no coinciden", "/editarPass");
+
+		}
+
+		return "redirect:/menuOpciones";
+	}
+
+	@GetMapping("editarCorreo")
+	public String gestionarCorreo() {
+
+		return "perfil/opciones/correo";
+	}
+
+	@PostMapping("editarCorreo")
+	public String gestionarCorreo(@RequestParam("email") String email, HttpSession s) {
+
+		Usuario usuario = (Usuario) s.getAttribute("user");
 
 		usuario.setEmail(email);
 
 		usuarioRepository.save(usuario);
 
-		return "perfil/opciones/correo";
+		return "redirect:/menuOpciones";
 	}
 
 	@GetMapping("seguidoresSeguidos")
@@ -442,5 +454,4 @@ public class UsuarioController {
 
 		return "perfil/opciones/notificaciones";
 	}
-
 }
