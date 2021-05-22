@@ -1,29 +1,44 @@
 <div class="bg-light">
 	<div class="row justify-content-md-center">
 		<div class="col-10">
-			
+
 			<div class="row">
-			<section>
-			<div class="col-1">
-			<img class="img-fluid" src="#">
+				<section>
+					<div class="col-1">
+						<img class="img-fluid" src="#">
+					</div>
+					<div class="col-3">
+						<h3 class="display-1" th:text="${usuario.loginName}"></h3>
+					</div>
 			</div>
-			<div class="col-3">
-				<h3 class="display-1" th:text="${usuario.loginName}"></h3>
-				</div>
-				</div>
-				<div class="row">
+			<div class="row">
 				<div class="col-1">
-				<a href="menuOpciones" class="btn btn-outline-secondary">Editar Perfil</a> <br />
-				</div><!--AQUI-->
-				<p class="lead">numeroPublicaciones</p>
+					<a href="menuOpciones" class="btn btn-outline-secondary">Editar Perfil</a> <br />
 				</div>
-				<a href="#" class="btn btn-outline-secondary">[Num]Seguidores</a> <a href="#"
-					class="btn btn-outline-secondary">[Num]Seguidos</a> <br />
-				<p class="lead">
-					<strong>Nombre</strong>
-				</p>
-				<br />
-				<p class="lead">CargarDescripcion</p>
+				<!--AQUI-->
+				<div class="col-3">
+					<div th:if="${usuario.nombre != null}">
+						<span class="lead" th:text="${usuario.nombre}"></span>
+					</div>
+					<div th:unles="${usuario.nombre != null}">
+						<span>Aun no has introducido tu nombre</span>
+					</div>
+					<div th:if="${usuario.apellido != null}">
+						<span class="lead" th:text="${usuario.apellido}"></span>
+					</div>
+					<div th:unles="${usuario.apellido != null}">
+						<span>Aun no has introducido tu nombre</span>
+					</div>
+				</div>
+				<p class="lead">numeroPublicaciones</p>
+			</div>
+			<a href="#" class="btn btn-outline-secondary">[Num]Seguidores</a> <a href="#"
+				class="btn btn-outline-secondary">[Num]Seguidos</a> <br />
+			<p class="lead">
+				<strong>Nombre</strong>
+			</p>
+			<br />
+			<p class="lead">CargarDescripcion</p>
 			</section>
 			<section>
 				<span th:if="${publicaciones != null}">

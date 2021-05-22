@@ -76,7 +76,6 @@ public class UsuarioController {
 	@GetMapping("menuOpciones")
 	public String opcionesPerfil(HttpSession s) {
 
-		System.out.println(s.getAttribute("user"));
 		return "perfil/opcionesPerfil";
 
 	}
