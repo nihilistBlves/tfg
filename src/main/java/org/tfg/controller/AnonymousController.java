@@ -1,5 +1,6 @@
 package org.tfg.controller;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.Calendar;
 
@@ -64,6 +65,7 @@ public class AnonymousController {
 		if (usuarioRepository.getByLoginName(loginName) != null
 				&& passwordEncoder.matches(pass, usuarioRepository.getByLoginName(loginName).getPass())) {
 			Usuario usuario = usuarioRepository.getByLoginName(loginName);
+
 			if (!usuario.isEnabled()) {
 				s.setAttribute("infoModal", "La cuenta no ha sido verificada");
 				returner = "redirect:/";
@@ -71,6 +73,7 @@ public class AnonymousController {
 				s.setAttribute("user", usuario);
 				returner = "redirect:/" + loginName;
 			}
+
 		} else {
 			s.setAttribute("infoModal", "El usuario no existe o la contraseña es incorrecta");
 			returner = "redirect:/";
@@ -87,8 +90,10 @@ public class AnonymousController {
 	@PostMapping("/registro")
 	public String registroPost(ModelMap m, HttpSession s, @RequestParam("loginName") String loginName,
 			@RequestParam("password") String pass, @RequestParam("repass") String passConfirm,
+
 			@RequestParam("email") String email, @RequestParam("fechaNacimiento") String fNacimiento,
 			HttpServletRequest request) {
+
 
 		Usuario usuario = new Usuario();
 
@@ -123,6 +128,7 @@ public class AnonymousController {
 
 			usuarioRepository.save(usuario);
 
+
 			String appUrl = request.getContextPath();
 
 			eventPublisher.publishEvent(new EventoVerificacion(usuario, request.getLocale(), appUrl));
@@ -131,6 +137,9 @@ public class AnonymousController {
 		}
 
 		s.setAttribute("infoModal", "Registrado correctamente! Revisa tu bandeja de entrada para activar la cuenta antes de logear por primera vez");
+
+		
+
 		return "redirect:/";
 	}
 
@@ -157,6 +166,26 @@ public class AnonymousController {
 
 		usuario.setEnabled(true);
 		usuarioRepository.save(usuario);
+		
+		File directorio = new File("src//main//resources/static/users/"+usuario.getLoginName());
+		File directorioPerfil = new File("src//main//resources/static/users/"+usuario.getLoginName()+"/perfil");
+		File directorioPosts = new File("src//main//resources/static/users/"+usuario.getLoginName()+"/posts");
+		File directorioPostsImgs = new File("src//main//resources/static/users/"+usuario.getLoginName()+"/posts/imgs");
+		File directorioPostsAudios = new File("src//main//resources/static/users/"+usuario.getLoginName()+"/posts/audios");
+		File directorioPostsFilms = new File("src//main//resources/static/users/"+usuario.getLoginName()+"/posts/films");
+		
+		if (!directorio.exists()) {
+				directorio.mkdir();
+				directorioPerfil.mkdir();
+				directorioPosts.mkdir();
+				directorioPostsImgs.mkdir();
+				directorioPostsAudios.mkdir();
+				directorioPostsFilms.mkdir();
+				System.out.println("Directorio creado");
+			} else {
+				System.out.println("Error al crear directorio");
+			}
+		
 		s.setAttribute("infoModal", "La cuenta se ha activado correctamente. Ya puedes hacer login.");
 		return "redirect:/";
 

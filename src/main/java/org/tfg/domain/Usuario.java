@@ -6,6 +6,7 @@ import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,8 +31,13 @@ public class Usuario {
 	private String apellidos;
 	private LocalDate fechaNacimiento;
 	private LocalDate fechaCreacion;
+
 	private boolean enabled;
-	//private String extensionImg;
+
+	private String descripcionPerfil;
+	private String fotoPerfil;
+
+
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	private Collection<Instrumento> instrumentos;
@@ -39,7 +45,7 @@ public class Usuario {
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Rol rol;
 	
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(fetch=FetchType.EAGER,cascade = CascadeType.ALL)
 	private Collection<Publicacion> publicaciones;
 	
 	@OneToMany(cascade = CascadeType.ALL)
@@ -54,8 +60,15 @@ public class Usuario {
 	@OneToMany(cascade = CascadeType.ALL)
 	private Collection<Seguimiento> seguidos;
 
+
+
+
+
 	public Usuario(String loginName, String email, String pass, String nombre, String apellidos,
-			LocalDate fechaNacimiento, boolean enabled, Collection<Instrumento> instrumentos, Rol rol) {
+			LocalDate fechaNacimiento,boolean enabled, LocalDate fechaCreacion, String descripcionPerfil, String fotoPerfil,
+			Collection<Instrumento> instrumentos, Rol rol, Collection<Publicacion> publicaciones,
+			Collection<Comentario> comentariosHechos, Collection<Wave> wavesDados, Collection<Seguimiento> seguidores,
+			Collection<Seguimiento> seguidos) {
 		super();
 		this.loginName = loginName;
 		this.email = email;
@@ -63,10 +76,19 @@ public class Usuario {
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.fechaNacimiento = fechaNacimiento;
+
 		this.fechaCreacion = LocalDate.now();
 		this.enabled = false;
+		this.descripcionPerfil = descripcionPerfil;
+		this.fotoPerfil = fotoPerfil;
+
 		this.instrumentos = instrumentos;
 		this.rol = rol;
+		this.publicaciones = publicaciones;
+		this.comentariosHechos = comentariosHechos;
+		this.wavesDados = wavesDados;
+		this.seguidores = seguidores;
+		this.seguidos = seguidos;
 	}
 
 	public Usuario() {
@@ -197,6 +219,22 @@ public class Usuario {
 	
 	public boolean isAdmin() {
 		return (this.getRol()!= null && this.getRol().getTipo().equals("admin"));
+	}
+
+	public String getDescripcionPerfil() {
+		return descripcionPerfil;
+	}
+
+	public void setDescripcionPerfil(String descripcionPerfil) {
+		this.descripcionPerfil = descripcionPerfil;
+	}
+
+	public String getFotoPerfil() {
+		return fotoPerfil;
+	}
+
+	public void setFotoPerfil(String fotoPerfil) {
+		this.fotoPerfil = fotoPerfil;
 	}
 	
 	

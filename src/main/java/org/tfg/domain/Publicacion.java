@@ -19,27 +19,40 @@ public class Publicacion {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	//private MultipartFile contenido;
-	
+
+	private String contenido;
+
 	private String descripcion;
-	
+
 	private LocalDate fechaPublicacion;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
+
+	private String tipoContenido;
+
+	@ManyToOne(cascade = CascadeType.MERGE)
 	private Usuario duenioPublicacion;
-	
+
 	@OneToMany(cascade = CascadeType.ALL)
 	private Collection<Comentario> comentarios;
-	
+
 	@OneToMany(cascade = CascadeType.ALL)
 	private Collection<Wave> waves;
 
-	public Publicacion(String descripcion, LocalDate fechaPublicacion, Usuario duenioPublicacion) {
+	public Publicacion(Long id, String contenido, String descripcion, LocalDate fechaPublicacion, String tipoContenido,
+			Usuario duenioPublicacion, Collection<Comentario> comentarios, Collection<Wave> waves) {
 		super();
+		this.id = id;
+		this.contenido = contenido;
 		this.descripcion = descripcion;
 		this.fechaPublicacion = fechaPublicacion;
+		this.tipoContenido = tipoContenido;
 		this.duenioPublicacion = duenioPublicacion;
+		this.comentarios = comentarios;
+		this.waves = waves;
+	}
+
+	public Publicacion() {
+		super();
+
 	}
 
 	public String getDescripcion() {
@@ -81,7 +94,29 @@ public class Publicacion {
 	public void setWaves(Collection<Wave> waves) {
 		this.waves = waves;
 	}
-	
-	
-	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getContenido() {
+		return contenido.toString();
+	}
+
+	public void setContenido(String contenido) {
+		this.contenido = contenido;
+	}
+
+	public String getTipoContenido() {
+		return tipoContenido;
+	}
+
+	public void setTipoContenido(String tipoContenido) {
+		this.tipoContenido = tipoContenido;
+	}
+
 }
