@@ -1,0 +1,17 @@
+
+        nav * {
+            color: white;
+        }
+        .title {
+            font-size: 30px;
+        }
+        .navbar{
+            width: 100%;
+        }
+        .menu{
+            position: fixed;
+            top: 0;
+        }
+        li{
+            padding-left: 42px;
+        }
