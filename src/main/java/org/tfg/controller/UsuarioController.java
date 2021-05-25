@@ -43,14 +43,44 @@ public class UsuarioController {
 	public String getFeed(ModelMap m, HttpSession s) {
 
 		if (s.getAttribute("user") != null) {
+			
+			s.setAttribute("infoModal","true");
+			s.setAttribute("infoTitulo", "Error");
+			s.setAttribute("infoTexto", "No existe este usuario");
+			s.setAttribute("infoEstado", "btn btn-danger");
+			
+			if (s.getAttribute("infoModal") != null) {
+				m.put("infoModal", "infoModal");
+				m.put("infoTitulo", s.getAttribute("infoTitulo"));
+				m.put("infoTexto", s.getAttribute("infoTexto"));
+				m.put("infoEstado", s.getAttribute("infoEstado"));
+				s.removeAttribute("infoTitulo");
+				s.removeAttribute("infoTexto");
+				s.removeAttribute("infoEstado");
+				s.removeAttribute("infoModal");
+			}
 			Usuario usuario = (Usuario) s.getAttribute("user");
-
 			m.put("publicaciones", publicacionRepository.findAll());
 			m.put("view", "usuario/feed");
 			return "_t/frameFeed";
 
 		} else {
-			m.put("infoModal", "Para acceder a este apartado debe estar logueado");
+			s.setAttribute("infoModal","true");
+			s.setAttribute("infoTitulo", "Error");
+			s.setAttribute("infoTexto", "Para acceder a este apartado debe estar logueado");
+			s.setAttribute("infoEstado", "btn btn-danger");
+			
+			if (s.getAttribute("infoModal") != null) {
+				m.put("infoModal", "infoModal");
+				m.put("infoTitulo", s.getAttribute("infoTitulo"));
+				m.put("infoTexto", s.getAttribute("infoTexto"));
+				m.put("infoEstado", s.getAttribute("infoEstado"));
+				s.removeAttribute("infoTitulo");
+				s.removeAttribute("infoTexto");
+				s.removeAttribute("infoEstado");
+				s.removeAttribute("infoModal");
+			}
+			
 			return "redirect:/";
 		}
 
@@ -63,6 +93,7 @@ public class UsuarioController {
 
 		if (usuarioRepository.getByLoginName(username) == null) {
 			// DEVOLVER PRG CON ERROR DE QUE NO EXISTE
+			
 			returner = "redirect:/feed";
 		} else {
 
@@ -93,8 +124,11 @@ public class UsuarioController {
 	// ============================================================================
 
 	@GetMapping("/publicar")
-	public String getPublicar(ModelMap m) {
+	public String getPublicar(ModelMap m,HttpSession s) {
 
+		
+		
+		
 		m.put("view", "usuario/publicar");
 		return "_t/frameFeed";
 

@@ -1,9 +1,25 @@
-<div class="container">
-	<h4 th:class="|alert alert-${severity}|">
-		<span th:text="${mensaje}"></span>
-	</h4>
+<!-- <div class="container"> -->
+<!-- 	<h4 th:class="|alert alert-${severity}|"> -->
+<!-- 		<span th:text="${mensaje}"></span> -->
+<!-- 	</h4> -->
 
-	<form th:action="${link}" method="get">
-		<input class="button" type="submit" value="Volver" autofocus="autofocus">
-	</form>
-</div>
+<!-- 	<form th:action="${link}" method="get"> -->
+<!-- 		<input class="button" type="submit" value="Volver" autofocus="autofocus"> -->
+<!-- 	</form> -->
+<!-- </div> -->
+<section id="info">
+    <div class="modal show my-5 mx-auto" id="infoModal" tabindex="-1" role="dialog"
+        aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div id="infoModal" class="modal-content">
+                <h4 class="text-dark" id="infoTitulo" th:text="${infoTitulo}"></h4>
+                <p class="text-dark"id="infoParrafo" th:text="${infoTexto}"></p>
+                <button class="text-dark" id="infoButton" th:class="${infoEstado}" onclick="$('#infoModal').modal('hide')">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+	<script th:if="${infoModal != null}">
+		$('#infoModal').modal('show');
+	</script>
