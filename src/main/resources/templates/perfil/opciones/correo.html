@@ -1,7 +1,7 @@
 <div>
-    <form method="post" action="editarCorreo">
+    <form method="post" action="editarCorreo" name="formulario" onsubmit="return opcionesCorreo(document.formulario.email)">
         <label for="nuevoCorreo">Correo nuevo:</label>
         <input type="text" id="nuevoCorreo" name="email"><br/>
-        <input type="submit" value="Cambiar Correo">
+        <input type="submit" name="btn" value="Cambiar Correo">
     </form>
 </div>

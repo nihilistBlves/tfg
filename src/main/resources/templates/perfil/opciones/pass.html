@@ -3,7 +3,7 @@
 		<div class="col-7">
 			<h2 class="h2 mb-4">Cambiar contraseña</h2>
 		</div>
-		<form method="post" name="formualrio" action="editarPass">
+		<form method="post" name="formu" action="editarPass" onsubmit="return comprobarPass(document.formu.passActual,document.formu.pass,document.formu.repass)">
 
 			<div class="col-7">
 				<div class="form-floating mb-3">
@@ -15,7 +15,7 @@
 				<div class="form-floating mb-3">
 					<label class="text-secondary" for="pass">Contraseña</label> <input type="password"
 						class="form-control" name="pass" id="pass" placeholder="Escriba su contraseña..."
-						onkeyup="validarPssw(this)"> <span id="ver" onmouseover="ver(document.formulario.pass)"
+						> <span id="ver" onmouseover="ver(document.formulario.pass)"
 						onmouseout="ocultar(document.formulario.pass)"><i class="bi bi-eye-fill"></i></span>
 					<div class="invalid-feedback passWrong text-white"></div>
 					<div class="valid-feedback passSuccess text-white"></div>
@@ -32,7 +32,7 @@
 					<label class="text-secondary" for="repass">Repita
 						Contraseña</label> <input type="password" class="form-control" name="repass" id="repass"
 						placeholder="Repita su contraseña..."
-						onkeyup=" validarRepetir(document.formulario.repass, document.formulario.pass)">
+						>
 					<span id="ver" onmouseover="ver(document.formulario.repass)"
 						onmouseout="ocultar(document.formulario.repass)"> <i class="bi bi-eye-fill"></i></span>
 					<div class="invalid-feedback passWrong text-white"></div>

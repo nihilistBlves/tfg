@@ -93,9 +93,11 @@ public class UsuarioController {
 
 		Usuario usuario= (Usuario) s.getAttribute("user");
 
+		//TODO Filtro para que no se introdudcan datos vacios string == ""
+		
 		if (nombre != null) usuario.setNombre(nombre);
 		if (apellidos != null) usuario.setApellidos(apellidos);
-		if (edad != null) {
+		if (edad != null ) {
 			LocalDate date = LocalDate.parse(edad);
 			usuario.setFechaNacimiento(date);
 		}
@@ -108,7 +110,7 @@ public class UsuarioController {
 		// comprobamos si esta vacio o nulo
 		if (file == null || file.isEmpty()) {
 			attributes.addFlashAttribute("message", "Por favor seleccione un archivo");
-			return "redirect:/status";
+			return "redirect:/menuOpciones";
 		} else {
 			// comprobamos el tamñao del archivo en KB
 			if (file.getSize() <= 300) {
@@ -118,7 +120,7 @@ public class UsuarioController {
 						|| !file.getName().endsWith(".jpeg")) {
 
 					attributes.addFlashAttribute("message", "Solo se permiten fotos con extension png,jpg,jpeg");
-					return "redirect:/status";
+					return "redirect:/menuOpciones";
 				} else {
 
 					byte[] fileBytes = file.getBytes();
@@ -131,12 +133,12 @@ public class UsuarioController {
 
 					attributes.addFlashAttribute("message", "Archivo cargado correctamente [" + rutaCompleta + "]");
 
-					return "redirect:/status";
+					return "redirect:/menuOpciones";
 				}
 
 			} else {
 				attributes.addFlashAttribute("message", "excede el tamaño permitido");
-				return "redirect:/status";
+				return "redirect:/menuOpciones";
 
 			}
 

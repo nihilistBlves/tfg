@@ -12,33 +12,37 @@
 					</div>
 			</div>
 			<div class="row">
-				<div class="col-1">
+				<div class="col-2">
 					<a href="menuOpciones" class="btn btn-outline-secondary">Editar Perfil</a> <br />
 				</div>
 				<!--AQUI-->
-				<div class="col-3">
-					<div th:if="${usuario.nombre != null}">
-						<span class="lead" th:text="${usuario.nombre}"></span>
+				<div class="col-4">
+					<div th:if="${usuario.nombre != null || usuario.nombre!=''}">
+						<strong><span class="h5" th:text="${usuario.nombre}"></span></strong>
 					</div>
-					<div th:unles="${usuario.nombre != null}">
-						<span>Aun no has introducido tu nombre</span>
+					<div th:unless="${usuario.nombre != null || usuario.nombre!=''}">
+						<span class="lead">Aun no has introducido tu nombre.</span>
 					</div>
-					<div th:if="${usuario.apellido != null}">
-						<span class="lead" th:text="${usuario.apellido}"></span>
+					<div th:if="${usuario.apellidos != null || usuario.nombre!=''}">
+						<strong><span class="h5" th:text="${usuario.apellidos}"></span></strong>
 					</div>
-					<div th:unles="${usuario.apellido != null}">
-						<span>Aun no has introducido tu nombre</span>
+					<div th:unless="${usuario.apellidos != null || usuario.nombre!=''}">
+						<span class="lead">Aun no has introducido tu apellido.</span>
 					</div>
 				</div>
-				<p class="lead">numeroPublicaciones</p>
+				<div class="col-3">
+				<h5 class="h5">Descripción</h5>
+				<div th:if="${usuario.descripcionPerfil != null || usuario.nombre!=''}">
+						<span class="lead" th:text="${usuario.descripcionPerfil}"></span>
+					</div>
+					<div th:unless="${usuario.descripcionPerfil != null || usuario.nombre!=''}">
+						<span class="lead">Aun no has introducido tu descripción.</span>
+					</div>
+				</div>
 			</div>
-			<a href="#" class="btn btn-outline-secondary">[Num]Seguidores</a> <a href="#"
-				class="btn btn-outline-secondary">[Num]Seguidos</a> <br />
-			<p class="lead">
-				<strong>Nombre</strong>
-			</p>
-			<br />
-			<p class="lead">CargarDescripcion</p>
+			<p class="lead">numeroPublicaciones</p>
+			<a href="#" class="btn btn-secondary">[Num]Seguidores</a> <a href="#"
+				class="btn btn-secondary">[Num]Seguidos</a> <br />
 			</section>
 			<section>
 				<span th:if="${publicaciones != null}">
@@ -52,7 +56,7 @@
 								</p>
 							</div>
 						</div>
-					</div> <span th:unles="${publicaciones != null}">
+					</div> <span th:unless="${publicaciones != null}">
 						<h3 class="h3">Aún no tienes publicaciones disponibles,¿A
 							qué estás esperando?</h3>
 					</span>
