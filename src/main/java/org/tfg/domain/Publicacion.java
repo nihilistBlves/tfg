@@ -28,7 +28,7 @@ public class Publicacion {
 
 	private String tipoContenido;
 
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	private Usuario duenioPublicacion;
 
 	@OneToMany(cascade = CascadeType.ALL)

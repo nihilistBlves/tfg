@@ -49,16 +49,7 @@ public class UsuarioController {
 			s.setAttribute("infoTexto", "No existe este usuario");
 			s.setAttribute("infoEstado", "btn btn-danger");
 			
-			if (s.getAttribute("infoModal") != null) {
-				m.put("infoModal", "infoModal");
-				m.put("infoTitulo", s.getAttribute("infoTitulo"));
-				m.put("infoTexto", s.getAttribute("infoTexto"));
-				m.put("infoEstado", s.getAttribute("infoEstado"));
-				s.removeAttribute("infoTitulo");
-				s.removeAttribute("infoTexto");
-				s.removeAttribute("infoEstado");
-				s.removeAttribute("infoModal");
-			}
+		
 			Usuario usuario = (Usuario) s.getAttribute("user");
 			m.put("publicaciones", publicacionRepository.findAll());
 			m.put("view", "usuario/feed");
@@ -70,16 +61,7 @@ public class UsuarioController {
 			s.setAttribute("infoTexto", "Para acceder a este apartado debe estar logueado");
 			s.setAttribute("infoEstado", "btn btn-danger");
 			
-			if (s.getAttribute("infoModal") != null) {
-				m.put("infoModal", "infoModal");
-				m.put("infoTitulo", s.getAttribute("infoTitulo"));
-				m.put("infoTexto", s.getAttribute("infoTexto"));
-				m.put("infoEstado", s.getAttribute("infoEstado"));
-				s.removeAttribute("infoTitulo");
-				s.removeAttribute("infoTexto");
-				s.removeAttribute("infoEstado");
-				s.removeAttribute("infoModal");
-			}
+		
 			
 			return "redirect:/";
 		}

@@ -73,20 +73,12 @@ public class AnonymousController {
 			Usuario usuario = usuarioRepository.getByLoginName(loginName);
 
 			if (!usuario.isEnabled()) {
+				
 				s.setAttribute("infoModal","true");
 				s.setAttribute("infoTitulo", "Error");
 				s.setAttribute("infoTexto", "La cuenta no ha sido verificada");
 				s.setAttribute("infoEstado", "btn btn-danger");
-				if (s.getAttribute("infoModal") != null) {
-					m.put("infoModal", "infoModal");
-					m.put("infoTitulo", s.getAttribute("infoTitulo"));
-					m.put("infoTexto", s.getAttribute("infoTexto"));
-					m.put("infoEstado", s.getAttribute("infoEstado"));
-					s.removeAttribute("infoTitulo");
-					s.removeAttribute("infoTexto");
-					s.removeAttribute("infoEstado");
-					s.removeAttribute("infoModal");
-				}
+			
 				returner = "redirect:/";
 			} else {
 				s.setAttribute("user", usuario);
@@ -98,16 +90,7 @@ public class AnonymousController {
 			s.setAttribute("infoTitulo", "Error");
 			s.setAttribute("infoTexto", "El usuario no existe o la contraseña es incorrecta");
 			s.setAttribute("infoEstado", "btn btn-danger");
-			if (s.getAttribute("infoModal") != null) {
-				m.put("infoModal", "infoModal");
-				m.put("infoTitulo", s.getAttribute("infoTitulo"));
-				m.put("infoTexto", s.getAttribute("infoTexto"));
-				m.put("infoEstado", s.getAttribute("infoEstado"));
-				s.removeAttribute("infoTitulo");
-				s.removeAttribute("infoTexto");
-				s.removeAttribute("infoEstado");
-				s.removeAttribute("infoModal");
-			}
+		
 			returner = "redirect:/";
 		}
 
@@ -135,16 +118,7 @@ public class AnonymousController {
 				s.setAttribute("infoTitulo", "Error");
 				s.setAttribute("infoTexto", "El nombre de usuario introducido ya existe");
 				s.setAttribute("infoEstado", "btn btn-danger");
-				if (s.getAttribute("infoModal") != null) {
-					m.put("infoModal", "infoModal");
-					m.put("infoTitulo", s.getAttribute("infoTitulo"));
-					m.put("infoTexto", s.getAttribute("infoTexto"));
-					m.put("infoEstado", s.getAttribute("infoEstado"));
-					s.removeAttribute("infoTitulo");
-					s.removeAttribute("infoTexto");
-					s.removeAttribute("infoEstado");
-					s.removeAttribute("infoModal");
-				}
+			
 				return "redirect:/";
 			} else {
 				usuario.setLoginName(loginName);
@@ -155,16 +129,7 @@ public class AnonymousController {
 				s.setAttribute("infoTitulo", "Error");
 				s.setAttribute("infoTexto", "Las contraseñas no coinciden");
 				s.setAttribute("infoEstado", "btn btn-danger");
-				if (s.getAttribute("infoModal") != null) {
-					m.put("infoModal", "infoModal");
-					m.put("infoTitulo", s.getAttribute("infoTitulo"));
-					m.put("infoTexto", s.getAttribute("infoTexto"));
-					m.put("infoEstado", s.getAttribute("infoEstado"));
-					s.removeAttribute("infoTitulo");
-					s.removeAttribute("infoTexto");
-					s.removeAttribute("infoEstado");
-					s.removeAttribute("infoModal");
-				}
+			
 				return "redirect:/";
 			} else {
 				BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -176,16 +141,7 @@ public class AnonymousController {
 				s.setAttribute("infoTitulo", "Error");
 				s.setAttribute("infoTexto", "El correo electrónico introducido ya está registrado");
 				s.setAttribute("infoEstado", "btn btn-danger");
-				if (s.getAttribute("infoModal") != null) {
-					m.put("infoModal", "infoModal");
-					m.put("infoTitulo", s.getAttribute("infoTitulo"));
-					m.put("infoTexto", s.getAttribute("infoTexto"));
-					m.put("infoEstado", s.getAttribute("infoEstado"));
-					s.removeAttribute("infoTitulo");
-					s.removeAttribute("infoTexto");
-					s.removeAttribute("infoEstado");
-					s.removeAttribute("infoModal");
-				}
+			
 				return "redirect:/";
 			} else {
 				usuario.setEmail(email);
@@ -210,16 +166,7 @@ public class AnonymousController {
 		s.setAttribute("infoTitulo", "!Enhorabuena!");
 		s.setAttribute("infoTexto", "Registrado correctamente! Revisa tu bandeja de entrada para activar la cuenta antes de logear por primera vez");
 		s.setAttribute("infoEstado", "btn btn-success");
-		if (s.getAttribute("infoModal") != null) {
-			m.put("infoModal", "infoModal");
-			m.put("infoTitulo", s.getAttribute("infoTitulo"));
-			m.put("infoTexto", s.getAttribute("infoTexto"));
-			m.put("infoEstado", s.getAttribute("infoEstado"));
-			s.removeAttribute("infoTitulo");
-			s.removeAttribute("infoTexto");
-			s.removeAttribute("infoEstado");
-			s.removeAttribute("infoModal");
-		}
+	
 		
 
 		return "redirect:/";
@@ -235,32 +182,14 @@ public class AnonymousController {
 			s.setAttribute("infoTitulo", "Error");
 			s.setAttribute("infoTexto", "El link al que has accedido no existe.");
 			s.setAttribute("infoEstado", "btn btn-danger");
-			if (s.getAttribute("infoModal") != null) {
-				m.put("infoModal", "infoModal");
-				m.put("infoTitulo", s.getAttribute("infoTitulo"));
-				m.put("infoTexto", s.getAttribute("infoTexto"));
-				m.put("infoEstado", s.getAttribute("infoEstado"));
-				s.removeAttribute("infoTitulo");
-				s.removeAttribute("infoTexto");
-				s.removeAttribute("infoEstado");
-				s.removeAttribute("infoModal");
-			}
+		
 			return "redirect:/";
 		} else if ((verificationToken != null) && (verificationToken.getUsuario().isEnabled())) {
 			s.setAttribute("infoModal","true");
 			s.setAttribute("infoTitulo", "Error");
 			s.setAttribute("infoTexto", "Esta cuenta ya ha sido activada anteriormente.");
 			s.setAttribute("infoEstado", "btn btn-danger");
-			if (s.getAttribute("infoModal") != null) {
-				m.put("infoModal", "infoModal");
-				m.put("infoTitulo", s.getAttribute("infoTitulo"));
-				m.put("infoTexto", s.getAttribute("infoTexto"));
-				m.put("infoEstado", s.getAttribute("infoEstado"));
-				s.removeAttribute("infoTitulo");
-				s.removeAttribute("infoTexto");
-				s.removeAttribute("infoEstado");
-				s.removeAttribute("infoModal");
-			}
+		
 			return "redirect:/";
 		}
 
@@ -272,16 +201,7 @@ public class AnonymousController {
 			s.setAttribute("infoTitulo", "Error");
 			s.setAttribute("infoTexto", "El link de activación de la cuenta ha expirado.");
 			s.setAttribute("infoEstado", "btn btn-danger");
-			if (s.getAttribute("infoModal") != null) {
-				m.put("infoModal", "infoModal");
-				m.put("infoTitulo", s.getAttribute("infoTitulo"));
-				m.put("infoTexto", s.getAttribute("infoTexto"));
-				m.put("infoEstado", s.getAttribute("infoEstado"));
-				s.removeAttribute("infoTitulo");
-				s.removeAttribute("infoTexto");
-				s.removeAttribute("infoEstado");
-				s.removeAttribute("infoModal");
-			}
+		
 			return "redirect:/";
 		}
 
@@ -311,16 +231,7 @@ public class AnonymousController {
 		s.setAttribute("infoTitulo", "Error");
 		s.setAttribute("infoTexto", "La cuenta se ha activado correctamente. Ya puedes hacer login.");
 		s.setAttribute("infoEstado", "btn btn-success");
-		if (s.getAttribute("infoModal") != null) {
-			m.put("infoModal", "infoModal");
-			m.put("infoTitulo", s.getAttribute("infoTitulo"));
-			m.put("infoTexto", s.getAttribute("infoTexto"));
-			m.put("infoEstado", s.getAttribute("infoEstado"));
-			s.removeAttribute("infoTitulo");
-			s.removeAttribute("infoTexto");
-			s.removeAttribute("infoEstado");
-			s.removeAttribute("infoModal");
-		}
+	
 		return "redirect:/";
 
 	}
