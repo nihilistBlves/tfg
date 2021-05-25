@@ -43,26 +43,23 @@ public class UsuarioController {
 	public String getFeed(ModelMap m, HttpSession s) {
 
 		if (s.getAttribute("user") != null) {
-			
-			s.setAttribute("infoModal","true");
+
+			s.setAttribute("infoModal", "true");
 			s.setAttribute("infoTitulo", "Error");
 			s.setAttribute("infoTexto", "No existe este usuario");
 			s.setAttribute("infoEstado", "btn btn-danger");
-			
-		
+
 			Usuario usuario = (Usuario) s.getAttribute("user");
 			m.put("publicaciones", publicacionRepository.findAll());
 			m.put("view", "usuario/feed");
 			return "_t/frameFeed";
 
 		} else {
-			s.setAttribute("infoModal","true");
+			s.setAttribute("infoModal", "true");
 			s.setAttribute("infoTitulo", "Error");
 			s.setAttribute("infoTexto", "Para acceder a este apartado debe estar logueado");
 			s.setAttribute("infoEstado", "btn btn-danger");
-			
-		
-			
+
 			return "redirect:/";
 		}
 
@@ -75,7 +72,7 @@ public class UsuarioController {
 
 		if (usuarioRepository.getByLoginName(username) == null) {
 			// DEVOLVER PRG CON ERROR DE QUE NO EXISTE
-			
+
 			returner = "redirect:/feed";
 		} else {
 
@@ -89,12 +86,11 @@ public class UsuarioController {
 			// publicacionRepository.getByDuenioPublicacion(usuario);
 
 			// m.addAttribute("publicaciones",publicaciones);
-			
-	
-			//te falta pasar el usuario por el put y de ahi coger sus datos como descripcion foto y 
-			//sus publicaciones
-			
-			
+
+			// te falta pasar el usuario por el put y de ahi coger sus datos como
+			// descripcion foto y
+			// sus publicaciones
+
 			m.addAttribute("usuario", userRequested);
 			m.put("view", "usuario/perfilUsuario");
 			returner = "_t/frameFeed";
@@ -106,11 +102,8 @@ public class UsuarioController {
 	// ============================================================================
 
 	@GetMapping("/publicar")
-	public String getPublicar(ModelMap m,HttpSession s) {
+	public String getPublicar(ModelMap m, HttpSession s) {
 
-		
-		
-		
 		m.put("view", "usuario/publicar");
 		return "_t/frameFeed";
 
@@ -302,7 +295,7 @@ public class UsuarioController {
 	// Opciones de perfil controller
 
 	@GetMapping("menuOpciones")
-	public String opcionesPerfil() {
+	public String opcionesPerfil(HttpSession s) {
 
 		return "perfil/opcionesPerfil";
 
@@ -400,6 +393,7 @@ public class UsuarioController {
 				if (newPass.contains(newRePass)) {
 
 					usuario.setPass(encoder.encode(newPass));
+
 					usuarioRepository.save(usuario);
 
 					// TODO Añadir correo de informacion de cambio de contraseña
@@ -470,4 +464,5 @@ public class UsuarioController {
 
 		return "perfil/opciones/notificaciones";
 	}
+
 }

@@ -1,44 +1,66 @@
 <div class="bg-light">
+	<div class="row justify-content-md-center">
+		<div class="col-10">
 
-	<img class="img-fluid" src="#">Si la foto no existe poner una por
-	defecto
-
-	<section>
-
-		<h3 class="lead">Nombre:</h3>
-		<p class="display-1" th:text="${usuario.loginName}"></p>
-		
-		<div class="numeroPublicaciones">
-		<p  class="bg-info">numeroPublicaciones</p>
-		<p  class="bg-info">[Num]Seguidores</p>
-		<p  class="bg-info">[Num]Seguidos</p> 
-		</div>
-		<a href="publicacion">Crear publicacion</a>
-		<div class="descripcion">
-		<p class="lead">CargarDescripcion pasar datos</p>
-		</div>
-
-
-	</section>
-
-	<section>
-
-		<span th:if="${publicaciones != null}">
-			<div th:each="publicaciones : ${publicacion}">
-
-				<div class="card" style="width: 18rem;">
-					<img src="nombreImagen" class="card-img-top" alt="...">
-					<div class="card-body">
-						<p class="card-text">
-						<p th:text="${publicacion.fecha_publicacion}"></p>
-						<p th:text="${publicacion.descripcion}"></p>
-						</p>
+			<div class="row">
+				<section>
+					<div class="col-1">
+						<img class="img-fluid" src="#">
+					</div>
+					<div class="col-3">
+						<h3 class="display-1" th:text="${usuario.loginName}"></h3>
+					</div>
+			</div>
+			<div class="row">
+				<div class="col-2">
+					<a href="menuOpciones" class="btn btn-outline-secondary">Editar Perfil</a> <br />
+				</div>
+				<!--AQUI-->
+				<div class="col-4">
+					<div th:if="${usuario.nombre != null || usuario.nombre!=''}">
+						<strong><span class="h5" th:text="${usuario.nombre}"></span></strong>
+					</div>
+					<div th:unless="${usuario.nombre != null || usuario.nombre!=''}">
+						<span class="lead">Aun no has introducido tu nombre.</span>
+					</div>
+					<div th:if="${usuario.apellidos != null || usuario.nombre!=''}">
+						<strong><span class="h5" th:text="${usuario.apellidos}"></span></strong>
+					</div>
+					<div th:unless="${usuario.apellidos != null || usuario.nombre!=''}">
+						<span class="lead">Aun no has introducido tu apellido.</span>
 					</div>
 				</div>
-			</div> <span th:unles="${publicaciones != null}">
-				<h3 class="h3">AÃºn no tienes publicaciones disponibles,Â¿A
-					quÃ© estÃ¡s esperando?</h3>
-		</span>
-	</section>
-
+				<div class="col-3">
+				<h5 class="h5">Descripción</h5>
+				<div th:if="${usuario.descripcionPerfil != null || usuario.nombre!=''}">
+						<span class="lead" th:text="${usuario.descripcionPerfil}"></span>
+					</div>
+					<div th:unless="${usuario.descripcionPerfil != null || usuario.nombre!=''}">
+						<span class="lead">Aun no has introducido tu descripción.</span>
+					</div>
+				</div>
+			</div>
+			<p class="lead">numeroPublicaciones</p>
+			<a href="#" class="btn btn-secondary">[Num]Seguidores</a> <a href="#"
+				class="btn btn-secondary">[Num]Seguidos</a> <br />
+			</section>
+			<section>
+				<span th:if="${publicaciones != null}">
+					<div th:each="publicaciones : ${publicacion}">
+						<div class="card" style="width: 18rem;">
+							<img src="nombreImagen" class="card-img-top" alt="...">
+							<div class="card-body">
+								<p class="card-text">
+								<p th:text="${publicacion.fecha_publicacion}"></p>
+								<p th:text="${publicacion.descripcion}"></p>
+								</p>
+							</div>
+						</div>
+					</div> <span th:unless="${publicaciones != null}">
+						<h3 class="h3">Aún no tienes publicaciones disponibles,¿A
+							qué estás esperando?</h3>
+					</span>
+			</section>
+		</div>
+	</div>
 </div>
