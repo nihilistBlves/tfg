@@ -18,11 +18,14 @@ public class Wave {
 	
 	private LocalDate fechaLike;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	//@ManyToOne(cascade = CascadeType.ALL)
+@ManyToOne(cascade = CascadeType.REFRESH)
 	private Usuario daWave;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Publicacion publicacionWaved;
+	
+	public Wave() {}
 
 	public Wave(LocalDate fechaLike, Usuario daWave, Publicacion publicacionWaved) {
 		super();
