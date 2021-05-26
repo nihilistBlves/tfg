@@ -1,37 +1,57 @@
 <div class="container">
-    <div class="row  justify-content-center">
-        <form method="post" action="editarPerfil" enctype="multipart/form-data">
-        
-          <div class="form-floating mb-3">
-                <label for="file">Foto de perfil</label>
-                <input type="file" class="form-control" id="file" name="file" placeholder="Escoja una foto...">
-                
-            </div>
-            <div class="form-floating mb-3">
-                <label for="nombreUsuario">Nombre de usuario</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nuevo nombre de usuario...">
-                
-            </div>
-            <div class="form-floating mb-3">
-               <label for="apellidos">Apellidos</label>
-                <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Nuevos apellidos...">
-            </div>
-            <div class="form-floating mb-3">
-               <label for="edad">Edad</label>
-                <input type="date" class="form-control" id="edad" name="edad" >
-            </div>
-            <div class="form-floating mb-3">
-                <label for="descripcion">Descripción:</label>
-                <textarea id="descripcion"  maxlength="300" style="resize:none" onkeyup="validarLimite(this)" placeholder="Descripción de tu perfil de usuario..." cols="50" rows="5"></textarea>
-                <span class="contador">0/300</span>
-            </div>
-            <div class="form-floating mb-3">
-                <label for="listaInstrumentos">Lista de Instrumentos:</label>
-                <textarea id="listaInstrumentos" maxlength="300" style="resize:none" placeholder="Lista de instrumentos..." cols="50" rows="5"></textarea>
-            </div>
+	<div class="row  justify-content-center">
+	<div class="col-7">
+		<h2 class="h2 mb-4">Editar perfil</h2>
+	</div>
+		<form method="post" action="editarPerfil" enctype="multipart/form-data">
+			<div class="col-7">
+				<div class="form-floating mb-3">
+					<label for="file">Foto de perfil</label>
+					<input type="file" class="form-control" id="file" name="file" placeholder="Escoja una foto...">
 
-            <input type="submit" value="Guardar">
-        </form>
-    </div>
+				</div>
+			</div>
+			<div class="col-7">
+				<div class="form-floating mb-3">
+					<label for="nombreUsuario">Nombre de usuario</label>
+					<input type="text" class="form-control" id="nombre" name="nombre"
+						placeholder="Nuevo nombre de usuario...">
+
+				</div>
+			</div>
+			<div class="col-7">
+				<div class="form-floating mb-3">
+					<label for="apellidos">Apellidos</label>
+					<input type="text" class="form-control" id="apellidos" name="apellidos"
+						placeholder="Nuevos apellidos...">
+				</div>
+			</div>
+			<div class="col-7">
+				<div class="form-floating mb-3">
+					<label for="edad">Edad</label>
+					<input type="date" class="form-control" id="edad" name="edad">
+				</div>
+			</div>
+			<div class="col-7">
+				<div class="form-floating mb-3">
+					<label for="descripcion">DescripciÃ³n:</label>
+					<textarea id="descripcion" maxlength="150" style="resize:none" onkeyup="validarLimite(this)"
+						placeholder="Descripciï¿½n de tu perfil de usuario..." cols="50" rows="5" name="descripcion"></textarea>
+					<span class="contador">0/150</span>
+				</div>
+			</div>
+			<div class="col-7">
+				<div class="form-floating mb-3">
+					<label for="listaInstrumentos">Lista de Instrumentos:</label>
+					<textarea id="listaInstrumentos" maxlength="300" style="resize:none"
+						placeholder="Lista de instrumentos..." cols="50" rows="5"></textarea>
+				</div>
+			</div>
+
+			<div class="col-7">
+				<input type="submit" class="btn btn-dark" value="Guardar">
+			</div>
+		</form>
+	</div>
 
 </div>

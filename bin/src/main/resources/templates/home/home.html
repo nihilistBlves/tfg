@@ -5,13 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>WaveIt!</title>
-
+<link rel="shortcut icon" href="/img/logotipo.png">
 <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="/bootstrap/css/bootstrap-icons.css">
 <link rel="stylesheet" href="/css/login.css">
 <link rel="stylesheet" href="/css/principal.css">
 <link rel="stylesheet" href="/css/registro.css">
 <link rel="stylesheet" href="/css/buscar.css">
+<link rel="stylesheet" href="/css/info.css">
 <!-- ---------------------------------------------- -->
 <script type="application/javascript" src="/jquery/jquery-3.6.0.min.js"></script>
 <script src="/bootstrap/js/bootstrap.min.js"></script>
@@ -39,7 +40,6 @@
 	});
 </script>
 
-
 </head>
 <body>
 
@@ -48,9 +48,9 @@
 		<div class="content">
 			<div class="navegador">
 				<button type="button" class="btn btn-dark text-light"
-					data-toggle="modal" data-target="#exampleModal" id="btnlog">Login</button>
+					data-toggle="modal" data-target="#loginModal" id="btnlog">Login</button>
 				<button type="button" class="btn btn-dark text-light"
-					data-toggle="modal" data-target="#dos">Registro</button>
+					data-toggle="modal" data-target="#registroModal">Registro</button>
 			</div>
 			<div class="title">
 				<img src="./img/logotipo.png" alt="logo">
@@ -61,25 +61,28 @@
 			</div>
 		</div>
 		<div class="waves"></div>
-
-
 	</section>
+
 	<section id="login"></section>
 	<section id="registro"></section>
-	<section id="error">
-		<div class="modal fade" id="errorModal" role="dialog"
-			aria-labelledby="errorModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">El usuario o la contraseña son
-					incorrectos</div>
-			</div>
-		</div>
-	</section>
-	<!-- 	<span th:if="${loginError != null}"> -->
 
-	<!-- 	</span> -->
-	<script th:if="${loginError != null}">
-		$('#errorModal').modal('show')
+<section id="info">
+    <div class="modal show my-5 mx-auto" id="infoModal" tabindex="-1" role="dialog"
+        aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div id="infoModal" class="modal-content">
+                <h4 id="infoTitulo" th:text="${infoTitulo}"></h4>
+                <p id="infoParrafo" th:text="${infoTexto}"></p>
+                <button id="infoButton" th:class="${infoEstado}" onclick="$('#infoModal').modal('hide')">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+	<script th:if="${infoModal != null}">
+		$('#infoModal').modal('show');
 	</script>
+
+
 </body>
 </html>

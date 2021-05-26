@@ -1,6 +1,5 @@
-<<<<<<< HEAD
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-	aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog"
+	aria-labelledby="loginModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<form method="post" name="login" action="/login" novalidate>
@@ -29,45 +28,9 @@
 				<div class="row justify-content-center">
 					<div class="registro ">
 						<span class="text-secondary">Si todavia no tienes cuenta...</span>
-						<a class="text-danger" href="#link">Registrate</a>
+						<button type="button" class="btn btn-outline-danger" onclick="$('#registroModal').modal('show');$('#loginModal').modal('hide');">Registrate</button>
 					</div>
 				</div>
-				<!-- <br>
-                                    <span class="text-secondary text-center">ï¿½Ya estï¿½s registrado?</span>
-=======
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form method="post" name="login" action="/login" novalidate>
-                <div class="row justify-content-center">
-                    <div class="form-group col-10">
-                        <label class="text-secondary" for="nameLog">Nombre</label>
-                        <input class="form-control" type="text" name="loginName" id="nameLog" placeholder="Escriba su nombre...">
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="form-group col-10">
-                        <label class="text-secondary" for="passLog">Contraseña</label>
-                        <input class="form-control" type="text" name="password" id="passLog"
-                            placeholder="Escriba su Contraseña...">
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="form-group">
-                        <button class="btn btn-danger">Login</button>
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="registro ">
-                        <span class="text-secondary">Si todavia no tienes cuenta...</span>
-                        <a class="text-danger" href="#link">Registrate</a>
-                    </div>
-                </div>
-                <!-- <br>
-                                    <span class="text-secondary text-center">¿Ya estás registrado?</span>
->>>>>>> refs/remotes/origin/feature/email-verification
-                                    <button class="btn btn-secondary">Login</button> -->
 			</form>
 		</div>
 	</div>
