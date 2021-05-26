@@ -37,7 +37,7 @@
 					<!-- 		Para video -->
 					<div th:if="${publicacion.tipoContenido}=='video'"
 						class="card-film">
-						<video width="auto" height="300px" controls>
+						<video width="500px" height="300px" controls>
 							<source th:src="@{${publicacion.contenido}}" type="video/mp4" />
 						</video>
 					</div>
@@ -73,35 +73,40 @@
 								</div>
 
 								<form>
+
 									<div class="form-group">
-										<div class="d-inline-flex coment">
-											<img class="foto-perfil" th:src="@{${publicacion.duenioPublicacion.fotoPerfil}}" >
-											<input type="text" class="form-control" placeholder="Comentar" name="comentario" id="comentario"/>
+										<div class="d-flex pt-4 comentarios">
+											<img class="foto-perfil col-2"
+												th:src="@{${publicacion.duenioPublicacion.fotoPerfil}}">
+											<input type="text" class="form-control col-10"
+												placeholder="Comentar" name="comentario" id="comentario" />
 										</div>
+
+
+										<!-- 									este flex de arriba su intencion es que se posicione arriba una vez despues de dar click -->
+										<!-- 									en este div de comentarios . Si tiene comentarios los muestra aqui y el comentar arriba de ellos -->
+										<!-- 									si no tiene solo que salga el comentar. lo comentado de abajo es para hacer la relacion y colocar -->
+										<!-- 									los datos -->
+
+
+										<!-- 									relacionar los comentarios de otros con el post -->
 										<div th:each="publicacion: ${relacion}">
-											<div th:if="${relacion}" class="coment">
-												<div>
-													<img class="card-img" th:src="@{${publicacion.contenido}}" width="50px" height="50px">
+											<div th:if="${relacion}" class="comentario">
+												<div class="col">
+													<p>Nombre usuario</p>
+												</div>
+												<div class="d-flex pt-4 comentarios">
+													<img class="foto-perfil col-2"
+														th:src="@{${publicacion.duenioPublicacion.fotoPerfil}}">
+													<p>comentario persona aqui</p>
 												</div>
 												<div>
-													<p>asdsadasd</p>
+													<img src="./img/sub.png" alt=""> <img
+														src="./img/unsub.png" alt="">
 												</div>
-												<div>
-													<img src="./img/sub.png" alt="">
-													 <img src="./img/unsub.png" alt="">
-												</div>
-												<div th:if="${relacion}" class="otherComent">
-													<div>
-														<img class="card-img" th:src="@{${publicacion.contenido}}">
-													</div>
-													<div>
-														<p></p>
-													</div>
-													<div>
-														<img src="./img/sub.png" alt=""> <img
-															src="./img/unsub.png" alt="">
-													</div>
-												</div>
+
+
+
 											</div>
 										</div>
 									</div>
