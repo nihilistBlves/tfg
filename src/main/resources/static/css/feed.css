@@ -76,3 +76,8 @@ body{
    background-color: rgba(226, 231, 231, 0.349);
    overflow: hidden;
 }
+.foto-perfil{
+	width:50px;
+	 height:50px;
+	 border-radius: 50%;
+}

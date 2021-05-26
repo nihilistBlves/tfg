@@ -9,8 +9,10 @@
 		objeto.onclick = function() {
 			objeto.parentNode.parentNode.children[1].style.height = "200px";
 			objeto.text = "Leer más";
-			objeto.onclick = function (){leer(objeto)};
-			
+			objeto.onclick = function() {
+				leer(objeto)
+			};
+
 		};
 	}
 </script>
@@ -56,22 +58,55 @@
 								<b th:text="${publicacion.duenioPublicacion.loginName}">Nombre</b>
 							</div>
 							<div class="card-text">
-								<p th:id="${publicacion.id}" th:text="${publicacion.descripcion}"></p>
+								<p th:id="${publicacion.id}"
+									th:text="${publicacion.descripcion}"></p>
 								<p class="text-muted text-right" id="fecha"
 									th:text="${publicacion.fechaPublicacion}"></p>
 							</div>
 							<div class="leer-mas">
-								<a class="leer" onclick="leer(this)" >Leer más</a>
+								<a class="leer" onclick="leer(this)">Leer más</a>
 							</div>
 							<div class="card-footer text-right">
 								<div class="icons">
-									<img src="./img/sub.png" alt="" >
-									<img src="./img/unsub.png" alt="" >
+									<img src="./img/sub.png" alt=""> <img
+										src="./img/unsub.png" alt="">
 								</div>
+
 								<form>
-									<div class="form-group"></div>
-									<input type="text" class="form-control" placeholder="Comentar" />
+									<div class="form-group">
+										<div class="d-inline-flex coment">
+											<img class="foto-perfil" th:src="@{${publicacion.duenioPublicacion.fotoPerfil}}" >
+											<input type="text" class="form-control" placeholder="Comentar" name="comentario" id="comentario"/>
+										</div>
+										<div th:each="publicacion: ${relacion}">
+											<div th:if="${relacion}" class="coment">
+												<div>
+													<img class="card-img" th:src="@{${publicacion.contenido}}" width="50px" height="50px">
+												</div>
+												<div>
+													<p>asdsadasd</p>
+												</div>
+												<div>
+													<img src="./img/sub.png" alt="">
+													 <img src="./img/unsub.png" alt="">
+												</div>
+												<div th:if="${relacion}" class="otherComent">
+													<div>
+														<img class="card-img" th:src="@{${publicacion.contenido}}">
+													</div>
+													<div>
+														<p></p>
+													</div>
+													<div>
+														<img src="./img/sub.png" alt=""> <img
+															src="./img/unsub.png" alt="">
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
 								</form>
+
 							</div>
 						</div>
 					</div>
