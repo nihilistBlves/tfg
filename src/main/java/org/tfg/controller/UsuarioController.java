@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
@@ -26,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.tfg.domain.Publicacion;
 import org.tfg.domain.Usuario;
 import org.tfg.exception.DangerException;
+import org.tfg.helper.H;
 import org.tfg.helper.PRG;
 import org.tfg.repositories.PublicacionRepository;
 import org.tfg.repositories.UsuarioRepository;
@@ -42,14 +44,20 @@ public class UsuarioController {
 	@GetMapping("/feed")
 	public String getFeed(ModelMap m, HttpSession s) {
 
-		if (s.getAttribute("user") != null) {
+		if (s.getAttribute("userLogged") != null) {
 
-			s.setAttribute("infoModal", "true");
-			s.setAttribute("infoTitulo", "Error");
-			s.setAttribute("infoTexto", "No existe este usuario");
-			s.setAttribute("infoEstado", "btn btn-danger");
+			if (s.getAttribute("infoModal") != null) {
+				m.put("infoModal", "infoModal");
+				m.put("infoTitulo", s.getAttribute("infoTitulo"));
+				m.put("infoTexto", s.getAttribute("infoTexto"));
+				m.put("infoEstado", s.getAttribute("infoEstado"));
+				s.removeAttribute("infoTitulo");
+				s.removeAttribute("infoTexto");
+				s.removeAttribute("infoEstado");
+				s.removeAttribute("infoModal");
+			}
 
-			Usuario usuario = (Usuario) s.getAttribute("user");
+			Usuario usuario = (Usuario) s.getAttribute("userLogged");
 			m.put("publicaciones", publicacionRepository.findAll());
 			m.put("view", "usuario/feed");
 			return "_t/frameFeed";
@@ -65,35 +73,45 @@ public class UsuarioController {
 
 	}
 
+	@PostMapping("/logout")
+	public String postLogout(ModelMap m, HttpSession s) {
+		s.removeAttribute("userLogged");
+		s.setAttribute("infoModal", "true");
+		s.setAttribute("infoTitulo", "Info");
+		s.setAttribute("infoTexto", "La sesión ha cerrado correctamente");
+		s.setAttribute("infoEstado", "btn btn-danger");
+		return "redirect:/";
+	}
+
 	@GetMapping("/user/{loginName}")
 	public String getPerfil(@PathVariable("loginName") String username, ModelMap m, HttpSession s) {
 
-		String returner = "";
-
 		if (usuarioRepository.getByLoginName(username) == null) {
-			// DEVOLVER PRG CON ERROR DE QUE NO EXISTE
-			
-			returner = "redirect:/feed";
+			s.setAttribute("infoModal", "true");
+			s.setAttribute("infoTitulo", "Error");
+			s.setAttribute("infoTexto", "No existe este usuario");
+			s.setAttribute("infoEstado", "btn btn-danger");
+
+			return "redirect:/feed";
 		} else {
-			
+
 			int seguidores = usuarioRepository.getByLoginName(username).getSeguidores().size();
 			int seguidos = usuarioRepository.getByLoginName(username).getSeguidos().size();
-			
+
 			m.put("usuario", usuarioRepository.getByLoginName(username));
 			m.put("seguidores", seguidores);
 			m.put("seguidos", seguidos);
-			
-			if (username.equals(((Usuario) s.getAttribute("userLogged")).getLoginName())) {
-				m.put("propietario", "true");
-			} else if (s.getAttribute("user") == null) {
-				
+
+			if (s.getAttribute("userLogged") != null) {
+				if (username.equals(((Usuario) s.getAttribute("userLogged")).getLoginName())) {
+					m.put("propietario", "si");
+				}
 			}
-			
+
 			m.put("view", "usuario/perfilUsuario");
-			
-			returner = "_t/frameFeed";
+
+			return "_t/frameFeed";
 		}
-		return returner;
 	}
 
 	// ===========================================================================
@@ -101,181 +119,150 @@ public class UsuarioController {
 
 	@GetMapping("/publicar")
 	public String getPublicar(ModelMap m, HttpSession s) {
-
-		m.put("view", "usuario/publicar");
-		return "_t/frameFeed";
+		if (s.getAttribute("userLogged") != null) {
+			if (s.getAttribute("infoModal") != null) {
+				H.mPut(m, s);
+			}
+			m.put("view", "usuario/publicar");
+			return "_t/frameFeed";
+		} else {
+			s.setAttribute("infoModal", "true");
+			s.setAttribute("infoTitulo", "Error");
+			s.setAttribute("infoTexto", "Para acceder a este apartado debe estar logueado");
+			s.setAttribute("infoEstado", "btn btn-danger");
+			return "redirect:/";
+		}
 
 	}
 
 	@PostMapping("/publicar")
 	public String getPublicar(@RequestParam("mensaje") String texto, @RequestParam("file") MultipartFile file,
-			RedirectAttributes attributes, HttpSession s) throws IOException {
+			RedirectAttributes attributes, HttpSession s, ModelMap m) throws IOException {
 
 		Path path = null;
-		String originalFilename = file.getOriginalFilename();
+		String originalFilename = file.getOriginalFilename().toLowerCase();
+		String nuevoNombreRandom = UUID.randomUUID().toString();
+		String extensionArchivo = originalFilename.substring(originalFilename.lastIndexOf("."));
+		String nuevoNombreArchivo = nuevoNombreRandom + extensionArchivo;
 
 		if (file != null) {
 
-//			System.out.println(file.getOriginalFilename() + file.getSize());
-			if ((!originalFilename.toLowerCase().endsWith(".png") && !originalFilename.toLowerCase().endsWith(".jpg")
-					&& !originalFilename.toLowerCase().endsWith(".jpeg"))
-					&& (!originalFilename.toLowerCase().endsWith(".mov")
-							&& !originalFilename.toLowerCase().endsWith(".mp4")
-							&& !originalFilename.toLowerCase().endsWith(".mpg"))
-					&& (!originalFilename.toLowerCase().endsWith(".ogg")
-							&& !originalFilename.toLowerCase().endsWith(".mp3"))) {
+			if ((!originalFilename.endsWith(".png") && !originalFilename.endsWith(".jpg")
+					&& !originalFilename.endsWith(".jpeg"))
+					&& (!originalFilename.endsWith(".mov") && !originalFilename.endsWith(".mp4")
+							&& !originalFilename.endsWith(".mpg"))
+					&& (!originalFilename.endsWith(".ogg") && !originalFilename.endsWith(".mp3"))) {
+				H.setInfoModal(
+						"Error|Solo se permiten fotos con extension png,jpg,jpeg. Y para videos : mp4,mov,mpg|btn btn-danger",
+						s);
 
-				attributes.addFlashAttribute("message",
-						"Solo se permiten fotos con extension png,jpg,jpeg. Y para videos : mp4,mov,mpg");
-				return "redirect:/status";
+				return "redirect:/publicar";
 
 			} else {
 
-				if (originalFilename.toLowerCase().endsWith(".png") || originalFilename.toLowerCase().endsWith(".jpg")
-						|| originalFilename.toLowerCase().endsWith(".jpeg")) {
+				Usuario usuario = (Usuario) s.getAttribute("userLogged");
+				Publicacion publicacion = new Publicacion();
 
-					// archivo en bytes se compara con 800kb
+				if (originalFilename.endsWith(".png") || originalFilename.endsWith(".jpg")
+						|| originalFilename.endsWith(".jpeg")) {
 
-					if (file.getSize() <= 800000) {
-
-						Usuario usuario = (Usuario) s.getAttribute("user");
-						LocalDate date = LocalDate.now();
-						Publicacion publicacion = new Publicacion();
+					if (file.getSize() <= 2000000) {
 
 						byte[] fileBytes = file.getBytes();
 
-						path = Paths.get("src//main//resources/static/users/" + usuario.getLoginName() + "/posts/imgs");
+						path = Paths.get("src//main//resources/static/users/" + usuario.getLoginName() + "/posts/img");
 						String rutaRelativa = path.toFile().getAbsolutePath();
-						Path rutaCompleta = Paths.get(rutaRelativa + "//" + file.getOriginalFilename());
+						Path rutaCompleta = Paths.get(rutaRelativa + "//" + nuevoNombreArchivo);
 						Files.write(rutaCompleta, fileBytes);
 
-						attributes.addFlashAttribute("message", "Archivo cargado correctamente [" + rutaCompleta + "]");
-
-						if (!texto.equals("")) {
-							publicacion.setDescripcion(texto);
-
-						}
 						if (path != null) {
-							publicacion.setContenido("/users/" + usuario.getLoginName() + "/posts/imgs" + "/"
-									+ file.getOriginalFilename());
+							publicacion.setContenido(
+									"/users/" + usuario.getLoginName() + "/posts/img" + "/" + nuevoNombreArchivo);
 						}
 
-						publicacion.setFechaPublicacion(date);
-						publicacion.setDuenioPublicacion(usuario);
-						publicacion.setTipoContenido("imagen");
-						publicacionRepository.save(publicacion);
-						Collection<Publicacion> publicacionesActualizadas = usuario.getPublicaciones();
-						publicacionesActualizadas.add(publicacion);
-						usuario.setPublicaciones(publicacionesActualizadas);
-						usuarioRepository.save(usuario);
-
-						return "redirect:/status";
+						publicacion.setTipoContenido("img");
 
 					} else {
 
-						attributes.addFlashAttribute("message", "La foto excede el tamaño permitido");
+						H.setInfoModal("Error|La imagen excede el tamaño permitido (2 MB)|btn btn-danger", s);
 
-						return "redirect:/status";
+						return "redirect:/publicar";
 
 					}
 
 				}
-				if (originalFilename.toLowerCase().endsWith(".mp4") || originalFilename.toLowerCase().endsWith(".mov")
-						|| originalFilename.toLowerCase().endsWith(".mpg")) {
+				if (originalFilename.endsWith(".mp4") || originalFilename.endsWith(".mov")
+						|| originalFilename.endsWith(".mpg")) {
 
-					if (file.getSize() <= 1000000000) {
-
-						Usuario usuario = (Usuario) s.getAttribute("user");
-						LocalDate date = LocalDate.now();
-						Publicacion publicacion = new Publicacion();
+					if (file.getSize() <= 20000000) {
 
 						byte[] fileBytes = file.getBytes();
 
 						path = Paths
-								.get("src//main//resources/static/users/" + usuario.getLoginName() + "/posts/films");
+								.get("src//main//resources/static/users/" + usuario.getLoginName() + "/posts/video");
 						String rutaRelativa = path.toFile().getAbsolutePath();
-						Path rutaCompleta = Paths.get(rutaRelativa + "//" + file.getOriginalFilename());
+						Path rutaCompleta = Paths.get(rutaRelativa + "//" + nuevoNombreArchivo);
 						Files.write(rutaCompleta, fileBytes);
 
-						attributes.addFlashAttribute("message", "Archivo cargado correctamente [" + rutaCompleta + "]");
-
-						if (!texto.equals("")) {
-							publicacion.setDescripcion(texto);
-
-						}
 						if (path != null) {
-							publicacion.setContenido("/users/" + usuario.getLoginName() + "/posts/films" + "/"
-									+ file.getOriginalFilename());
+							publicacion.setContenido(
+									"/users/" + usuario.getLoginName() + "/posts/video" + "/" + nuevoNombreArchivo);
 						}
 
-						publicacion.setFechaPublicacion(date);
-						publicacion.setDuenioPublicacion(usuario);
 						publicacion.setTipoContenido("video");
-						publicacionRepository.save(publicacion);
-						Collection<Publicacion> publicacionesActualizadas = usuario.getPublicaciones();
-						publicacionesActualizadas.add(publicacion);
-						usuario.setPublicaciones(publicacionesActualizadas);
-						usuarioRepository.save(usuario);
-
-						return "redirect:/status";
 
 					} else {
 
-						attributes.addFlashAttribute("message", "El video excede el tamaño permitido");
+						H.setInfoModal("Error|El video excede el tamaño permitido (20 MB)|btn btn-danger", s);
 
-						return "redirect:/status";
+						return "redirect:/publicar";
 
 					}
 
 				}
 
-				if (originalFilename.toLowerCase().endsWith(".mp3")
-						|| originalFilename.toLowerCase().endsWith(".ogg")) {
+				if (originalFilename.endsWith(".mp3") || originalFilename.endsWith(".ogg")) {
 
 					if (file.getSize() <= 10000000) {
 
-						Usuario usuario = (Usuario) s.getAttribute("user");
-						LocalDate date = LocalDate.now();
-						Publicacion publicacion = new Publicacion();
-
 						byte[] fileBytes = file.getBytes();
 
 						path = Paths
-								.get("src//main//resources/static/users/" + usuario.getLoginName() + "/posts/audios");
+								.get("src//main//resources/static/users/" + usuario.getLoginName() + "/posts/audio");
 						String rutaRelativa = path.toFile().getAbsolutePath();
-						Path rutaCompleta = Paths.get(rutaRelativa + "//" + file.getOriginalFilename());
+						Path rutaCompleta = Paths.get(rutaRelativa + "//" + nuevoNombreArchivo);
 						Files.write(rutaCompleta, fileBytes);
 
-						attributes.addFlashAttribute("message", "Archivo cargado correctamente [" + rutaCompleta + "]");
-
-						if (!texto.equals("")) {
-							publicacion.setDescripcion(texto);
-
-						}
 						if (path != null) {
-							publicacion.setContenido("/users/" + usuario.getLoginName() + "/posts/audios" + "/"
-									+ file.getOriginalFilename());
+							publicacion.setContenido(
+									"/users/" + usuario.getLoginName() + "/posts/audio" + "/" + nuevoNombreArchivo);
 						}
 
-						publicacion.setFechaPublicacion(date);
-						publicacion.setDuenioPublicacion(usuario);
 						publicacion.setTipoContenido("audio");
-						publicacionRepository.save(publicacion);
-						Collection<Publicacion> publicacionesActualizadas = usuario.getPublicaciones();
-						publicacionesActualizadas.add(publicacion);
-						usuario.setPublicaciones(publicacionesActualizadas);
-						usuarioRepository.save(usuario);
-						return "redirect:/status";
 
 					} else {
 
-						attributes.addFlashAttribute("message", "El video excede el tamaño permitido");
+						H.setInfoModal("Error|El audio excede el tamaño permitido (10 MB)|btn btn-danger", s);
 
-						return "redirect:/status";
+						return "redirect:/publicar";
 
 					}
 
 				}
+
+				if (!texto.equals("")) {
+					publicacion.setDescripcion(texto);
+				}
+				publicacion.setDuenioPublicacion(usuario);
+				publicacionRepository.save(publicacion);
+				Collection<Publicacion> publicacionesActualizadas = usuario.getPublicaciones();
+				publicacionesActualizadas.add(publicacion);
+				usuario.setPublicaciones(publicacionesActualizadas);
+				usuarioRepository.save(usuario);
+
+				H.setInfoModal("Info|Publicación creada correctamente|btn btn-danger", s);
+
+				return "redirect:/feed";
 
 			}
 
@@ -292,81 +279,89 @@ public class UsuarioController {
 
 	// Opciones de perfil controller
 
-	@GetMapping("menuOpciones")
-	public String opcionesPerfil(HttpSession s) {
-
-		return "perfil/opcionesPerfil";
+	@GetMapping("/user/{loginName}/opciones")
+	public String opcionesPerfil(@PathVariable("loginName") String username, ModelMap m, HttpSession s) {
+		if (s.getAttribute("userLogged") != null) {
+			if (username.equals(((Usuario) s.getAttribute("userLogged")).getLoginName())) {
+				H.mPut(m, s);
+				m.put("view", "perfil/opcionesPerfil");
+				return "/_t/frameFeed";
+			}
+		}
+		return "redirect:/user/" + username;
 
 	}
 
-	@GetMapping("editarPerfil")
+	@GetMapping("/editarPerfil")
 	public String editarPerfil() {
 
 		return "perfil/opciones/editarPerfil";
 	}
 
-	@PostMapping("editarPerfil")
+	@PostMapping("/editarPerfil")
 	public String editarPerfil(@RequestParam("file") MultipartFile file, RedirectAttributes attributes,
 			@RequestParam("nombre") String nombre, @RequestParam("apellidos") String apellidos,
 			@RequestParam("edad") String edad, @RequestParam("descripcion") String descripcion, HttpSession s)
 			throws IOException {
 
-		Usuario usuario = (Usuario) s.getAttribute("user");
-		String originalFilename = file.getOriginalFilename();
+		Usuario usuario = (Usuario) s.getAttribute("userLogged");
+		String originalFilename = file.getOriginalFilename().toLowerCase();
+		String nuevoNombreRandom = UUID.randomUUID().toString();
+		String extensionArchivo = originalFilename.substring(originalFilename.lastIndexOf("."));
+		String nuevoNombreArchivo = nuevoNombreRandom + extensionArchivo;
 
-		if (nombre != null)
+		if (nombre != null) {
 			usuario.setNombre(nombre);
-		if (apellidos != null)
+		}
+		if (apellidos != null) {
 			usuario.setApellidos(apellidos);
-		if (edad != null) {
+		}
+
+		if (!edad.equals("")) {
 			LocalDate date = LocalDate.parse(edad);
 			usuario.setFechaNacimiento(date);
 		}
 		if (descripcion != null)
 			usuario.setDescripcionPerfil(descripcion);
 
-		usuarioRepository.save(usuario);
-
 //		 comprobamos si esta vacio o nulo
-		if (file.isEmpty()) {
-			attributes.addFlashAttribute("message", "Por favor seleccione un archivo");
-			return "redirect:/status";
-		} else {
-			// comprobamos el tamaño del archivo en bytes y aqui 800KB
-			if (file.getSize() <= 800000) {
+		if (!file.isEmpty()) {
+			// comprobamos el tamaño del archivo en bytes y aqui 2MB
+			if (file.getSize() <= 2000000) {
 
 				// comprobamos la extension en la que termina el archivo
-				if (originalFilename.toLowerCase().endsWith(".png") || originalFilename.toLowerCase().endsWith(".jpg")
-						|| originalFilename.toLowerCase().endsWith(".jpeg")) {
+				if (originalFilename.endsWith(".png") || originalFilename.endsWith(".jpg")
+						|| originalFilename.endsWith(".jpeg")) {
 
 					byte[] fileBytes = file.getBytes();
 
-					Path path = Paths.get("src//main//resources//static/users/" + usuario.getLoginName() + "/perfil");
+					Path path = Paths.get("src//main//resources/static/users/" + usuario.getLoginName() + "/perfil");
 					String rutaRelativa = path.toFile().getAbsolutePath();
-					Path rutaCompleta = Paths.get(rutaRelativa + "//" + file.getOriginalFilename());
+					Path rutaCompleta = Paths.get(rutaRelativa + "//" + nuevoNombreArchivo);
 					Files.write(rutaCompleta, fileBytes);
 
-					usuario.setFotoPerfil(
-							"/users/" + usuario.getLoginName() + "/perfil" + "/" + file.getOriginalFilename());
-
-					attributes.addFlashAttribute("message", "Archivo cargado correctamente [" + rutaCompleta + "]");
-
-					return "redirect:/status";
+					usuario.setFotoPerfil("/users/" + usuario.getLoginName() + "/perfil/" + nuevoNombreArchivo);
 
 				} else {
-
-					attributes.addFlashAttribute("message", "Solo se permiten fotos con extension png,jpg,jpeg");
-					return "redirect:/status";
+					H.setInfoModal("Error|Solo se permiten imagenes con extension png, jpg o jpeg|btn btn-danger", s);
+					return "redirect:/user/" + usuario.getLoginName() + "/opciones";
 				}
 
 			} else {
 
-				attributes.addFlashAttribute("message", "excede el tamaño permitido");
-				return "redirect:/status";
+				H.setInfoModal("Error|La imagen excede el tamaño permitido (2 MB)|btn btn-danger", s);
+
+				return "redirect:/publicar";
 
 			}
 
 		}
+		
+		H.setInfoModal("Info|Perfil modificado correctamente|btn btn-danger", s);
+		
+		usuarioRepository.save(usuario);
+		
+		return "redirect:/user/"+usuario.getLoginName();
 
 	}
 
@@ -380,7 +375,7 @@ public class UsuarioController {
 	public String gestionarPass(@RequestParam("passActual") String pass, @RequestParam("pass") String newPass,
 			@RequestParam("repass") String newRePass, HttpSession s) throws DangerException {
 
-		Usuario usuario = (Usuario) s.getAttribute("user");
+		Usuario usuario = (Usuario) s.getAttribute("userLogged");
 
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -421,7 +416,7 @@ public class UsuarioController {
 	@PostMapping("editarCorreo")
 	public String gestionarCorreo(@RequestParam("email") String email, HttpSession s) {
 
-		Usuario usuario = (Usuario) s.getAttribute("user");
+		Usuario usuario = (Usuario) s.getAttribute("userLogged");
 
 		usuario.setEmail(email);
 

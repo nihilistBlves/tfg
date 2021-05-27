@@ -38,9 +38,8 @@ public class AnonymousController {
 
 	@GetMapping("/")
 	public String index(ModelMap m, HttpSession s) throws DangerException {
-		String returner = "";
 		if (s.getAttribute("userLogged") != null) {
-			returner = "redirect:/feed";
+			return "redirect:/feed";
 		} else {
 			if (s.getAttribute("infoModal") != null) {
 				m.put("infoModal", "infoModal");
@@ -52,9 +51,8 @@ public class AnonymousController {
 				s.removeAttribute("infoEstado");
 				s.removeAttribute("infoModal");
 			}
-			returner = "home/home";
 		}
-		return returner;
+		return "/home/home";
 	}
 
 	@GetMapping("/login")
@@ -209,21 +207,19 @@ public class AnonymousController {
 
 		File directorio = new File("src//main//resources/static/users/" + usuario.getLoginName());
 		File directorioPerfil = new File("src//main//resources/static/users/" + usuario.getLoginName() + "/perfil");
-		File directorioPosts = new File("src//main//resources/static/users/" + usuario.getLoginName() + "/posts");
 		File directorioPostsImgs = new File(
-				"src//main//resources/static/users/" + usuario.getLoginName() + "/posts/imgs");
+				"src//main//resources/static/users/" + usuario.getLoginName() + "/posts/img");
 		File directorioPostsAudios = new File(
-				"src//main//resources/static/users/" + usuario.getLoginName() + "/posts/audios");
+				"src//main//resources/static/users/" + usuario.getLoginName() + "/posts/audio");
 		File directorioPostsFilms = new File(
-				"src//main//resources/static/users/" + usuario.getLoginName() + "/posts/films");
+				"src//main//resources/static/users/" + usuario.getLoginName() + "/posts/video");
 
 		if (!directorio.exists()) {
-			directorio.mkdir();
-			directorioPerfil.mkdir();
-			directorioPosts.mkdir();
-			directorioPostsImgs.mkdir();
-			directorioPostsAudios.mkdir();
-			directorioPostsFilms.mkdir();
+			directorio.mkdirs();
+			directorioPerfil.mkdirs();
+			directorioPostsImgs.mkdirs();
+			directorioPostsAudios.mkdirs();
+			directorioPostsFilms.mkdirs();
 			System.out.println("Directorio creado");
 		} else {
 			System.out.println("Error al crear directorio");

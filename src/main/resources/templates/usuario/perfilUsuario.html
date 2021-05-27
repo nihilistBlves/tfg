@@ -3,7 +3,7 @@
 		<div class="cabecera">
 			<div class="row">
 				<div class="col-3">
-					<img class="fotoPerfil" src="2.png">
+					<img class="fotoPerfil" th:src="@{${usuario.fotoPerfil}}">
 				</div>
 				<div class="col-9">
 					<h2 th:text="${usuario.loginName}"></h2>
@@ -12,11 +12,15 @@
 					<p th:each="instrumento: ${usuario.instrumentos}">
 						<span th:text="${instrumento.nombre}"></span>
 					</p>
-					<div th:if="${propietario == null}">
-						<button class="btn btn-outline-danger">Seguir</button>
+					<div th:if="${propietario} == null">
+						<form action="/seguir">
+							<button type="submit" class="btn btn-outline-danger">Seguir</button>
+						</form>
 					</div>
-					<div th:unless="${propietario == true}">
-						<button class="btn btn-outline-danger">Editar perfil</button>
+					<div th:if="${propietario} != null">
+						<form th:action="@{/user/{userLogged}/opciones(userLogged=${session.userLogged.loginName})}" method="get">
+							<button type="submit" class="btn btn-outline-danger">Editar perfil</button>
+						</form>
 					</div>
 					<span class="seguimiento"><b>Seguidores [<span
 							th:text="${seguidores}"></span>]

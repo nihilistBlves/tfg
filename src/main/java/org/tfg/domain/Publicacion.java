@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,6 +23,7 @@ public class Publicacion {
 
 	private String contenido;
 
+	@Column(columnDefinition = "TEXT")
 	private String descripcion;
 
 	private LocalDate fechaPublicacion;
@@ -37,13 +39,13 @@ public class Publicacion {
 	@OneToMany(cascade = CascadeType.ALL)
 	private Collection<Wave> waves;
 
-	public Publicacion(Long id, String contenido, String descripcion, LocalDate fechaPublicacion, String tipoContenido,
+	public Publicacion(Long id, String contenido, String descripcion, String tipoContenido,
 			Usuario duenioPublicacion, Collection<Comentario> comentarios, Collection<Wave> waves) {
 		super();
 		this.id = id;
 		this.contenido = contenido;
 		this.descripcion = descripcion;
-		this.fechaPublicacion = fechaPublicacion;
+		this.fechaPublicacion = LocalDate.now();
 		this.tipoContenido = tipoContenido;
 		this.duenioPublicacion = duenioPublicacion;
 		this.comentarios = comentarios;
@@ -52,7 +54,7 @@ public class Publicacion {
 
 	public Publicacion() {
 		super();
-
+		this.fechaPublicacion = LocalDate.now();
 	}
 
 	public String getDescripcion() {
