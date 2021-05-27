@@ -65,34 +65,32 @@ public class UsuarioController {
 
 	}
 
-	@GetMapping("/{loginName}")
+	@GetMapping("/user/{loginName}")
 	public String getPerfil(@PathVariable("loginName") String username, ModelMap m, HttpSession s) {
 
 		String returner = "";
 
 		if (usuarioRepository.getByLoginName(username) == null) {
 			// DEVOLVER PRG CON ERROR DE QUE NO EXISTE
-
+			
 			returner = "redirect:/feed";
 		} else {
-
-			Usuario userRequested = usuarioRepository.getByLoginName(username);
-
-			Usuario userLogged = (Usuario) s.getAttribute("user");
-
-			// m.put("usuario", userLogged);
-
-			// List <Publicacion> publicaciones =
-			// publicacionRepository.getByDuenioPublicacion(usuario);
-
-			// m.addAttribute("publicaciones",publicaciones);
-
-			// te falta pasar el usuario por el put y de ahi coger sus datos como
-			// descripcion foto y
-			// sus publicaciones
-
-			m.addAttribute("usuario", userRequested);
+			
+			int seguidores = usuarioRepository.getByLoginName(username).getSeguidores().size();
+			int seguidos = usuarioRepository.getByLoginName(username).getSeguidos().size();
+			
+			m.put("usuario", usuarioRepository.getByLoginName(username));
+			m.put("seguidores", seguidores);
+			m.put("seguidos", seguidos);
+			
+			if (username.equals(((Usuario) s.getAttribute("userLogged")).getLoginName())) {
+				m.put("propietario", "true");
+			} else if (s.getAttribute("user") == null) {
+				
+			}
+			
 			m.put("view", "usuario/perfilUsuario");
+			
 			returner = "_t/frameFeed";
 		}
 		return returner;

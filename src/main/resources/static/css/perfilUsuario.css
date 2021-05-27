@@ -1,0 +1,37 @@
+.caja {
+	background-color: white;
+	border-radius: 50px;
+	padding: 40px;
+	box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.486);
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+.cabecera {
+	padding: 30px;
+	margin: 50px;
+}
+
+.fotoPerfil {
+	clip-path: circle();
+	height: 12em;
+	width: 12em;
+}
+
+.seguimiento {
+	margin-left: 1em;
+	padding: 0.5em;
+	border: 0.1em solid black;
+	border-radius: 2em;
+}
+
+.cuerpo {
+	background-color: gainsboro;
+	margin: 50px;
+	border-radius: 20px;
+	padding: 30px
+}
+
+.publicacion {
+	margin-bottom: 10px;
+}
