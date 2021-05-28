@@ -98,6 +98,8 @@ public class UsuarioController {
 			int seguidores = usuarioRepository.getByLoginName(username).getSeguidores().size();
 			int seguidos = usuarioRepository.getByLoginName(username).getSeguidos().size();
 
+			Usuario usuario = (Usuario) s.getAttribute("userLogged");
+			m.put("publicaciones", publicacionRepository.getByDuenioPublicacion(usuario));
 			m.put("usuario", usuarioRepository.getByLoginName(username));
 			m.put("seguidores", seguidores);
 			m.put("seguidos", seguidos);
