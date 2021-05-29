@@ -11,7 +11,6 @@
 <link rel="stylesheet" href="/css/login.css">
 <link rel="stylesheet" href="/css/principal.css">
 <link rel="stylesheet" href="/css/registro.css">
-<link rel="stylesheet" href="/css/buscar.css">
 <link rel="stylesheet" href="/css/info.css">
 <!-- ---------------------------------------------- -->
 <script type="application/javascript" src="/jquery/jquery-3.6.0.min.js"></script>
@@ -42,53 +41,61 @@
 
 </head>
 <body>
-
-
-	<section class="hero">
-		<div class="content">
-			<div class="navegador">
-				<button type="button" class="btn btn-dark text-light"
-					data-toggle="modal" data-target="#loginModal" id="btnlog">Login</button>
-				<button type="button" class="btn btn-dark text-light"
-					data-toggle="modal" data-target="#registroModal">Registro</button>
-			</div>
-			<div class="title">
-				<img src="./img/logotipo.png" alt="logo">
-				<h1>Wave it!</h1>
-				<div class="buscar">
-					<button type="button" class="btn btn-dark text-light" id="buscar">Buscar</button>
+	<div class="container-fluid p-0">
+		<section class="hero">
+			<div class="content">
+				<div class="navegador fixed-top d-flex justify-content-end my-2">
+					<button type="button" class="btn btn-dark text-light mr-3   btn-hover btn-form"
+						data-toggle="modal" data-target="#loginModal" id="btnlog">Login</button>
+					<button type="button" class="btn btn-dark text-light mr-3 btn-hover btn-form"
+						data-toggle="modal" data-target="#registroModal">Registro</button>
+				</div>
+				<div class="d-flexbox justify-content-center mx-auto pt-5">
+					<div class=" d-inline-flex justify-content-center mx-auto my-auto">
+						<!-- 				<div class=" logo"> -->
+						<div class="row w-auto h-auto justify-content-center my-auto">
+							<img class="imagen my-auto" src="./img/logotipo.png" alt="logo">
+							<!-- 				 </div> -->
+							<!-- 				 <div class=" title"> -->
+							<h1 class="text-nowrap text-center">Wave it!</h1>
+							<!--  				</div>  -->
+						</div>
+					</div>
+					<div class="buscar d-flex justify-content-center">
+						<button type="button" class="btn btn-dark text-light btn-hover btn-form" id="buscar">Explorar</button>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="waves"></div>
-	</section>
+			<div class="waves"></div>
+		</section>
 
-	<section id="login"></section>
-	<section id="registro"></section>
+		<section id="login"></section>
+		<section id="registro"></section>
 
-	<section id="info">
-		<div class="modal show my-5 mx-auto" id="infoModal" tabindex="-1"
-			role="dialog" aria-labelledby="infoModalLabel" aria-hidden="true">
-			<div class="modal-dialog bg-danger" role="document">
+		<section id="info">
+			<div class="modal show my-5 mx-auto" id="infoModal" tabindex="-1"
+				role="dialog" aria-labelledby="infoModalLabel" aria-hidden="true">
+				<div class="modal-dialog bg-danger" role="document">
 
-				<div id="infoModal" class="modal-content">
-					
+					<div id="infoModal" class="modal-content">
+
 						<h4 class="modal-title " id="infoTitulo" th:text="${infoTitulo}"></h4>
 
-			
+
 						<p id="infoParrafo" th:text="${infoTexto}"></p>
-					
+
 						<button id="infoButton" th:class="${infoEstado}"
 							onclick="$('#infoModal').modal('hide')">Cerrar</button>
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
 
+		</section>
+	</div>
 	<script th:if="${infoModal != null}">
 		$('#infoModal').modal('show');
 	</script>
+
 
 
 </body>
