@@ -1,16 +1,16 @@
 <div class="col">
 	<div class="caja">
 		<div class="cabecera">
-			<div class="row">
-				<div class="col-3">
-					<img class="fotoPerfil" th:src="@{${usuario.fotoPerfil}}">
+			<div class="row d-flex justify-content-around">
+				<div class="foto my-5">
+					<img class="fotoPerfil" th:src="@{${usuario.fotoPerfil}}" >
 				</div>
-				<div class="col-9 ">
-					<div class="row">
-						<div class="col-4">
+				<div class="nombre">
+					<div class="row d-flex justify-content-around">
+						<div class="col">
 							<h2 th:text="${usuario.loginName}"></h2>
 						</div>
-						<div class="col-8   d-inline-flex ">
+						<div class="follow my-2 ml-auto">
 							<span class="seguimiento mx-auto"><b>Seguidores [<span
 									th:text="${seguidores}"></span>]
 							</b></span> <span class="seguimiento mx-auto"><b>Seguidos [<span
@@ -28,7 +28,7 @@
 						</p>
 
 					</div>
-					<div th:if="${propietario} != null"
+					<div th:if="${propietario} == null"
 						class="d-flex justify-content-between my-4">
 						<div class="col contacto">
 							<form action="/seguir">
@@ -65,4 +65,5 @@
 				</div>
 			</div>
 		</div>
+	</div>
 	</div>

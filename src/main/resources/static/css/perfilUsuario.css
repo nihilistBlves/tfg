@@ -14,18 +14,17 @@
 
 .fotoPerfil {
 	clip-path: circle();
-	height: 12em;
-	width: 12em;
+	width: 200px;
+	height: 200px;
 }
 
 .seguimiento {
 	margin-left: 1em;
 	padding: 0.5em;
-	
 }
 
 .cuerpo {
- 	background-color: gainsboro; 
+	background-color: gainsboro;
 	margin: 10px;
 	border-radius: 20px;
 	padding: 30px;
@@ -35,7 +34,7 @@
 .publicacion {
 	margin-bottom: 20px;
 }
-.contacto{
-padding:4px;
-	
+
+.contacto {
+	padding: 4px;
 }
