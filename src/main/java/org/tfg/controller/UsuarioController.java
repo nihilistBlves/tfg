@@ -25,10 +25,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.tfg.domain.Publicacion;
 import org.tfg.domain.Usuario;
+import org.tfg.domain.Wave;
 import org.tfg.exception.DangerException;
 import org.tfg.helper.PRG;
 import org.tfg.repositories.PublicacionRepository;
 import org.tfg.repositories.UsuarioRepository;
+import org.tfg.repositories.WaveRepository;
 
 @Controller
 public class UsuarioController {
@@ -38,7 +40,10 @@ public class UsuarioController {
 
 	@Autowired
 	private PublicacionRepository publicacionRepository;
-
+	
+	@Autowired
+	private WaveRepository waveRepository;
+	
 	@GetMapping("/feed")
 	public String getFeed(ModelMap m, HttpSession s) {
 
@@ -50,6 +55,8 @@ public class UsuarioController {
 			s.setAttribute("infoEstado", "btn btn-danger");
 
 			Usuario usuario = (Usuario) s.getAttribute("user");
+			
+			m.put("waves", waveRepository.findAll());
 			m.put("publicaciones", publicacionRepository.findAll());
 			m.put("view", "usuario/feed");
 			return "_t/frameFeed";

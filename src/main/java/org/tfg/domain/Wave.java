@@ -22,7 +22,7 @@ public class Wave {
 @ManyToOne(cascade = CascadeType.REFRESH)
 	private Usuario daWave;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	private Publicacion publicacionWaved;
 	
 	public Wave() {}
@@ -32,6 +32,10 @@ public class Wave {
 		this.fechaLike = fechaLike;
 		this.daWave = daWave;
 		this.publicacionWaved = publicacionWaved;
+	}
+	
+	public Long getId() {
+		return id;
 	}
 
 	public LocalDate getFechaLike() {

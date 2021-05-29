@@ -14,19 +14,9 @@
 		};
 	}
 
-	/*function wave(w){
-		console.log(w.nextSibling.nextSibling.firstChild);
-		if(w.checked==true){
-			w.nextSibling.nextSibling.firstChild.src="./img/sub.png";
-			
-		}else{
-			w.nextSibling.nextSibling.firstChild.src="./img/unsub.png";
-		}
-		
-		
-	}*/
 
 	function wave(w) {
+
 		console.log(w.nextSibling.nextSibling.firstChild);
 		if (w.checked == true) {
 			w.nextSibling.nextSibling.firstChild.src = "./img/sub.png";
@@ -39,13 +29,16 @@
 					url: '/crearWave', //archivo que recibe la peticion
 					type: 'post', //método de envio
 
+
 				});
 			});
 
 		} else {
+
 			w.nextSibling.nextSibling.firstChild.src = "./img/unsub.png";
 			var parametros = {
-				"wave": w.value
+				"wave": w.value,
+
 			}
 			$(document).ready(function () {
 				$.ajax({
@@ -57,6 +50,8 @@
 			});
 
 		}
+
+		
 
 
 	}
@@ -106,12 +101,17 @@
 							<div class="leer-mas">
 								<a class="leer" onclick="leer(this)">Leer m�s</a>
 							</div>
+
+							<!--=============================TODO:que al refresacar aparezcan los likes dados======================================-->
+
 							<div class="card-footer text-right">
 								<div class="icons">
-									<input type="checkbox" th:id="|wave-${publicacion.id}|" th:value="${publicacion.id}"
-										style="display: none;" onchange="wave(this)" />
-									<label th:for="|wave-${publicacion.id}|"><img src="./img/unsub.png" /></label>
+										<input type="checkbox" th:id="|wave-${publicacion.id}|"
+											th:value="${publicacion.id}" style="display: none;" onchange="wave(this)" />
+										<label th:for="|wave-${publicacion.id}|"><img src="./img/unsub.png" /></label>
+									</div>
 								</div>
+								<!--===================================================================-->
 								<form>
 									<div class="form-group"></div>
 									<input type="text" class="form-control" placeholder="Comentar" />

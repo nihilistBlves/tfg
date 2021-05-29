@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.tfg.domain.Publicacion;
@@ -30,7 +31,7 @@ public class WaveController {
 	private WaveRepository waveRepository;
 	
 	@PostMapping("/crearWave")
-	public String crearWave(@RequestParam("wave") Long idPublicacion, HttpSession s) {
+	public String crearWave(@RequestParam("wave") Long idPublicacion, HttpSession s, ModelMap m) {
 		
 		Usuario usuario = (Usuario) s.getAttribute("user");
 		Publicacion publicacion = publicacionRepository.getById(idPublicacion);
@@ -41,7 +42,9 @@ public class WaveController {
 		
 		waveRepository.save(wave);
 		
-		return "";
+		System.out.println(wave.getId());
+		//m.put("idWave", wave.getId());
+		return "redirect:/feed";
 		
 	}
 	
@@ -49,9 +52,11 @@ public class WaveController {
 	@Transactional
 	public String borrarWave(@RequestParam("wave") Long idPublicacion, HttpSession s) {
 		
-		waveRepository.deleteByPublicacionWavedId(idPublicacion);
-		
-		return "";
+		//waveRepository.deleteByPublicacionWavedId(idPublicacion);
+		//waveRepository.deleteById(idWave);
+		Publicacion publicacion = publicacionRepository.getById(idPublicacion);
+		waveRepository.deleteByDaWaveAndPublicacionWaved((Usuario) s.getAttribute("user"), publicacion);
+		return "redirect:/feed";
 	}
 	
 }
