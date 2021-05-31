@@ -1,0 +1,122 @@
+<script>
+	//falta que cuando se comente se carguen los comentarios
+	function leer(objeto) {
+
+		objeto.parentNode.parentNode.children[1].style.height = "auto";
+
+		objeto.text = "Leer menos";
+
+		objeto.onclick = function() {
+			objeto.parentNode.parentNode.children[1].style.height = "200px";
+			objeto.text = "Leer m�s";
+			objeto.onclick = function() {
+				leer(objeto)
+			};
+
+		};
+	}
+</script>
+<div class="col-lg">
+	<div id="centro" class=" justify-content-center align-items-center">
+		<!-- 			cargar publicaciones -->
+		<div th:each="publicacion: ${publicaciones}">
+			<div id="perfiles">
+				<div id="borde-perfil"
+					class="d-flex justify-content-center align-items-center">
+
+					<div class="card  d-flex justify-content-center align-items-center">
+
+
+						<!-- 				img solo desde static -->
+						<div th:if="${publicacion.tipoContenido}=='img'">
+							<img class="card-img" th:src="@{${publicacion.contenido}}">
+						</div>
+
+						<!-- 		Para video -->
+						<div th:if="${publicacion.tipoContenido}=='video'"
+							class="card-film">
+							<video width="500px" height="300px" controls>
+								<source th:src="@{${publicacion.contenido}}" type="video/mp4" />
+							</video>
+						</div>
+
+
+
+						<div th:if="${publicacion.tipoContenido}=='audio'"
+							class="card-audio">
+							<audio th:src="@{${publicacion.contenido}}" controls
+								type="audio/mpeg">
+							</audio>
+						</div>
+
+
+						<div class="col-md-12">
+							<div class="card-body">
+								<div class="card-tittle">
+									<b th:text="${publicacion.duenioPublicacion.loginName}">Nombre</b>
+								</div>
+								<div class="card-text">
+									<p th:id="${publicacion.id}"
+										th:text="${publicacion.descripcion}"></p>
+									<p class="text-muted text-right" id="fecha"
+										th:text="${publicacion.fechaPublicacion}"></p>
+								</div>
+								<div class="leer-mas">
+									<a class="leer" onclick="leer(this)">Leer m�s</a>
+								</div>
+								<div class="card-footer text-right">
+									<div class="icons">
+										<img src="./img/sub.png" alt=""> <img
+											src="./img/unsub.png" alt="">
+									</div>
+
+									<form>
+
+										<div class="form-group">
+											<div class="d-flex pt-4 comentarios">
+												<img class="foto-perfil col-2"
+													th:src="@{${publicacion.duenioPublicacion.fotoPerfil}}">
+												<input type="text" class="form-control col-10"
+													placeholder="Comentar" name="comentario" id="comentario" />
+											</div>
+
+
+											<!-- 									este flex de arriba su intencion es que se posicione arriba una vez despues de dar click -->
+											<!-- 									en este div de comentarios . Si tiene comentarios los muestra aqui y el comentar arriba de ellos -->
+											<!-- 									si no tiene solo que salga el comentar. lo comentado de abajo es para hacer la relacion y colocar -->
+											<!-- 									los datos -->
+
+
+											<!-- 									relacionar los comentarios de otros con el post -->
+											<div th:each="publicacion: ${relacion}">
+												<div th:if="${relacion}" class="comentario">
+													<div class="col">
+														<p>Nombre usuario</p>
+													</div>
+													<div class="d-flex pt-4 comentarios">
+														<img class="foto-perfil col-2"
+															th:src="@{${publicacion.duenioPublicacion.fotoPerfil}}">
+														<p>comentario persona aqui</p>
+													</div>
+													<div>
+														<img src="./img/sub.png" alt=""> <img
+															src="./img/unsub.png" alt="">
+													</div>
+
+
+
+												</div>
+											</div>
+										</div>
+									</form>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

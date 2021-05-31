@@ -47,14 +47,7 @@ public class UsuarioController {
 		if (s.getAttribute("userLogged") != null) {
 
 			if (s.getAttribute("infoModal") != null) {
-				m.put("infoModal", "infoModal");
-				m.put("infoTitulo", s.getAttribute("infoTitulo"));
-				m.put("infoTexto", s.getAttribute("infoTexto"));
-				m.put("infoEstado", s.getAttribute("infoEstado"));
-				s.removeAttribute("infoTitulo");
-				s.removeAttribute("infoTexto");
-				s.removeAttribute("infoEstado");
-				s.removeAttribute("infoModal");
+				H.mPut(m, s);
 			}
 
 			Usuario usuario = (Usuario) s.getAttribute("userLogged");
@@ -63,10 +56,7 @@ public class UsuarioController {
 			return "_t/frameFeed";
 
 		} else {
-			s.setAttribute("infoModal", "true");
-			s.setAttribute("infoTitulo", "Error");
-			s.setAttribute("infoTexto", "Para acceder a este apartado debe estar logueado");
-			s.setAttribute("infoEstado", "btn btn-danger");
+			H.setInfoModal("Error|Para acceder a este apartado debe estar logueado|btn-hover btn-red", s);
 
 			return "redirect:/";
 		}
@@ -76,10 +66,7 @@ public class UsuarioController {
 	@PostMapping("/logout")
 	public String postLogout(ModelMap m, HttpSession s) {
 		s.removeAttribute("userLogged");
-		s.setAttribute("infoModal", "true");
-		s.setAttribute("infoTitulo", "Info");
-		s.setAttribute("infoTexto", "La sesión ha cerrado correctamente");
-		s.setAttribute("infoEstado", "btn btn-danger");
+		H.setInfoModal("Info|La sesión ha cerrado correctamente|btn-hover btn-black", s);
 		return "redirect:/";
 	}
 
@@ -87,10 +74,7 @@ public class UsuarioController {
 	public String getPerfil(@PathVariable("loginName") String username, ModelMap m, HttpSession s) {
 
 		if (usuarioRepository.getByLoginName(username) == null) {
-			s.setAttribute("infoModal", "true");
-			s.setAttribute("infoTitulo", "Error");
-			s.setAttribute("infoTexto", "No existe este usuario");
-			s.setAttribute("infoEstado", "btn btn-danger");
+			H.setInfoModal("Error|No existe esta página|btn-hover btn-red", s);
 
 			return "redirect:/feed";
 		} else {
@@ -128,10 +112,7 @@ public class UsuarioController {
 			m.put("view", "usuario/publicar");
 			return "_t/frameFeed";
 		} else {
-			s.setAttribute("infoModal", "true");
-			s.setAttribute("infoTitulo", "Error");
-			s.setAttribute("infoTexto", "Para acceder a este apartado debe estar logueado");
-			s.setAttribute("infoEstado", "btn btn-danger");
+			H.setInfoModal("Error|Para acceder a este apartado debe estar logueado|btn-hover btn-red", s);
 			return "redirect:/";
 		}
 
@@ -144,10 +125,16 @@ public class UsuarioController {
 		Path path = null;
 		String originalFilename = file.getOriginalFilename().toLowerCase();
 		String nuevoNombreRandom = UUID.randomUUID().toString();
-		String extensionArchivo = originalFilename.substring(originalFilename.lastIndexOf("."));
-		String nuevoNombreArchivo = nuevoNombreRandom + extensionArchivo;
+		String extensionArchivo = "";
+		String nuevoNombreArchivo = "";
 
-		if (file != null) {
+		Usuario usuario = (Usuario) s.getAttribute("userLogged");
+		Publicacion publicacion = new Publicacion();
+
+		if (!originalFilename.equals("")) {
+
+			extensionArchivo = originalFilename.substring(originalFilename.lastIndexOf("."));
+			nuevoNombreArchivo = nuevoNombreRandom + extensionArchivo;
 
 			if ((!originalFilename.endsWith(".png") && !originalFilename.endsWith(".jpg")
 					&& !originalFilename.endsWith(".jpeg"))
@@ -161,9 +148,6 @@ public class UsuarioController {
 				return "redirect:/publicar";
 
 			} else {
-
-				Usuario usuario = (Usuario) s.getAttribute("userLogged");
-				Publicacion publicacion = new Publicacion();
 
 				if (originalFilename.endsWith(".png") || originalFilename.endsWith(".jpg")
 						|| originalFilename.endsWith(".jpeg")) {
@@ -186,13 +170,14 @@ public class UsuarioController {
 
 					} else {
 
-						H.setInfoModal("Error|La imagen excede el tamaño permitido (2 MB)|btn btn-danger", s);
+						H.setInfoModal("Error|La imagen excede el tamaño permitido (2 MB)|btn-hover btn-red", s);
 
 						return "redirect:/publicar";
 
 					}
 
 				}
+
 				if (originalFilename.endsWith(".mp4") || originalFilename.endsWith(".mov")
 						|| originalFilename.endsWith(".mpg")) {
 
@@ -215,7 +200,7 @@ public class UsuarioController {
 
 					} else {
 
-						H.setInfoModal("Error|El video excede el tamaño permitido (20 MB)|btn btn-danger", s);
+						H.setInfoModal("Error|El video excede el tamaño permitido (20 MB)|btn-hover btn-red", s);
 
 						return "redirect:/publicar";
 
@@ -244,7 +229,7 @@ public class UsuarioController {
 
 					} else {
 
-						H.setInfoModal("Error|El audio excede el tamaño permitido (10 MB)|btn btn-danger", s);
+						H.setInfoModal("Error|El audio excede el tamaño permitido (10 MB)|btn-hover btn-red", s);
 
 						return "redirect:/publicar";
 
@@ -262,18 +247,31 @@ public class UsuarioController {
 				usuario.setPublicaciones(publicacionesActualizadas);
 				usuarioRepository.save(usuario);
 
-				H.setInfoModal("Info|Publicación creada correctamente|btn btn-danger", s);
-
+				H.setInfoModal("Info|Publicación creada correctamente|btn-hover btn-black", s);
 				return "redirect:/feed";
-
 			}
 
+		} else {
+
+			if (texto.equals("")) {
+				H.setInfoModal(
+						"Error|Para crear una publicación sin archivo se requiere mínimo un texto|btn-hover btn-red",
+						s);
+				return "redirect:/publicar";
+			} else {
+				publicacion.setDescripcion(texto);
+				publicacion.setDuenioPublicacion(usuario);
+				publicacionRepository.save(publicacion);
+				Collection<Publicacion> publicacionesActualizadas = usuario.getPublicaciones();
+				publicacionesActualizadas.add(publicacion);
+				usuario.setPublicaciones(publicacionesActualizadas);
+				usuarioRepository.save(usuario);
+
+				H.setInfoModal("Info|Publicación creada correctamente|btn-hover btn-black", s);
+
+				return "redirect:/feed";
+			}
 		}
-
-		attributes.addFlashAttribute("message", "debede seleccionar un archivo");
-
-		return "redirect:/status";
-
 	}
 
 	// ============================================================================
@@ -345,25 +343,26 @@ public class UsuarioController {
 					usuario.setFotoPerfil("/users/" + usuario.getLoginName() + "/perfil/" + nuevoNombreArchivo);
 
 				} else {
-					H.setInfoModal("Error|Solo se permiten imagenes con extension png, jpg o jpeg|btn btn-danger", s);
+					H.setInfoModal("Error|Solo se permiten imagenes con extension png, jpg o jpeg|btn-hover btn-red",
+							s);
 					return "redirect:/user/" + usuario.getLoginName() + "/opciones";
 				}
 
 			} else {
 
-				H.setInfoModal("Error|La imagen excede el tamaño permitido (2 MB)|btn btn-danger", s);
+				H.setInfoModal("Error|La imagen excede el tamaño permitido (2 MB)|btn-hover btn-red", s);
 
 				return "redirect:/publicar";
 
 			}
 
 		}
-		
-		H.setInfoModal("Info|Perfil modificado correctamente|btn btn-danger", s);
-		
+
+		H.setInfoModal("Info|Perfil modificado correctamente|btn-hover btn-black", s);
+
 		usuarioRepository.save(usuario);
-		
-		return "redirect:/user/"+usuario.getLoginName();
+
+		return "redirect:/user/" + usuario.getLoginName();
 
 	}
 

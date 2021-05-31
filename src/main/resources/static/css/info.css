@@ -1,26 +1,59 @@
-#infoModal{
-  
-    height: auto;
-
-
-}
-#infoTitulo{
-    text-align: center;
-    text-transform: uppercase;
-    margin:20px;
-    border-bottom: 2px solid rgb(19, 19, 16); 
-    line-height: 50px;
- 
+#infoModal {
+	height: auto;
 }
 
-#infoParrafo{
-    text-align: center;
-    margin-left: 22px;
-    margin-right: 22px;
-}
-#infoButton{
-    margin:20px auto;
-    width: 50%;
-
+#infoTitulo {
+	text-align: center;
+	text-transform: uppercase;
+	margin: 20px;
+	border-bottom: 2px solid rgb(19, 19, 16);
+	line-height: 50px;
 }
 
+#infoParrafo {
+	text-align: center;
+	margin-left: 22px;
+	margin-right: 22px;
+}
+
+#infoButton {
+	margin: 20px auto;
+	width: 50%;
+}
+
+.btn-hover{
+	width: 100px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    height: 40px;
+    text-align:center;
+    border: none;
+    background-size: 300% 100%;
+    border-radius: 50px;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+	
+}
+.btn-hover:hover {
+    background-position: 100% 0;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
+.btn-hover:focus {
+    outline: none;
+}
+
+.btn-red{
+	       background-image: linear-gradient(to right, #eb3941, #f15e64, #e14e53, #e2373f);
+	       box-shadow: 0 5px 15px rgba(242, 97, 103, .4);
+}
+.btn-black {
+    background-image: linear-gradient(to right, #29323c, #485563, #2b5876, #4e4376);
+    box-shadow: 0 2px 10px 0 rgba(45, 54, 65, 0.75);
+}

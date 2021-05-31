@@ -1,57 +1,48 @@
 <div class="container-fluid">
-      <div class="container my-2" id="contenedor">
-        <form action="/publicar" method="POST" enctype="multipart/form-data">
-          <div class="d-flex">
-            <div class="elements col d-flex justify-content-center">
-              <div class="form-group textarea py-4">
-                <div class="form-group">
-                  <textarea
-                    class="form-control"
-                    id="mensaje"
-                    name="mensaje"
-                    rows="18"
-                    cols="2"
-                    placeholder="Escriba aquí "
-                  ></textarea>
-                </div>
-              </div>
-            </div>
+	<div class="container my-2" id="contenedor">
+		<form action="/publicar" method="POST" enctype="multipart/form-data">
+			<div class="d-flex">
+				<div class="elements col d-flex justify-content-center">
+					<div class="form-group textarea py-4">
+						<div class="form-group">
+							<h4>Introduzca el texto de la publicación</h4>
+							<textarea class="form-control" id="mensaje" name="mensaje"
+								rows="18" cols="2" placeholder="Escriba aquí "></textarea>
+						</div>
+					</div>
+				</div>
 
-            <div class="col-5 px-3">
-              <div class="form-group d-flexbox my-4 mx-auto">
-                <div class="preview-zone d-none">
-                  <div class="box box-solid">
-                    <div class="box-header with-border">
-                      <div><b>Vista Previa</b></div>
-                      <div class="box-tools pull-right">
-                        <button
-                          type="button"
-                          class="btn btn-danger btn-xs remove-preview"
-                        >
-                          Borrar
-                        </button>
-                      </div>
-                    </div>
-                    <div class="box-body"></div>
-                  </div>
-                </div>
-                <div class="dropzone-wrapper row">
-                  <div class="dropzone-desc">
-                    <i class="bi bi-cloud-arrow-up-fill text-danger"></i>
-                    <p class="text-danger">Arrastra o escoge un archivo a subir</p>
-                  </div>
-                  <input type="file" name="file" class="dropzone" />
-                </div>
-                <div class="form-group col-12 mx-auto  my-3 btn">
-                    <button type="submit" class="btn btn-danger ">Enviar</button>
-                    <button class="btn btn-dark" id="back">Volver</button>
-                  </div>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-    <script src="/js/subirArchivo.js"></script>
-
-<!--     https://webdevtrick.com/jquery-drag-and-drop-file-upload/ -->
+				<div class="col-5 px-3">
+					<div class="form-group d-flexbox my-4 mx-auto">
+						<div class="preview-zone d-none">
+							<div class="box box-solid">
+								<div class="box-header with-border">
+									<div>
+										<b>Vista Previa</b>
+									</div>
+									<div class="box-tools pull-right">
+										<button type="button"
+											class="btn btn-danger btn-xs remove-preview">
+											Borrar</button>
+									</div>
+								</div>
+								<div class="box-body"></div>
+							</div>
+						</div>
+						<div class="dropzone-wrapper row">
+							<div class="dropzone-desc">
+								<i class="bi bi-cloud-arrow-up-fill text-danger"></i>
+								<p class="text-danger">Arrastra o escoge un archivo a subir</p>
+							</div>
+							<input type="file" name="file" class="dropzone" />
+						</div>
+						<div class="form-group col-12 mx-auto  my-3 btn">
+							<button type="submit" class="btn btn-danger ">Enviar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<script src="/js/subirArchivo.js"></script>

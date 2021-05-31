@@ -21,6 +21,7 @@ import org.tfg.domain.Usuario;
 import org.tfg.domain.VerificationToken;
 import org.tfg.events.EventoVerificacion;
 import org.tfg.exception.DangerException;
+import org.tfg.helper.H;
 import org.tfg.repositories.UsuarioRepository;
 import org.tfg.repositories.VerificationTokenRepository;
 
@@ -42,14 +43,7 @@ public class AnonymousController {
 			return "redirect:/feed";
 		} else {
 			if (s.getAttribute("infoModal") != null) {
-				m.put("infoModal", "infoModal");
-				m.put("infoTitulo", s.getAttribute("infoTitulo"));
-				m.put("infoTexto", s.getAttribute("infoTexto"));
-				m.put("infoEstado", s.getAttribute("infoEstado"));
-				s.removeAttribute("infoTitulo");
-				s.removeAttribute("infoTexto");
-				s.removeAttribute("infoEstado");
-				s.removeAttribute("infoModal");
+				H.mPut(m, s);
 			}
 		}
 		return "/home/home";
@@ -74,10 +68,7 @@ public class AnonymousController {
 
 			if (!usuario.isEnabled()) {
 
-				s.setAttribute("infoModal", "true");
-				s.setAttribute("infoTitulo", "Error");
-				s.setAttribute("infoTexto", "La cuenta no ha sido verificada");
-				s.setAttribute("infoEstado", "btn btn-danger");
+				H.setInfoModal("Error|La cuenta no ha sido verificada|btn-hover btn-red", s);
 
 				returner = "redirect:/";
 			} else {
@@ -86,10 +77,7 @@ public class AnonymousController {
 			}
 
 		} else {
-			s.setAttribute("infoModal", "true");
-			s.setAttribute("infoTitulo", "Error");
-			s.setAttribute("infoTexto", "El usuario no existe o la contraseña es incorrecta");
-			s.setAttribute("infoEstado", "btn btn-danger");
+			H.setInfoModal("Error|El usuario no existe o la contraseña es incorrecta|btn-hover btn-red", s);
 
 			returner = "redirect:/";
 		}
@@ -113,10 +101,7 @@ public class AnonymousController {
 
 		try {
 			if (usuarioRepository.getByLoginName(loginName) != null) {
-				s.setAttribute("infoModal", "true");
-				s.setAttribute("infoTitulo", "Error");
-				s.setAttribute("infoTexto", "El nombre de usuario introducido ya existe");
-				s.setAttribute("infoEstado", "btn btn-danger");
+				H.setInfoModal("Error|El nombre de usuario introducido ya existe|btn-hover btn-red", s);
 
 				return "redirect:/";
 			} else {
@@ -124,10 +109,7 @@ public class AnonymousController {
 			}
 
 			if (!pass.equals(passConfirm)) {
-				s.setAttribute("infoModal", "true");
-				s.setAttribute("infoTitulo", "Error");
-				s.setAttribute("infoTexto", "Las contraseñas no coinciden");
-				s.setAttribute("infoEstado", "btn btn-danger");
+				H.setInfoModal("Error|Las contraseñas no coinciden|btn-hover btn-red", s);
 
 				return "redirect:/";
 			} else {
@@ -136,10 +118,7 @@ public class AnonymousController {
 			}
 
 			if (usuarioRepository.getByEmail(email) != null) {
-				s.setAttribute("infoModal", "true");
-				s.setAttribute("infoTitulo", "Error");
-				s.setAttribute("infoTexto", "El correo electrónico introducido ya está registrado");
-				s.setAttribute("infoEstado", "btn btn-danger");
+				H.setInfoModal("Error|El correo electrónico introducido ya está registrado|btn-hover btn-red", s);
 
 				return "redirect:/";
 			} else {
@@ -160,11 +139,7 @@ public class AnonymousController {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		s.setAttribute("infoModal", "true");
-		s.setAttribute("infoTitulo", "Info");
-		s.setAttribute("infoTexto",
-				"Te has registrado correctamente! Revisa tu bandeja de entrada para activar la cuenta antes de logear por primera vez");
-		s.setAttribute("infoEstado", "btn btn-success");
+		H.setInfoModal("Info|Te has registrado correctamente! Revisa tu bandeja de entrada para activar la cuenta antes de logear por primera vez|btn-hover btn-black", s);
 
 		return "redirect:/";
 	}
@@ -175,17 +150,11 @@ public class AnonymousController {
 		VerificationToken verificationToken = verificationTokenRepository.getByToken(token);
 
 		if (verificationToken == null) {
-			s.setAttribute("infoModal", "true");
-			s.setAttribute("infoTitulo", "Error");
-			s.setAttribute("infoTexto", "El link al que has accedido no existe.");
-			s.setAttribute("infoEstado", "btn btn-danger");
+			H.setInfoModal("Error|No existe esta página|btn btn-danger", s);
 
 			return "redirect:/";
 		} else if ((verificationToken != null) && (verificationToken.getUsuario().isEnabled())) {
-			s.setAttribute("infoModal", "true");
-			s.setAttribute("infoTitulo", "Error");
-			s.setAttribute("infoTexto", "Esta cuenta ya ha sido activada anteriormente.");
-			s.setAttribute("infoEstado", "btn btn-danger");
+			H.setInfoModal("Error|Esta cuenta ya ha sido activada anteriormente.|btn-hover btn-red", s);
 
 			return "redirect:/";
 		}
@@ -194,10 +163,7 @@ public class AnonymousController {
 		Calendar cal = Calendar.getInstance();
 
 		if ((verificationToken.getExpirationDate().getTime() - cal.getTime().getTime()) <= 0) {
-			s.setAttribute("infoModal", "true");
-			s.setAttribute("infoTitulo", "Error");
-			s.setAttribute("infoTexto", "El link de activación de la cuenta ha expirado.");
-			s.setAttribute("infoEstado", "btn btn-danger");
+			H.setInfoModal("Error|El link de activación de la cuenta ha expirado.|btn-hover btn-red", s);
 
 			return "redirect:/";
 		}
@@ -225,10 +191,7 @@ public class AnonymousController {
 			System.out.println("Error al crear directorio");
 		}
 
-		s.setAttribute("infoModal", "true");
-		s.setAttribute("infoTitulo", "Info");
-		s.setAttribute("infoTexto", "La cuenta se ha activado correctamente. Ya puedes hacer login.");
-		s.setAttribute("infoEstado", "btn btn-success");
+		H.setInfoModal("Info|La cuenta se ha activado correctamente. Ya puedes hacer login.|btn-hover btn-black", s);
 
 		return "redirect:/";
 

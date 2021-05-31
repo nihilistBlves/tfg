@@ -6,11 +6,23 @@
 
 <body>
 
-<div th:replace="/_t/navIzq"></div>
+	<div class="container">
 
-<div th:replace="${view}"></div>
+		<div class="row">
 
-<div th:replace="/_t/navDer"></div>
+			<div th:replace="/_t/nav"></div>
+
+		</div>
+
+		<div class="row">
+
+			<div th:replace="${view}"></div>
+
+		</div>
+
+		<div th:replace="/_t/info"></div>
+
+	</div>
 
 </body>
 
