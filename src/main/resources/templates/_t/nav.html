@@ -18,11 +18,15 @@
 			<div th:if="${session.userLogged} != null">
 				<form method="post" name="logout" action="/logout"
 					class="form-inline my-2 my-lg-0">
-					<button class="btn my-2 my-sm-0" type="submit">
+					<button class="btn " id="logOut" type="submit">
 						<i class="bi bi-box-arrow-right"></i>
 						<span class="logOut"> Cerrar sesión</span>
 					</button>
 				</form>
+			</div>
+			<div th:unless="${session.userLogged} != null">
+				<button type="button" class=" text-light mr-3   btn-hover btn-form"
+						data-toggle="modal" data-target="#loginModal" id="btnlog">Login</button>
 			</div>
 		</div>
 	</nav>

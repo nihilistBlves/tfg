@@ -1,9 +1,9 @@
-#form{
-    height: 600px;
-    box-shadow: 0px 0px 6px 6px rgb(173, 24, 69);
-    /* border-radius: 44px; */
-    background-color: white;
-}
+/* form{ */
+/*     height: 600px; */
+/*     box-shadow: 0px 0px 6px 6px rgb(173, 24, 69); */
+/*     border-radius: 44px; */
+/*     background-color: white; */
+/* } */
 input,input:active{
     /* margin-left:80px; */
     /* margin-top:15px;
@@ -14,7 +14,7 @@ input,input:active{
     border-bottom: 1px solid #ffa000;
     box-shadow: 0 1px 0 0 #ffa000;
 
-}.form-control{
+}.inputs{
     border:0;
 }
 /* https://qastack.mx/programming/14820952/change-bootstrap-input-focus-blue-glow       //para quitar el borde en bootstrap*/
@@ -29,10 +29,10 @@ input,input:active{
 #aceptar{
     /* margin-left:160px; */
     /* margin-top: -10px; */
-    margin-top: 20px;
+/*     margin-top: 20px; */
 
 }
-label{
+.labels{
     /* margin-left:100px; */
     font-weight: bold;
     margin-top: 15px;
@@ -53,11 +53,11 @@ label{
 
 }
 
-.form-group{
+.grupos{
     height: 72px;
    
 }
-i{
+.bi-eye-fill{
    color:gray;
     
    font-size: 1em;
@@ -69,6 +69,6 @@ i{
 .barra{
 
    height: 3px;
-   margin-top: 10px;
+   margin-top: 8px;
    
 }

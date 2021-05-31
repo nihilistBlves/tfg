@@ -2,11 +2,11 @@
 	aria-labelledby="registroModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<form method="post" name="formulario" action="/registro">
+			<form  method="post" name="formulario" action="/registro">
 				<div class="row justify-content-center">
-					<div class="form-group col-10">
-						<label class="text-secondary" for="nombreUsuario">Nombre
-							Usuario</label> <input type="text" class="form-control" name="loginName"
+					<div class="form-group col-10 grupos">
+						<label class="text-secondary labels" for="nombreUsuario">Nombre
+							Usuario</label> <input type="text" class="form-control inputs" name="loginName"
 							id="nombreUsuario" placeholder="Escriba su nombre..."
 							onkeyup="validarNombre(this)">
 						<div class="invalid-feedback">Rellene este campo</div>
@@ -14,9 +14,9 @@
 					</div>
 				</div>
 				<div class="row justify-content-center">
-					<div class="form-group col-10">
-						<label class="text-secondary" for="edad">Edad</label> <input
-							type="date" class="form-control" name="fechaNacimiento" id="edad"
+					<div class="form-group col-10 grupos">
+						<label class="text-secondary labels" for="edad">Edad</label> <input
+							type="date" class="form-control inputs" name="fechaNacimiento" id="edad"
 							placeholder="Escriba su edad..." min="1970-01-01"
 							max="2020-01-01" onchange="validarFecha(this)">
 						<div class="invalid-feedback">Rellene este campo</div>
@@ -24,18 +24,18 @@
 					</div>
 				</div>
 				<div class="row justify-content-center">
-					<div class="form-group col-10 text-left">
-						<label class="text-secondary" for="email">Email</label> <input
-							type="text" class="form-control" name="email" id="email"
+					<div class="form-group col-10 text-left grupos">
+						<label class="text-secondary labels" for="email">Email</label> <input
+							type="text" class="form-control inputs" name="email" id="email"
 							placeholder="Escriba su email..." onkeyup="validarEmail(this)">
 						<div class="invalid-feedback">Rellene este campo</div>
 						<div class="valid-feedback">Campo completado!</div>
 					</div>
 				</div>
 				<div class="row justify-content-center">
-					<div class="form-group col-10">
-						<label class="text-secondary" for="pass">Contrase�a</label> <input
-							type="password" class="form-control" name="password" id="pass"
+					<div class="form-group col-10 grupos">
+						<label class="text-secondary labels" for="pass">Contrase�a</label> <input
+							type="password" class="form-control inputs" name="password" id="pass"
 							placeholder="Escriba su contrase�a..."
 							onkeyup="validarPssw(this)"> <span id="ver"
 							onmouseover="ver(document.formulario.pass)"
@@ -53,10 +53,10 @@
 					</div>
 				</div>
 
-				<div class="row justify-content-center">
-					<div class="form-group col-10">
-						<label class="text-secondary" for="repass">Repita
-							Contrase�a</label> <input type="password" class="form-control"
+				<div class="row justify-content-center mt-4">
+					<div class="form-group col-10 grupos">
+						<label class="text-secondary labels" for="repass">Repita
+							Contrase�a</label> <input type="password" class="form-control inputs"
 							name="repass" id="repass" placeholder="Repita su contrase�a..."
 							onkeyup=" validarRepetir(document.formulario.repass,document.formulario.pass)">
 						<span id="ver" onmouseover="ver(document.formulario.repass)"
@@ -74,9 +74,9 @@
 					</div>
 				</div>
 
-				<div class="row justify-content-center">
-					<div class="form-group col-3">
-						<button class="btn  btn-secondary justify-content-center "
+				<div class="row justify-content-center mt-2 m-0">
+					<div class="form-group col-3  grupos mt-4 m-0">
+						<button class="btn-hover btn-green justify-content-center"
 							name="aceptar" id="aceptar">Registrar</button>
 					</div>
 				</div>

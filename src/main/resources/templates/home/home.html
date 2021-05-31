@@ -27,16 +27,16 @@
 
 		$("#registro").load("registro");
 
-		$("#buscar").click(function() {
+		//$("#buscar").click(function() {
 			//Simple
-			window.location.href = "buscar.html";
+			//window.location.href = "buscar.html";
 			//Pestaña
 			//  window.open("http://www.google.com");
 			//Ventana
 			//window.open("http://www.google.com", "Tu Titulo", "width=500, height=500")
 		});
 
-	});
+	//});
 </script>
 
 </head>
@@ -45,9 +45,13 @@
 		<section class="hero">
 			<div class="content">
 				<div class="navegador fixed-top d-flex justify-content-end my-2">
+
 					<button type="button" class="text-light mr-3 btn-hover btn-black"
+
 						data-toggle="modal" data-target="#loginModal" id="btnlog">Login</button>
 					<button type="button" class="text-light mr-3 btn-hover btn-black"
+
+
 						data-toggle="modal" data-target="#registroModal">Registro</button>
 				</div>
 				<div class="d-flexbox justify-content-center mx-auto pt-5">
@@ -62,7 +66,10 @@
 						</div>
 					</div>
 					<div class="buscar d-flex justify-content-center">
-						<button type="button" class="text-light btn-hover btn-black" id="buscar">Explorar</button>
+
+					<form action="/explorar" method="GET">
+						<button type="submit" class="btn btn-dark text-light btn-hover btn-form" id="buscar">Explorar</button>
+						</form>
 					</div>
 				</div>
 			</div>

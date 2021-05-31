@@ -70,6 +70,7 @@ public class AnonymousController {
 
 				H.setInfoModal("Error|La cuenta no ha sido verificada|btn-hover btn-red", s);
 
+
 				returner = "redirect:/";
 			} else {
 				s.setAttribute("userLogged", usuario);
@@ -77,7 +78,9 @@ public class AnonymousController {
 			}
 
 		} else {
+
 			H.setInfoModal("Error|El usuario no existe o la contraseña es incorrecta|btn-hover btn-red", s);
+
 
 			returner = "redirect:/";
 		}
@@ -101,7 +104,9 @@ public class AnonymousController {
 
 		try {
 			if (usuarioRepository.getByLoginName(loginName) != null) {
+
 				H.setInfoModal("Error|El nombre de usuario introducido ya existe|btn-hover btn-red", s);
+
 
 				return "redirect:/";
 			} else {
@@ -109,7 +114,9 @@ public class AnonymousController {
 			}
 
 			if (!pass.equals(passConfirm)) {
+
 				H.setInfoModal("Error|Las contraseñas no coinciden|btn-hover btn-red", s);
+
 
 				return "redirect:/";
 			} else {
@@ -118,7 +125,9 @@ public class AnonymousController {
 			}
 
 			if (usuarioRepository.getByEmail(email) != null) {
+
 				H.setInfoModal("Error|El correo electrónico introducido ya está registrado|btn-hover btn-red", s);
+
 
 				return "redirect:/";
 			} else {
@@ -141,6 +150,7 @@ public class AnonymousController {
 		}
 		H.setInfoModal("Info|Te has registrado correctamente! Revisa tu bandeja de entrada para activar la cuenta antes de logear por primera vez|btn-hover btn-black", s);
 
+
 		return "redirect:/";
 	}
 
@@ -150,11 +160,15 @@ public class AnonymousController {
 		VerificationToken verificationToken = verificationTokenRepository.getByToken(token);
 
 		if (verificationToken == null) {
-			H.setInfoModal("Error|No existe esta página|btn btn-danger", s);
+
+
+			H.setInfoModal("Error|El link al que has accedido no existe|btn-hover btn-red",s);
 
 			return "redirect:/";
 		} else if ((verificationToken != null) && (verificationToken.getUsuario().isEnabled())) {
-			H.setInfoModal("Error|Esta cuenta ya ha sido activada anteriormente.|btn-hover btn-red", s);
+
+			
+			H.setInfoModal("Error|Esta cuenta ya ha sido activada anteriormente|btn-hover btn-red",s);
 
 			return "redirect:/";
 		}
@@ -163,7 +177,8 @@ public class AnonymousController {
 		Calendar cal = Calendar.getInstance();
 
 		if ((verificationToken.getExpirationDate().getTime() - cal.getTime().getTime()) <= 0) {
-			H.setInfoModal("Error|El link de activación de la cuenta ha expirado.|btn-hover btn-red", s);
+
+			H.setInfoModal("Error|El link de activación de la cuenta ha expirado|btn-hover btn-red",s);
 
 			return "redirect:/";
 		}
@@ -191,10 +206,19 @@ public class AnonymousController {
 			System.out.println("Error al crear directorio");
 		}
 
-		H.setInfoModal("Info|La cuenta se ha activado correctamente. Ya puedes hacer login.|btn-hover btn-black", s);
 
+		
+		H.setInfoModal("!Exito!|La cuenta se ha activado correctamente. Ya puedes hacer login|btn-hover btn-green",s);
 		return "redirect:/";
 
 	}
+	
+	@GetMapping("/explorar")
+	public String explorar(ModelMap m) {
+		
+		m.put("view", "usuario/buscar");
+		return "/_t/frameFeed";
+	}
+	
 
 }

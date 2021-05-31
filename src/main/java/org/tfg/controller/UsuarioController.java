@@ -56,7 +56,9 @@ public class UsuarioController {
 			return "_t/frameFeed";
 
 		} else {
+
 			H.setInfoModal("Error|Para acceder a este apartado debe estar logueado|btn-hover btn-red", s);
+
 
 			return "redirect:/";
 		}
@@ -65,8 +67,13 @@ public class UsuarioController {
 
 	@PostMapping("/logout")
 	public String postLogout(ModelMap m, HttpSession s) {
+
+		H.setInfoModal("!Exito!|La sesión ha cerrado correctamente|btn-hover btn-green",s);
+		
 		s.removeAttribute("userLogged");
+		
 		H.setInfoModal("Info|La sesión ha cerrado correctamente|btn-hover btn-black", s);
+
 		return "redirect:/";
 	}
 
@@ -74,7 +81,9 @@ public class UsuarioController {
 	public String getPerfil(@PathVariable("loginName") String username, ModelMap m, HttpSession s) {
 
 		if (usuarioRepository.getByLoginName(username) == null) {
+
 			H.setInfoModal("Error|No existe esta página|btn-hover btn-red", s);
+
 
 			return "redirect:/feed";
 		} else {
@@ -123,7 +132,7 @@ public class UsuarioController {
 			RedirectAttributes attributes, HttpSession s, ModelMap m) throws IOException {
 
 		Path path = null;
-		String originalFilename = file.getOriginalFilename().toLowerCase();
+		String originalFilename = "";
 		String nuevoNombreRandom = UUID.randomUUID().toString();
 		String extensionArchivo = "";
 		String nuevoNombreArchivo = "";
@@ -136,6 +145,10 @@ public class UsuarioController {
 			extensionArchivo = originalFilename.substring(originalFilename.lastIndexOf("."));
 			nuevoNombreArchivo = nuevoNombreRandom + extensionArchivo;
 
+			originalFilename = file.getOriginalFilename().toLowerCase();
+			extensionArchivo=originalFilename.substring(originalFilename.lastIndexOf("."));
+			nuevoNombreArchivo = nuevoNombreRandom + extensionArchivo;
+			
 			if ((!originalFilename.endsWith(".png") && !originalFilename.endsWith(".jpg")
 					&& !originalFilename.endsWith(".jpeg"))
 					&& (!originalFilename.endsWith(".mov") && !originalFilename.endsWith(".mp4")
@@ -240,6 +253,7 @@ public class UsuarioController {
 				if (!texto.equals("")) {
 					publicacion.setDescripcion(texto);
 				}
+				
 				publicacion.setDuenioPublicacion(usuario);
 				publicacionRepository.save(publicacion);
 				Collection<Publicacion> publicacionesActualizadas = usuario.getPublicaciones();

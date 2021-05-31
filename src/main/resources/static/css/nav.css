@@ -7,6 +7,11 @@ nav * {
 	width: 2em;
 	height: 2em;
 }
+.btn:focus{
+	box-shadow: none;
+	outline:none;
+}
+
 .logOut{
 	color:white;
 }

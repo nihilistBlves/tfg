@@ -4,16 +4,16 @@
 		<div class="modal-content">
 			<form method="post" name="login" action="/login" novalidate>
 				<div class="row justify-content-center">
-					<div class="form-group col-10">
-						<label class="text-secondary" for="nameLog">Nombre</label> <input
-							class="form-control" type="text" name="loginName" id="nameLog"
+					<div class="form-group col-10 grupo">
+						<label class="text-secondary label" for="nameLog">Nombre</label> <input
+							class="form-control inputs" type="text" name="loginName" id="nameLog"
 							placeholder="Escriba su nombre...">
 					</div>
 				</div>
 				<div class="row justify-content-center">
-					<div class="form-group col-10">
+					<div class="form-group col-10 grupo">
 						<label class="text-secondary" for="pass">Contrase�a</label> <input
-							type="password" class="form-control" name="password" id="passLog"
+							type="password" class="form-control inputs" name="password" id="passLog"
 							placeholder="Escriba su contrase�a..."> <span id="ver"
 							onmouseover="ver(document.login.passLog)"
 							onmouseout="ocultar(document.login.passLog)"><i
@@ -21,14 +21,14 @@
 					</div>
 				</div>
 				<div class="row justify-content-center">
-					<div class="form-group">
-						<button class="btn btn-danger">Login</button>
+					<div class="form-group grupo">
+						<button class="btn-hover btn-red">Login</button>
 					</div>
 				</div>
 				<div class="row justify-content-center">
 					<div class="registro ">
-						<span class="text-secondary">Si todavia no tienes cuenta...</span>
-						<button type="button" class="btn btn-outline-danger" onclick="$('#registroModal').modal('show');$('#loginModal').modal('hide');">Registrate</button>
+						<span class="text-secondary info">Si todavia no tienes cuenta...</span>
+						<button type="button" class="btn btn-danger" onclick="$('#registroModal').modal('show');$('#loginModal').modal('hide');">Registrate</button>
 					</div>
 				</div>
 			</form>
