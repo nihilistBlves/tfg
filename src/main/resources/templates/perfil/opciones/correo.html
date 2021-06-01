@@ -1,7 +1,10 @@
-<div>
+<div class="d-flex justify-content-center my-5">
 	<form method="post" action="editarCorreo" name="formulario" onsubmit="return opcionesCorreo(document.formulario.email)">
-		<label for="nuevoCorreo">Correo nuevo:</label> <input type="text"
-			id="nuevoCorreo" name="email"><br /> <input type="submit"
-			name="btn" value="Cambiar Correo">
+	<div class="form-group">
+		<label for="nuevoCorreo">Correo nuevo:</label> 
+		<input type="text" id="nuevoCorreo" name="email"class="form-control" placeholder="Escriba nuevo correo">
+		 <button type="submit" name="btn" value="Cambiar Correo" class="btn btn-primary my-4">Cambiar Correo</button>
+			</div>
 	</form>
+	
 </div>
