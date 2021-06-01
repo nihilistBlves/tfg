@@ -11,4 +11,6 @@ import org.tfg.domain.Usuario;
 public interface PublicacionRepository extends JpaRepository<Publicacion, Long> {
 
 	public List<Publicacion> getByDuenioPublicacion (Usuario usuario);
+
+	public Publicacion getById(Long idPublicacion);
 }

@@ -74,7 +74,7 @@ public class AnonymousController {
 				returner = "redirect:/";
 			} else {
 				s.setAttribute("userLogged", usuario);
-				returner = "redirect:/user/" + loginName;
+				returner = "redirect:/feed";
 			}
 
 		} else {

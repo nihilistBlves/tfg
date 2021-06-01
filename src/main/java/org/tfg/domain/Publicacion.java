@@ -39,8 +39,8 @@ public class Publicacion {
 	@OneToMany(cascade = CascadeType.ALL)
 	private Collection<Wave> waves;
 
-	public Publicacion(Long id, String contenido, String descripcion, String tipoContenido,
-			Usuario duenioPublicacion, Collection<Comentario> comentarios, Collection<Wave> waves) {
+	public Publicacion(Long id, String contenido, String descripcion, String tipoContenido, Usuario duenioPublicacion,
+			Collection<Comentario> comentarios, Collection<Wave> waves) {
 		super();
 		this.id = id;
 		this.contenido = contenido;

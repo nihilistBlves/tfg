@@ -15,6 +15,43 @@
 
 		};
 	}
+
+	function wave(w) {
+
+		console.log(w.nextSibling.nextSibling.firstChild);
+		if (w.checked == true) {
+			w.nextSibling.nextSibling.firstChild.src = "./img/sub.png";
+			var parametros = {
+				"wave" : w.value
+			}
+			$(document).ready(function() {
+				$.ajax({
+					data : parametros, //datos que se envian a traves de ajax
+					url : '/crearWave', //archivo que recibe la peticion
+					type : 'post', //método de envio
+
+				});
+			});
+
+		} else {
+
+			w.nextSibling.nextSibling.firstChild.src = "./img/unsub.png";
+			var parametros = {
+				"wave" : w.value,
+
+			}
+			$(document).ready(function() {
+				$.ajax({
+					data : parametros, //datos que se envian a traves de ajax
+					url : '/borrarWave', //archivo que recibe la peticion
+					type : 'post', //método de envio
+
+				});
+			});
+
+		}
+
+	}
 </script>
 <div class="col-lg">
 	<div id="centro" class=" justify-content-center align-items-center">
@@ -119,4 +156,3 @@
 		</div>
 	</div>
 </div>
-
