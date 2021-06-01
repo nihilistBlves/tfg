@@ -85,3 +85,22 @@ body{
 	 height:50px;
 	 border-radius: 50%;
 }
+
+/*Cargar comentarios*/
+.cargaComentarios{
+	
+	height: 190px;
+	overflow-y: auto;
+	
+}
+
+.userComent{
+	font-weight: bold;
+	float: left;
+}
+
+.fotoComent{
+	width:27px;
+	height:27px;
+	border-radius: 50%;
+}

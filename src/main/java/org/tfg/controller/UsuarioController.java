@@ -103,13 +103,13 @@ public class UsuarioController {
 			
 			Usuario usuarioCargado = usuarioRepository.getByLoginName(username);
 
-			int seguidores = seguimientoRepository.findSeguidoresByIdUsuario(usuarioRepository.getByLoginName(username).getId()).size();
-			int seguidos = seguimientoRepository.findSeguidosByIdUsuario(usuarioRepository.getByLoginName(username).getId()).size();
+			//int seguidores = seguimientoRepository.findSeguidoresByIdUsuario(usuarioRepository.getByLoginName(username).getId()).size();
+			//int seguidos = seguimientoRepository.findSeguidosByIdUsuario(usuarioRepository.getByLoginName(username).getId()).size();
 
 			m.put("publicaciones", publicacionRepository.getByDuenioPublicacion(usuarioCargado));
 			m.put("usuario", usuarioRepository.getByLoginName(username));
-			m.put("seguidores", seguidores);
-			m.put("seguidos", seguidos);
+			//m.put("seguidores", seguidores);
+			//m.put("seguidos", seguidos);
 
 			if (s.getAttribute("userLogged") != null) {
 				if (username.equals(((Usuario) s.getAttribute("userLogged")).getLoginName())) {
@@ -500,12 +500,17 @@ public class UsuarioController {
 			
 			comentarioRepository.save(coment);
 			
-			Collection <Comentario> comentarios=comentarioRepository.findAll();
+			Collection <Comentario> comentarios=comentarioRepository.getByPublicacionComentada(publicacion);
+			
 			String allComentarios="";
 			for(Comentario c: comentarios) {
 				
 				allComentarios+="<div class='card'>"
 						+ "<div class='card-body'>"
+						+"<span class='userComent'>"
+						+"<img src='"+c.getComentador().getFotoPerfil()+"' class='fotoComent' />"
+						+c.getComentador().getLoginName()
+						+"</span>"
 						+ c.getTexto()
 						+"</div></div>";
 				
@@ -517,20 +522,27 @@ public class UsuarioController {
 		
 		@GetMapping("verComentarios")
 		@ResponseBody
-		public String verComentarios(ModelMap m) {
+		public String verComentarios(@RequestParam("idPublicacion") Long idPublicacion) {
 		
-			Collection <Comentario> comentarios=comentarioRepository.findAll();
+			Publicacion publicacion = publicacionRepository.getById(idPublicacion);
+			Collection <Comentario> comentarios=comentarioRepository.getByPublicacionComentada(publicacion);
 			String allComentarios="";
 			for(Comentario c: comentarios) {
 				
 				allComentarios+="<div class='card'>"
 						+ "<div class='card-body'>"
+						+"<span class='userComent'>"
+						+"<img src='"+c.getComentador().getFotoPerfil()+"' class='fotoComent' />"
+						+c.getComentador().getLoginName()
+						+"</span>"
 						+ c.getTexto()
 						+"</div></div>";
 				
 			}
 			return allComentarios;
 		}
+		
+		
 	}
 
 

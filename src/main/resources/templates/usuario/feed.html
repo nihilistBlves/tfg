@@ -71,19 +71,23 @@
 //Comentarios
 
 	function verComentarios(div) {
-		console.log("var div");
-		console.log(div);
-		console.log("DIV REAL");
-		console.log(div.parentNode.parentNode.previousSibling.previousSibling);
+		
 		var divReal = div.parentNode.parentNode.previousSibling.previousSibling;
+		console.log(divReal.children[0].getAttribute("value"));
+		var idPublicacion=divReal.children[0].getAttribute("value");
+		
+		if(divReal.style.display=="none"){
+			divReal.style.display = "block";
+			div.value="Ocultar comentarios";
+		}else{
+			divReal.style.display = "none";
+			div.value="Ver comentarios";
+		}
 
 		$(document).ready(function () {
 
-			/*var parametros = {
-				"idPublicacion": idPublicacion,
-			}*/
-
 			$.ajax({
+				data:{"idPublicacion":idPublicacion},
 				url: "/verComentarios",
 				type: "get",
 				success: function (comentarios) {
@@ -126,6 +130,34 @@
 
 
 	}
+	
+	/*window.onload = function(){
+		setTimeout(function(){
+		var divComentarios = document.getElementsByClassName("cargaComentarios");
+		
+		for(var i in divComentarios){
+			//console.log(divComentarios[i]);
+			console.log(divComentarios[i].children[0].getAttribute("value"));
+			var idPublicacion = divComentarios[i].children[0].getAttribute("value");
+			
+			$(document).ready(function () {
+			$.ajax({
+				data: {"idPublicacion": idPublicacion},
+				url: "/verComentarios",
+				type: "get",
+				success: function (comentarios) {
+					console.log(comentarios);
+					divComentarios[i].innerHTML=comentarios;
+
+				}
+
+			});
+		});
+			
+		}
+		},2000);
+		
+	}*/
 	
 	//Comentarios
 </script>
@@ -178,9 +210,11 @@
 											th:value="${publicacion.id}" style="display: none;" onchange="wave(this)" />
 										<label th:for="|wave-${publicacion.id}|"><img src="./img/unsub.png" /></label>
 									</div>
+									
+									
 
-
-									<div id="|coment-${publicacion.id}|">
+									<div th:id="|coment-${publicacion.id}|" class="cargaComentarios" style="display: none;">
+										<imput type="hidden" th:value="${publicacion.id}" />
 									</div>
 									
 									<div class="form-group">
