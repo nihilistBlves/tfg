@@ -19,12 +19,6 @@ public class Rol {
 	
 	@Column(unique = true)
 	String tipo;
-	
-	@OneToMany(mappedBy = "rol", cascade = CascadeType.ALL)
-	private Collection<Usuario> usuarios;
-	
-	@OneToMany(mappedBy = "rol", cascade = CascadeType.ALL)
-	private Collection<Admin> admins;
 
 	public Rol(String tipo) {
 		super();
@@ -43,21 +37,14 @@ public class Rol {
 		this.tipo = tipo;
 	}
 
-	public Collection<Usuario> getUsuarios() {
-		return usuarios;
+	public Long getId() {
+		return id;
 	}
 
-	public void setUsuarios(Collection<Usuario> usuarios) {
-		this.usuarios = usuarios;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public Collection<Admin> getAdmins() {
-		return admins;
-	}
-
-	public void setAdmins(Collection<Admin> admins) {
-		this.admins = admins;
-	}
 	
 	
 	

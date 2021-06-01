@@ -37,38 +37,15 @@ public class Usuario {
 	private String descripcionPerfil;
 	private String fotoPerfil;
 
-
+	@ManyToOne
+	private Rol rol;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	private Collection<Instrumento> instrumentos;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
-	private Rol rol;
-	
-	@OneToMany(fetch=FetchType.EAGER,cascade = CascadeType.ALL)
-	private Collection<Publicacion> publicaciones;
-	
-	@OneToMany(cascade = CascadeType.ALL)
-	private Collection<Comentario> comentariosHechos;
-	
-	@OneToMany(cascade = CascadeType.ALL)
-	private Collection<Wave> wavesDados;
-	
-	@OneToMany(cascade = CascadeType.ALL)
-	private Collection<Seguimiento> seguidores;
-	
-	@OneToMany(cascade = CascadeType.ALL)
-	private Collection<Seguimiento> seguidos;
-
-
-
-
 
 	public Usuario(String loginName, String email, String pass, String nombre, String apellidos,
 			LocalDate fechaNacimiento,boolean enabled, LocalDate fechaCreacion, String descripcionPerfil, String fotoPerfil,
-			Collection<Instrumento> instrumentos, Rol rol, Collection<Publicacion> publicaciones,
-			Collection<Comentario> comentariosHechos, Collection<Wave> wavesDados, Collection<Seguimiento> seguidores,
-			Collection<Seguimiento> seguidos) {
+			Collection<Instrumento> instrumentos, Rol rol) {
 		super();
 		this.loginName = loginName;
 		this.email = email;
@@ -84,11 +61,6 @@ public class Usuario {
 
 		this.instrumentos = instrumentos;
 		this.rol = rol;
-		this.publicaciones = publicaciones;
-		this.comentariosHechos = comentariosHechos;
-		this.wavesDados = wavesDados;
-		this.seguidores = seguidores;
-		this.seguidos = seguidos;
 	}
 
 	public Usuario() {
@@ -176,47 +148,15 @@ public class Usuario {
 	public void setRol(Rol rol) {
 		this.rol = rol;
 	}
-
-	public Collection<Publicacion> getPublicaciones() {
-		return publicaciones;
-	}
-
-	public void setPublicaciones(Collection<Publicacion> publicaciones) {
-		this.publicaciones = publicaciones;
-	}
-
-	public Collection<Comentario> getComentariosHechos() {
-		return comentariosHechos;
-	}
-
-	public void setComentariosHechos(Collection<Comentario> comentariosHechos) {
-		this.comentariosHechos = comentariosHechos;
-	}
-
-	public Collection<Wave> getWavesDados() {
-		return wavesDados;
-	}
-
-	public void setWavesDados(Collection<Wave> wavesDados) {
-		this.wavesDados = wavesDados;
-	}
-
-	public Collection<Seguimiento> getSeguidores() {
-		return seguidores;
-	}
-
-	public void setSeguidores(Collection<Seguimiento> seguidores) {
-		this.seguidores = seguidores;
-	}
-
-	public Collection<Seguimiento> getSeguidos() {
-		return seguidos;
-	}
-
-	public void setSeguidos(Collection<Seguimiento> seguidos) {
-		this.seguidos = seguidos;
-	}
 	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public boolean isAdmin() {
 		return (this.getRol()!= null && this.getRol().getTipo().equals("admin"));
 	}

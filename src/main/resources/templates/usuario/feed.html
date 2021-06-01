@@ -61,12 +61,14 @@
 				<div id="borde-perfil"
 					class="d-flex justify-content-center align-items-center">
 
-					<div class="card card-feed d-flex justify-content-center align-items-center">
+					<div
+						class="card card-feed d-flex justify-content-center align-items-center">
 
 
 						<!-- 				img solo desde static -->
 						<div th:if="${publicacion.tipoContenido}=='img'">
-							<img class="card-img feed-img" th:src="@{${publicacion.contenido}}">
+							<img class="card-img feed-img"
+								th:src="@{${publicacion.contenido}}">
 						</div>
 
 						<!-- 		Para video -->
@@ -103,8 +105,9 @@
 								</div>
 								<div class="card-footer text-right">
 									<div class="icons">
-										<img src="./img/sub.png" alt=""> <img
-											src="./img/unsub.png" alt="">
+										<input type="checkbox" th:id="|wave-${publicacion.id}|"
+											th:value="${publicacion.id}" style="display: none;" onchange="wave(this)" />
+										<label th:for="|wave-${publicacion.id}|"><img src="./img/unsub.png" /></label>
 									</div>
 
 									<form>
@@ -115,34 +118,6 @@
 													th:src="@{${publicacion.duenioPublicacion.fotoPerfil}}">
 												<input type="text" class="form-control col-10"
 													placeholder="Comentar" name="comentario" id="comentario" />
-											</div>
-
-
-											<!-- 									este flex de arriba su intencion es que se posicione arriba una vez despues de dar click -->
-											<!-- 									en este div de comentarios . Si tiene comentarios los muestra aqui y el comentar arriba de ellos -->
-											<!-- 									si no tiene solo que salga el comentar. lo comentado de abajo es para hacer la relacion y colocar -->
-											<!-- 									los datos -->
-
-
-											<!-- 									relacionar los comentarios de otros con el post -->
-											<div th:each="publicacion: ${relacion}">
-												<div th:if="${relacion}" class="comentario">
-													<div class="col">
-														<p>Nombre usuario</p>
-													</div>
-													<div class="d-flex pt-4 comentarios">
-														<img class="foto-perfil col-2"
-															th:src="@{${publicacion.duenioPublicacion.fotoPerfil}}">
-														<p>comentario persona aqui</p>
-													</div>
-													<div>
-														<img src="./img/sub.png" alt=""> <img
-															src="./img/unsub.png" alt="">
-													</div>
-
-
-
-												</div>
 											</div>
 										</div>
 									</form>

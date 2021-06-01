@@ -33,14 +33,9 @@ public class Publicacion {
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	private Usuario duenioPublicacion;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	private Collection<Comentario> comentarios;
+	
 
-	@OneToMany(cascade = CascadeType.ALL)
-	private Collection<Wave> waves;
-
-	public Publicacion(Long id, String contenido, String descripcion, String tipoContenido, Usuario duenioPublicacion,
-			Collection<Comentario> comentarios, Collection<Wave> waves) {
+	public Publicacion(Long id, String contenido, String descripcion, String tipoContenido, Usuario duenioPublicacion) {
 		super();
 		this.id = id;
 		this.contenido = contenido;
@@ -48,8 +43,7 @@ public class Publicacion {
 		this.fechaPublicacion = LocalDate.now();
 		this.tipoContenido = tipoContenido;
 		this.duenioPublicacion = duenioPublicacion;
-		this.comentarios = comentarios;
-		this.waves = waves;
+
 	}
 
 	public Publicacion() {
@@ -79,22 +73,6 @@ public class Publicacion {
 
 	public void setDuenioPublicacion(Usuario duenioPublicacion) {
 		this.duenioPublicacion = duenioPublicacion;
-	}
-
-	public Collection<Comentario> getComentarios() {
-		return comentarios;
-	}
-
-	public void setComentarios(Collection<Comentario> comentarios) {
-		this.comentarios = comentarios;
-	}
-
-	public Collection<Wave> getWaves() {
-		return waves;
-	}
-
-	public void setWaves(Collection<Wave> waves) {
-		this.waves = waves;
 	}
 
 	public Long getId() {

@@ -31,6 +31,7 @@ import org.tfg.exception.DangerException;
 import org.tfg.helper.H;
 import org.tfg.helper.PRG;
 import org.tfg.repositories.PublicacionRepository;
+import org.tfg.repositories.SeguimientoRepository;
 import org.tfg.repositories.UsuarioRepository;
 import org.tfg.repositories.WaveRepository;
 
@@ -39,13 +40,16 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private SeguimientoRepository seguimientoRepository;
 
 	@Autowired
 	private PublicacionRepository publicacionRepository;
-	
+
 	@Autowired
 	private WaveRepository waveRepository;
-	
+
 	@GetMapping("/feed")
 	public String getFeed(ModelMap m, HttpSession s) {
 
@@ -54,9 +58,9 @@ public class UsuarioController {
 			if (s.getAttribute("infoModal") != null) {
 				H.mPut(m, s);
 			}
-			
+
 			Usuario usuario = (Usuario) s.getAttribute("userLogged");
-			
+
 			m.put("waves", waveRepository.findAll());
 			m.put("publicaciones", publicacionRepository.findAll());
 			m.put("view", "usuario/feed");
@@ -66,7 +70,6 @@ public class UsuarioController {
 
 			H.setInfoModal("Error|Para acceder a este apartado debe estar logueado|btn-hover btn-red", s);
 
-
 			return "redirect:/";
 		}
 
@@ -75,10 +78,10 @@ public class UsuarioController {
 	@PostMapping("/logout")
 	public String postLogout(ModelMap m, HttpSession s) {
 
-		H.setInfoModal("!Exito!|La sesión ha cerrado correctamente|btn-hover btn-green",s);
-		
+		H.setInfoModal("!Exito!|La sesión ha cerrado correctamente|btn-hover btn-green", s);
+
 		s.removeAttribute("userLogged");
-		
+
 		H.setInfoModal("Info|La sesión ha cerrado correctamente|btn-hover btn-black", s);
 
 		return "redirect:/";
@@ -91,14 +94,15 @@ public class UsuarioController {
 
 			H.setInfoModal("Error|No existe esta página|btn-hover btn-red", s);
 
-
 			return "redirect:/feed";
 		} else {
+			
+			Usuario usuarioCargado = usuarioRepository.getByLoginName(username);
 
-			int seguidores = usuarioRepository.getByLoginName(username).getSeguidores().size();
-			int seguidos = usuarioRepository.getByLoginName(username).getSeguidos().size();
+			int seguidores = seguimientoRepository.findSeguidoresByIdUsuario(usuarioRepository.getByLoginName(username).getId()).size();
+			int seguidos = seguimientoRepository.findSeguidosByIdUsuario(usuarioRepository.getByLoginName(username).getId()).size();
 
-			m.put("publicaciones", usuarioRepository.getByLoginName(username).getPublicaciones());
+			m.put("publicaciones", publicacionRepository.getByDuenioPublicacion(usuarioCargado));
 			m.put("usuario", usuarioRepository.getByLoginName(username));
 			m.put("seguidores", seguidores);
 			m.put("seguidos", seguidos);
@@ -113,6 +117,11 @@ public class UsuarioController {
 
 			return "_t/frameFeed";
 		}
+	}
+	
+	@PostMapping("/user/{loginName}/seguir")
+	public String postSeguir() {
+		return null;
 	}
 
 	// ===========================================================================
@@ -138,7 +147,7 @@ public class UsuarioController {
 			RedirectAttributes attributes, HttpSession s, ModelMap m) throws IOException {
 
 		Path path = null;
-		String originalFilename = "";
+		String originalFilename = file.getOriginalFilename().toLowerCase();;
 		String nuevoNombreRandom = UUID.randomUUID().toString();
 		String extensionArchivo = "";
 		String nuevoNombreArchivo = "";
@@ -151,10 +160,6 @@ public class UsuarioController {
 			extensionArchivo = originalFilename.substring(originalFilename.lastIndexOf("."));
 			nuevoNombreArchivo = nuevoNombreRandom + extensionArchivo;
 
-			originalFilename = file.getOriginalFilename().toLowerCase();
-			extensionArchivo=originalFilename.substring(originalFilename.lastIndexOf("."));
-			nuevoNombreArchivo = nuevoNombreRandom + extensionArchivo;
-			
 			if ((!originalFilename.endsWith(".png") && !originalFilename.endsWith(".jpg")
 					&& !originalFilename.endsWith(".jpeg"))
 					&& (!originalFilename.endsWith(".mov") && !originalFilename.endsWith(".mp4")
@@ -259,14 +264,10 @@ public class UsuarioController {
 				if (!texto.equals("")) {
 					publicacion.setDescripcion(texto);
 				}
-				
+
 				publicacion.setDuenioPublicacion(usuario);
 				publicacionRepository.save(publicacion);
-				Collection<Publicacion> publicacionesActualizadas = usuario.getPublicaciones();
-				publicacionesActualizadas.add(publicacion);
-				usuario.setPublicaciones(publicacionesActualizadas);
-				usuarioRepository.save(usuario);
-
+				
 				H.setInfoModal("Info|Publicación creada correctamente|btn-hover btn-black", s);
 				return "redirect:/feed";
 			}
@@ -282,11 +283,7 @@ public class UsuarioController {
 				publicacion.setDescripcion(texto);
 				publicacion.setDuenioPublicacion(usuario);
 				publicacionRepository.save(publicacion);
-				Collection<Publicacion> publicacionesActualizadas = usuario.getPublicaciones();
-				publicacionesActualizadas.add(publicacion);
-				usuario.setPublicaciones(publicacionesActualizadas);
-				usuarioRepository.save(usuario);
-
+			
 				H.setInfoModal("Info|Publicación creada correctamente|btn-hover btn-black", s);
 
 				return "redirect:/feed";

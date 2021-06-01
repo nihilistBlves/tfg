@@ -18,7 +18,6 @@ public class Wave {
 
 	private LocalDate fechaLike;
 
-	// @ManyToOne(cascade = CascadeType.ALL)
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	private Usuario daWave;
 
