@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
    
         .title {
@@ -18,3 +19,17 @@
         text-decoration:none;
         
         }
+=======
+nav * {
+	color: white;
+	font-size: 1.1em;
+	
+}
+#logotipo-nav {
+	width: 2em;
+	height: 2em;
+}
+.logOut{
+	color:white;
+}
+>>>>>>> master

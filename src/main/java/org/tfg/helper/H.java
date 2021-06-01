@@ -2,6 +2,7 @@ package org.tfg.helper;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.ui.ModelMap;
 import org.tfg.domain.Usuario;
 import org.tfg.exception.DangerException;
 
@@ -31,8 +32,26 @@ public class H {
 		if ((rolActual!="anon") && rolExigido=="anon") {
 			throw new DangerException("Rol inadecuado");
 		}
-		
-		
 	}
+	
+	public static void mPut(ModelMap m, HttpSession s) {
+		m.put("infoModal", s.getAttribute("infoModal"));
+		m.put("infoTitulo", s.getAttribute("infoTitulo"));
+		m.put("infoTexto", s.getAttribute("infoTexto"));
+		m.put("infoEstado", s.getAttribute("infoEstado"));
+		s.removeAttribute("infoTitulo");
+		s.removeAttribute("infoTexto");
+		s.removeAttribute("infoEstado");
+		s.removeAttribute("infoModal");
+	}
+	
+	public static void setInfoModal(String cadenaSinSeparar, HttpSession s) {
+		String[] cadenaSeparada = cadenaSinSeparar.split("\\|");
+		s.setAttribute("infoModal", "true");
+		s.setAttribute("infoTitulo", cadenaSeparada[0]);
+		s.setAttribute("infoTexto", cadenaSeparada[1]);
+		s.setAttribute("infoEstado", cadenaSeparada[2]);
+	}
+	
 
 }

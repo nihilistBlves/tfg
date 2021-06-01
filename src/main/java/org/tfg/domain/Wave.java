@@ -11,29 +11,31 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class Wave {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private LocalDate fechaLike;
-	
-	//@ManyToOne(cascade = CascadeType.ALL)
-@ManyToOne(cascade = CascadeType.REFRESH)
+
+	// @ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	private Usuario daWave;
 
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	private Publicacion publicacionWaved;
-	
-	public Wave() {}
 
-	public Wave(LocalDate fechaLike, Usuario daWave, Publicacion publicacionWaved) {
+	public Wave() {
+		this.fechaLike = LocalDate.now();
+	}
+
+	public Wave(Usuario daWave, Publicacion publicacionWaved) {
 		super();
-		this.fechaLike = fechaLike;
+		this.fechaLike = LocalDate.now();
 		this.daWave = daWave;
 		this.publicacionWaved = publicacionWaved;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -61,5 +63,5 @@ public class Wave {
 	public void setPublicacionWaved(Publicacion publicacionWaved) {
 		this.publicacionWaved = publicacionWaved;
 	}
-	
+
 }

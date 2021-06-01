@@ -76,3 +76,12 @@ body{
    background-color: rgba(226, 231, 231, 0.349);
    overflow: hidden;
 }
+.comentarios{
+	border-top: 2px solid #ffa000;
+	margin-top:5px;
+}
+.foto-perfil{
+	width:100px;
+	 height:50px;
+	 border-radius: 50%;
+}

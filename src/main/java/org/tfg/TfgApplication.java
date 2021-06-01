@@ -10,6 +10,10 @@ public class TfgApplication {
 		SpringApplication.run(TfgApplication.class, args);
 		
 	}
+	
+	public void run(String args) throws Exception {
+		
+	}
 
 	
 }

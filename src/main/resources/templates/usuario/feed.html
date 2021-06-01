@@ -6,14 +6,15 @@
 
 		objeto.text = "Leer menos";
 
-		objeto.onclick = function () {
+		objeto.onclick = function() {
 			objeto.parentNode.parentNode.children[1].style.height = "200px";
 			objeto.text = "Leer m�s";
-			objeto.onclick = function () {leer(objeto)};
+			objeto.onclick = function() {
+				leer(objeto)
+			};
 
 		};
 	}
-
 
 	function wave(w) {
 
@@ -21,14 +22,13 @@
 		if (w.checked == true) {
 			w.nextSibling.nextSibling.firstChild.src = "./img/sub.png";
 			var parametros = {
-				"wave": w.value
+				"wave" : w.value
 			}
-			$(document).ready(function () {
+			$(document).ready(function() {
 				$.ajax({
-					data: parametros, //datos que se envian a traves de ajax
-					url: '/crearWave', //archivo que recibe la peticion
-					type: 'post', //método de envio
-
+					data : parametros, //datos que se envian a traves de ajax
+					url : '/crearWave', //archivo que recibe la peticion
+					type : 'post', //método de envio
 
 				});
 			});
@@ -37,22 +37,19 @@
 
 			w.nextSibling.nextSibling.firstChild.src = "./img/unsub.png";
 			var parametros = {
-				"wave": w.value,
+				"wave" : w.value,
 
 			}
-			$(document).ready(function () {
+			$(document).ready(function() {
 				$.ajax({
-					data: parametros, //datos que se envian a traves de ajax
-					url: '/borrarWave', //archivo que recibe la peticion
-					type: 'post', //método de envio
+					data : parametros, //datos que se envian a traves de ajax
+					url : '/borrarWave', //archivo que recibe la peticion
+					type : 'post', //método de envio
 
 				});
 			});
 
 		}
-
-		
-
 
 	}
 </script>
@@ -63,18 +60,20 @@
 	<!-- 			cargar publicaciones -->
 	<div th:each="publicacion: ${publicaciones}">
 		<div id="perfiles">
-			<div id="borde-perfil" class="d-flex justify-content-center align-items-center">
+			<div id="borde-perfil"
+				class="d-flex justify-content-center align-items-center">
 
 				<div class="card  d-flex justify-content-center align-items-center">
 
 
 					<!-- 				img solo desde static -->
-					<div th:if="${publicacion.tipoContenido}=='imagen'">
+					<div th:if="${publicacion.tipoContenido}=='img'">
 						<img class="card-img" th:src="@{${publicacion.contenido}}">
 					</div>
 
 					<!-- 		Para video -->
-					<div th:if="${publicacion.tipoContenido}=='video'" class="card-film">
+					<div th:if="${publicacion.tipoContenido}=='video'"
+						class="card-film">
 						<video width="auto" height="300px" controls>
 							<source th:src="@{${publicacion.contenido}}" type="video/mp4" />
 						</video>
@@ -82,8 +81,10 @@
 
 
 
-					<div th:if="${publicacion.tipoContenido}=='audio'" class="card-audio">
-						<audio th:src="@{${publicacion.contenido}}" controls type="audio/mpeg">
+					<div th:if="${publicacion.tipoContenido}=='audio'"
+						class="card-audio">
+						<audio th:src="@{${publicacion.contenido}}" controls
+							type="audio/mpeg">
 						</audio>
 					</div>
 
@@ -94,9 +95,10 @@
 								<b th:text="${publicacion.duenioPublicacion.loginName}">Nombre</b>
 							</div>
 							<div class="card-text">
-								<p th:id="${publicacion.id}" th:text="${publicacion.descripcion}"></p>
-								<p class="text-muted text-right" id="fecha" th:text="${publicacion.fechaPublicacion}">
-								</p>
+								<p th:id="${publicacion.id}"
+									th:text="${publicacion.descripcion}"></p>
+								<p class="text-muted text-right" id="fecha"
+									th:text="${publicacion.fechaPublicacion}"></p>
 							</div>
 							<div class="leer-mas">
 								<a class="leer" onclick="leer(this)">Leer m�s</a>
@@ -106,21 +108,23 @@
 
 							<div class="card-footer text-right">
 								<div class="icons">
-										<input type="checkbox" th:id="|wave-${publicacion.id}|"
-											th:value="${publicacion.id}" style="display: none;" onchange="wave(this)" />
-										<label th:for="|wave-${publicacion.id}|"><img src="./img/unsub.png" /></label>
-									</div>
+									<input type="checkbox" th:id="|wave-${publicacion.id}|"
+										th:value="${publicacion.id}" style="display: none;"
+										onchange="wave(this)" /> <label
+										th:for="|wave-${publicacion.id}|"><img
+										src="./img/unsub.png" /></label>
 								</div>
-								<!--===================================================================-->
-								<form>
-									<div class="form-group"></div>
-									<input type="text" class="form-control" placeholder="Comentar" />
-								</form>
 							</div>
+							<!--===================================================================-->
+							<form>
+								<div class="form-group"></div>
+								<input type="text" class="form-control" placeholder="Comentar" />
+							</form>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
 </div>
