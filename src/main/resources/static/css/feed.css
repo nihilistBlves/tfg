@@ -32,7 +32,7 @@ body{
   }
 
 
-.card{
+.card-feed{
     margin-top: 10px;
     padding-bottom: 10px;
     background-color: inherit;
@@ -40,35 +40,35 @@ body{
     width: 40vw;
     height: auto;
 }
-.card-img{
+.feed-img{
 
     width: auto;
     height: 300px;
     margin-top: 10px;
 }
-.card-audio{
+.feed-audio{
     margin-top:25%;
     margin-bottom: 20%;
    
 }
-.card-film{
+.feed-film{
 
     margin-top: 0.4em;
 }
-.card-body{
+.feed-body{
   
     box-shadow:black;
     padding: 0px;
     
 }
-.card-tittle{
+.feed-tittle{
    
     font-size: 22px;
     border-radius: 22px;
    padding: 10px;
    
 }
-.card-text{
+.feed-text{
    padding: 10px;
     font-weight: bold;
     font-size: 1rem;
