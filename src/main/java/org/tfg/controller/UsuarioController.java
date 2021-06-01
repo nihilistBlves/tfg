@@ -17,19 +17,23 @@ import org.apache.tomcat.jni.File;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.tfg.domain.Comentario;
 import org.tfg.domain.Publicacion;
 import org.tfg.domain.Usuario;
 import org.tfg.domain.Wave;
 import org.tfg.exception.DangerException;
 import org.tfg.helper.H;
 import org.tfg.helper.PRG;
+import org.tfg.repositories.ComentarioRepository;
 import org.tfg.repositories.PublicacionRepository;
 import org.tfg.repositories.SeguimientoRepository;
 import org.tfg.repositories.UsuarioRepository;
@@ -475,5 +479,59 @@ public class UsuarioController {
 
 		return "perfil/opciones/notificaciones";
 	}
+	
+	//=========================================================================
+		//COMENTARIOS
+		//=========================================================================
 
-}
+		@Autowired
+		ComentarioRepository comentarioRepository;
+
+		
+		@PostMapping("crearComentario")
+		@Transactional
+		@ResponseBody
+		public String comentar(@RequestParam("comentario") String comentario, @RequestParam("idPublicacion") Long idPublicacion ,HttpSession s) {
+			
+			LocalDate date = LocalDate.now();
+			Publicacion publicacion =  publicacionRepository.getOne(idPublicacion);
+			Usuario usuario = (Usuario) s.getAttribute("userLogged");
+			Comentario coment= new Comentario(comentario,date,usuario,publicacion);
+			
+			comentarioRepository.save(coment);
+			
+			Collection <Comentario> comentarios=comentarioRepository.findAll();
+			String allComentarios="";
+			for(Comentario c: comentarios) {
+				
+				allComentarios+="<div class='card'>"
+						+ "<div class='card-body'>"
+						+ c.getTexto()
+						+"</div></div>";
+				
+			}
+			return allComentarios;
+			
+			//return "redirect:/feed";
+		}
+		
+		@GetMapping("verComentarios")
+		@ResponseBody
+		public String verComentarios(ModelMap m) {
+		
+			Collection <Comentario> comentarios=comentarioRepository.findAll();
+			String allComentarios="";
+			for(Comentario c: comentarios) {
+				
+				allComentarios+="<div class='card'>"
+						+ "<div class='card-body'>"
+						+ c.getTexto()
+						+"</div></div>";
+				
+			}
+			return allComentarios;
+		}
+	}
+
+
+

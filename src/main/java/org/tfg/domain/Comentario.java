@@ -20,12 +20,14 @@ public class Comentario {
 	
 	private LocalDate fechaPublicacion;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	private Usuario comentador;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	private Publicacion publicacionComentada;
 
+	public Comentario() {}
+	
 	public Comentario(String texto, LocalDate fechaPublicacion, Usuario comentador, Publicacion publicacionComentada) {
 		super();
 		this.texto = texto;
