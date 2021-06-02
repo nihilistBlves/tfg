@@ -48,7 +48,7 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-	
+
 	@Autowired
 	private SeguimientoRepository seguimientoRepository;
 
@@ -57,6 +57,9 @@ public class UsuarioController {
 
 	@Autowired
 	private WaveRepository waveRepository;
+	
+	@Autowired
+	private ComentarioRepository comentarioRepository;
 
 	@GetMapping("/feed")
 	public String getFeed(ModelMap m, HttpSession s) {
@@ -107,9 +110,11 @@ public class UsuarioController {
 
 			return "redirect:/feed";
 		} else {
+
 			
 			H.mPut(m, s);
-			
+
+
 			Usuario usuarioCargado = usuarioRepository.getByLoginName(username);
 
 			Collection<Long> seguidores = seguimientoRepository.findSeguidoresByIdUsuario(usuarioRepository.getByLoginName(username).getId());
@@ -121,10 +126,13 @@ public class UsuarioController {
 				}
 			}
 
+
 			m.put("publicaciones", publicacionRepository.getByDuenioPublicacion(usuarioCargado));
 			m.put("usuario", usuarioRepository.getByLoginName(username));
+
 			m.put("seguidores", seguidores.size());
 			m.put("seguidos", seguidos.size());
+
 
 			if (s.getAttribute("userLogged") != null) {
 				if (username.equals(((Usuario) s.getAttribute("userLogged")).getLoginName())) {
@@ -137,7 +145,81 @@ public class UsuarioController {
 			return "_t/frameFeed";
 		}
 	}
-	
+
+	@PostMapping("/tipoArchivo")
+	@ResponseBody
+	public String elegirArchivo(@RequestParam("tipo") String tipo, @RequestParam("nombre") String nombre) {
+		
+		
+		System.out.println(tipo);
+
+		String publicacionesTipo = "";
+		Usuario usuario = usuarioRepository.getByLoginName(nombre);
+
+		Collection<Publicacion> publicaciones = publicacionRepository.getByDuenioPublicacion(usuario);
+
+		if (tipo.equals("texto")) {
+
+			for (Publicacion p : publicaciones) {
+
+				if (p.getDescripcion() != null) {
+
+					publicacionesTipo += "<div class='col-4 publicacion'>" + "	<p>" + p.getDescripcion() + "</p>"
+							+ "</div>";
+				}
+
+			}
+
+			return publicacionesTipo;
+
+		}
+
+		if (tipo.equals("img")) {
+
+			for (Publicacion p : publicaciones) {
+
+				if (p.getTipoContenido().equals(tipo) ) {
+
+					publicacionesTipo += "<img class='card-img feed-img' src=" + p.getContenido() + ">";
+				}
+
+			}
+			return publicacionesTipo;
+		}
+
+		if (tipo.equals("audio")) {
+
+			for (Publicacion p : publicaciones) {
+
+				if (p.getTipoContenido().equals(tipo) ) {
+
+					publicacionesTipo += "<audio src=" + p.getContenido() + " controls type='audio/mpeg'>"
+					+"</audio>";
+				}
+
+			}
+			return publicacionesTipo;
+		}
+
+		if (tipo.equals("video")) {
+
+			for (Publicacion p : publicaciones) {
+
+				if (p.getTipoContenido().equals(tipo) ) {
+
+					publicacionesTipo +="<video width='500px' height='300px' controls>"+
+					"<source src="+p.getContenido()+" type='video/mp4' />"+
+				"</video>";
+				}
+
+			}
+			return publicacionesTipo;
+		}
+
+		return publicacionesTipo;
+
+	}
+
 	@PostMapping("/user/{loginName}/seguir")
 	public String postSeguir(@PathVariable("loginName") String username, ModelMap m, HttpSession s) {
 		Usuario usuarioAlQueSeguir = usuarioRepository.getByLoginName(username);
@@ -179,7 +261,8 @@ public class UsuarioController {
 			RedirectAttributes attributes, HttpSession s, ModelMap m) throws IOException {
 
 		Path path = null;
-		String originalFilename = file.getOriginalFilename().toLowerCase();;
+		String originalFilename = file.getOriginalFilename().toLowerCase();
+		;
 		String nuevoNombreRandom = UUID.randomUUID().toString();
 		String extensionArchivo = "";
 		String nuevoNombreArchivo = "";
@@ -299,7 +382,7 @@ public class UsuarioController {
 
 				publicacion.setDuenioPublicacion(usuario);
 				publicacionRepository.save(publicacion);
-				
+
 				H.setInfoModal("Info|Publicación creada correctamente|btn-hover btn-black", s);
 				return "redirect:/feed";
 			}
@@ -313,9 +396,10 @@ public class UsuarioController {
 				return "redirect:/publicar";
 			} else {
 				publicacion.setDescripcion(texto);
+				publicacion.setTipoContenido("texto");
 				publicacion.setDuenioPublicacion(usuario);
 				publicacionRepository.save(publicacion);
-			
+
 				H.setInfoModal("Info|Publicación creada correctamente|btn-hover btn-black", s);
 
 				return "redirect:/feed";
@@ -511,13 +595,10 @@ public class UsuarioController {
 
 		return "perfil/opciones/notificaciones";
 	}
-	
-	//=========================================================================
-		//COMENTARIOS
-		//=========================================================================
 
-		@Autowired
-		ComentarioRepository comentarioRepository;
+	// =========================================================================
+	// COMENTARIOS
+	// =========================================================================
 
 		
 		@PostMapping("crearComentario")
@@ -552,32 +633,26 @@ public class UsuarioController {
 			return allComentarios;
 			
 			//return "redirect:/feed";
-		}
-		
-		@GetMapping("verComentarios")
-		@ResponseBody
-		public String verComentarios(@RequestParam("idPublicacion") Long idPublicacion) {
-		
-			Publicacion publicacion = publicacionRepository.getById(idPublicacion);
-			Collection <Comentario> comentarios=comentarioRepository.getByPublicacionComentada(publicacion);
-			String allComentarios="";
-			for(Comentario c: comentarios) {
-				
-				allComentarios+="<div class='card'>"
-						+ "<div class='card-body'>"
-						+"<span class='userComent'>"
-						+"<img src='"+c.getComentador().getFotoPerfil()+"' class='fotoComent' />"
-						+c.getComentador().getLoginName()
-						+"</span>"
-						+ c.getTexto()
-						+"</div></div>";
-				
-			}
-			return allComentarios;
-		}
-		
-		
+
+
+		// return "redirect:/feed";
 	}
 
+	@GetMapping("verComentarios")
+	@ResponseBody
+	public String verComentarios(@RequestParam("idPublicacion") Long idPublicacion) {
 
+		Publicacion publicacion = publicacionRepository.getById(idPublicacion);
+		Collection<Comentario> comentarios = comentarioRepository.getByPublicacionComentada(publicacion);
+		String allComentarios = "";
+		for (Comentario c : comentarios) {
 
+			allComentarios += "<div class='card'>" + "<div class='card-body'>" + "<span class='userComent'>"
+					+ "<img src='" + c.getComentador().getFotoPerfil() + "' class='fotoComent' />"
+					+ c.getComentador().getLoginName() + "</span>" + c.getTexto() + "</div></div>";
+
+		}
+		return allComentarios;
+	}
+
+}

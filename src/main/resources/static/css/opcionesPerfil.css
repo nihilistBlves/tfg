@@ -10,38 +10,40 @@
        
 
             color: #FFFFFF;
-            padding: 10px;
+           
             background-color: #272636;
         }
 
         .opcion:hover {
-            font-size: 19px;
-            background-color: rgba(252, 252, 252, 1); 
+        color: #FFFFFF;
+           
+            background-color: #272636;
+            border-left: white 4px solid;
          
         }
 
         #opciones {
-            overflow: scroll;
-            overflow-x: hidden;
-            height: 350px;
+/*             overflow: scroll; */
+/*             overflow-x: hidden; */
+            height: auto;
             background-color:white;
 
            
         }
 
-        #opciones::-webkit-scrollbar {
-            width: 1em;
-        }
+/*         #opciones::-webkit-scrollbar { */
+/*             width: 1em; */
+/*         } */
 
-        #opciones::-webkit-scrollbar-track {
-            -webkit-box-shadow: inset 0 0 6px rgba(187,187,187,0.6);
-            border-radius: 10px;
-        }
+/*         #opciones::-webkit-scrollbar-track { */
+/*             -webkit-box-shadow: inset 0 0 6px rgba(187,187,187,0.6); */
+/*             border-radius: 10px; */
+/*         } */
 
-        #opciones::-webkit-scrollbar-thumb {
-            background-color: rgba(221,221,221,0.6);
-            border-radius: 10px;
-        }
+/*         #opciones::-webkit-scrollbar-thumb { */
+/*             background-color: rgba(221,221,221,0.6); */
+/*             border-radius: 10px; */
+/*         } */
         .form-control{
        	 border:none;
         }
@@ -49,7 +51,7 @@
         .contador{
             color:grey;
             position:relative;
-            bottom:32px;
-            right:-355px;
+			top:-40px;
+			left:8%;
 
         }

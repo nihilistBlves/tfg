@@ -1,3 +1,4 @@
+
 <script th:inline="javascript">
 
 	function seguir(boton) {
@@ -33,6 +34,107 @@
 
 		}
 	}
+
+	$(document).ready(function () {
+		
+		$(".text").on("click",function(){
+			
+			var nombre = "pepepe";
+			
+			var datos = document.getElementById("datos");
+			
+			var parametros ={
+					
+					tipo: "texto",
+					nombre: nombre,
+			} 
+		
+			$.ajax({
+				data: parametros, 
+				url: '/tipoArchivo', 
+				type: 'post', 
+				success: function (publicaciones) {
+					console.log(publicaciones);
+					datos.innerHTML=publicaciones;
+				}
+				
+			});
+		});
+		
+	$(".image").on("click",function(){
+			
+			var nombre = "pepepe";
+			
+			var datos = document.getElementById("datos");
+			
+			var parametros ={
+					
+					tipo: "img",
+					nombre: nombre,
+			} 
+		
+			$.ajax({
+				data: parametros, 
+				url: '/tipoArchivo', 
+				type: 'post', 
+				success: function (publicaciones) {
+					console.log(publicaciones);
+					datos.innerHTML=publicaciones;
+				}
+				
+			});
+		});
+	
+	$(".music").on("click",function(){
+		
+		var nombre = "pepepe";
+		
+		var datos = document.getElementById("datos");
+		
+		var parametros ={
+				
+				tipo: "audio",
+				nombre: nombre,
+		} 
+	
+		$.ajax({
+			data: parametros, 
+			url: '/tipoArchivo', 
+			type: 'post', 
+			success: function (publicaciones) {
+				console.log(publicaciones);
+				datos.innerHTML=publicaciones;
+			}
+			
+		});
+	});
+	$(".video").on("click",function(){
+		
+		var nombre = "pepepe";
+		
+		var datos = document.getElementById("datos");
+		
+		var parametros ={
+				
+				tipo: "video",
+				nombre: nombre,
+		} 
+	
+		$.ajax({
+			data: parametros, 
+			url: '/tipoArchivo', 
+			type: 'post', 
+			success: function (publicaciones) {
+				console.log(publicaciones);
+				datos.innerHTML=publicaciones;
+			}
+			
+		});
+	});
+			
+		});
+		
+
 </script>
 <div class="col">
 	<div class="caja">
@@ -95,7 +197,22 @@
 				</div>
 			</div>
 		</div>
+		<div class="row d-flex justify-content-center ">
+		<div class="p-4 text">
+		<i class="bi bi-file-text-fill"></i>
+		</div>
+		<div class="p-4 image">
+		<i class="bi bi-image-fill"></i>
+		</div>
+		<div class="p-4 music">
+		<i class="bi bi-file-music-fill"></i>
+		</div>
+		<div class="p-4 video">
+		<i class="bi bi-camera-video-fill"></i>
+		</div>
+		</div>
 		<div class="cuerpo">
+
 			<div class="row d-flex justify-content-around ">
 				<div th:each="publicacion: ${publicaciones}">
 					<div class="col-4 publicacion">
@@ -103,7 +220,11 @@
 							th:src="@{${publicacion.contenido}}">
 					</div>
 				</div>
+
+			<div class="row d-flex justify-content-around" id="datos">
+
 			</div>
 		</div>
 	</div>
+</div>
 </div>

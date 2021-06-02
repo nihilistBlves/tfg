@@ -13,7 +13,7 @@
 }
 
 .fotoPerfil {
-	clip-path: circle();
+	border-radius:50%;
 	width: 200px;
 	height: 200px;
 }
@@ -37,4 +37,17 @@
 
 .contacto {
 	padding: 4px;
+}
+.bi-file-text-fill{
+	font-size:80px;
+}
+.bi-image-fill{
+	font-size:80px;
+}
+.bi-file-music-fill{
+	font-size:80px;
+
+}
+.bi-camera-video-fill{
+	font-size:80px;
 }

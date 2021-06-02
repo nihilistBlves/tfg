@@ -86,7 +86,7 @@ public class Publicacion implements Comparable<Publicacion> {
 	}
 
 	public String getContenido() {
-		return contenido.toString();
+		return contenido;
 	}
 
 	public void setContenido(String contenido) {
