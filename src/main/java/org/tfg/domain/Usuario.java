@@ -1,6 +1,7 @@
 package org.tfg.domain;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
@@ -30,7 +31,7 @@ public class Usuario {
 	private String nombre;
 	private String apellidos;
 	private LocalDate fechaNacimiento;
-	private LocalDate fechaCreacion;
+	private LocalDateTime fechaCreacion;
 
 	private boolean enabled;
 
@@ -54,7 +55,7 @@ public class Usuario {
 		this.apellidos = apellidos;
 		this.fechaNacimiento = fechaNacimiento;
 
-		this.fechaCreacion = LocalDate.now();
+		this.fechaCreacion = LocalDateTime.now();
 		this.enabled = false;
 		this.descripcionPerfil = descripcionPerfil;
 		this.fotoPerfil = fotoPerfil;
@@ -66,7 +67,7 @@ public class Usuario {
 	public Usuario() {
 		super();
 		this.enabled = false;
-		this.fechaCreacion = LocalDate.now();
+		this.fechaCreacion = LocalDateTime.now();
 	}
 
 	public String getLoginName() {
@@ -117,11 +118,11 @@ public class Usuario {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public LocalDate getFechaCreacion() {
+	public LocalDateTime getFechaCreacion() {
 		return fechaCreacion;
 	}
 
-	public void setFechaCreacion(LocalDate fechaCreacion) {
+	public void setFechaCreacion(LocalDateTime fechaCreacion) {
 		this.fechaCreacion = fechaCreacion;
 	}	
 

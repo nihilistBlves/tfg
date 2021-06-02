@@ -8,7 +8,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -28,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.tfg.domain.Comentario;
 import org.tfg.domain.Publicacion;
+import org.tfg.domain.Seguimiento;
 import org.tfg.domain.Usuario;
 import org.tfg.domain.Wave;
 import org.tfg.exception.DangerException;
@@ -64,9 +68,12 @@ public class UsuarioController {
 			}
 
 			Usuario usuario = (Usuario) s.getAttribute("userLogged");
+			
+			ArrayList<Publicacion> publicacionesSeguidos = (ArrayList<Publicacion>) publicacionRepository.feedDelUsuarioLogeado(usuario.getId());
+			Collections.sort(publicacionesSeguidos, Collections.reverseOrder());
 
 			m.put("waves", waveRepository.findAll());
-			m.put("publicaciones", publicacionRepository.findAll());
+			m.put("publicaciones", publicacionesSeguidos);
 			m.put("view", "usuario/feed");
 			return "_t/frameFeed";
 
@@ -101,15 +108,23 @@ public class UsuarioController {
 			return "redirect:/feed";
 		} else {
 			
+			H.mPut(m, s);
+			
 			Usuario usuarioCargado = usuarioRepository.getByLoginName(username);
 
-			//int seguidores = seguimientoRepository.findSeguidoresByIdUsuario(usuarioRepository.getByLoginName(username).getId()).size();
-			//int seguidos = seguimientoRepository.findSeguidosByIdUsuario(usuarioRepository.getByLoginName(username).getId()).size();
+			Collection<Long> seguidores = seguimientoRepository.findSeguidoresByIdUsuario(usuarioRepository.getByLoginName(username).getId());
+			Collection<Long> seguidos = seguimientoRepository.findSeguidosByIdUsuario(usuarioRepository.getByLoginName(username).getId());
+			
+			if(s.getAttribute("userLogged") != null) {
+				if (seguidores.contains(((Usuario) s.getAttribute("userLogged")).getId())) {
+					m.put("seguido", true);
+				}
+			}
 
 			m.put("publicaciones", publicacionRepository.getByDuenioPublicacion(usuarioCargado));
 			m.put("usuario", usuarioRepository.getByLoginName(username));
-			//m.put("seguidores", seguidores);
-			//m.put("seguidos", seguidos);
+			m.put("seguidores", seguidores.size());
+			m.put("seguidos", seguidos.size());
 
 			if (s.getAttribute("userLogged") != null) {
 				if (username.equals(((Usuario) s.getAttribute("userLogged")).getLoginName())) {
@@ -124,8 +139,21 @@ public class UsuarioController {
 	}
 	
 	@PostMapping("/user/{loginName}/seguir")
-	public String postSeguir() {
-		return null;
+	public String postSeguir(@PathVariable("loginName") String username, ModelMap m, HttpSession s) {
+		Usuario usuarioAlQueSeguir = usuarioRepository.getByLoginName(username);
+		Seguimiento nuevoSeguimiento = new Seguimiento();
+		nuevoSeguimiento.setSeguido(usuarioAlQueSeguir);
+		nuevoSeguimiento.setSeguidor((Usuario) s.getAttribute("userLogged"));
+		seguimientoRepository.save(nuevoSeguimiento);
+		return "redirect:/user/"+username;
+	}
+	
+	@PostMapping("/user/{loginName}/dejarDeSeguir")
+	public String postDejarDeSeguir(@PathVariable("loginName") String username, ModelMap m, HttpSession s) {
+		Usuario usuarioSeguido = usuarioRepository.getByLoginName(username);
+		Seguimiento seguimientoParaBorrar = seguimientoRepository.getBySeguidoAndSeguidor(usuarioSeguido, (Usuario) s.getAttribute("userLogged"));
+		seguimientoRepository.delete(seguimientoParaBorrar);
+		return "redirect:/user/"+username;
 	}
 
 	// ===========================================================================
@@ -328,8 +356,8 @@ public class UsuarioController {
 		Usuario usuario = (Usuario) s.getAttribute("userLogged");
 		String originalFilename = file.getOriginalFilename().toLowerCase();
 		String nuevoNombreRandom = UUID.randomUUID().toString();
-		String extensionArchivo = originalFilename.substring(originalFilename.lastIndexOf("."));
-		String nuevoNombreArchivo = nuevoNombreRandom + extensionArchivo;
+		String extensionArchivo = "";
+		String nuevoNombreArchivo = "";
 
 		if (nombre != null) {
 			usuario.setNombre(nombre);
@@ -346,7 +374,11 @@ public class UsuarioController {
 			usuario.setDescripcionPerfil(descripcion);
 
 //		 comprobamos si esta vacio o nulo
-		if (!file.isEmpty()) {
+		if (!originalFilename.equals("")) {
+			
+			extensionArchivo = originalFilename.substring(originalFilename.lastIndexOf("."));
+			nuevoNombreArchivo = nuevoNombreRandom + extensionArchivo;
+			
 			// comprobamos el tamaño del archivo en bytes y aqui 2MB
 			if (file.getSize() <= 2000000) {
 
@@ -493,11 +525,13 @@ public class UsuarioController {
 		@ResponseBody
 		public String comentar(@RequestParam("comentario") String comentario, @RequestParam("idPublicacion") Long idPublicacion ,HttpSession s) {
 			
-			LocalDate date = LocalDate.now();
 			Publicacion publicacion =  publicacionRepository.getOne(idPublicacion);
 			Usuario usuario = (Usuario) s.getAttribute("userLogged");
-			Comentario coment= new Comentario(comentario,date,usuario,publicacion);
+			Comentario coment = new Comentario();
 			
+			coment.setTexto(comentario);
+			coment.setPublicacionComentada(publicacion);
+			coment.setComentador(usuario);
 			comentarioRepository.save(coment);
 			
 			Collection <Comentario> comentarios=comentarioRepository.getByPublicacionComentada(publicacion);

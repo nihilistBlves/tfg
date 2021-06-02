@@ -1,9 +1,45 @@
+<script th:inline="javascript">
+
+	function seguir(boton) {
+		
+		var username = /*[[${usuario.loginName}]]*/ "";
+
+		if (boton.classList.contains("btn-outline-danger")) {
+			boton.classList.remove("btn-outline-danger");
+			boton.classList.add("btn-danger");
+			boton.innerText = "Dejar de seguir";
+			document.getElementById("seguidores").innerText = parseInt(document.getElementById("seguidores").innerText)+1;
+
+			$(document).ready(function() {
+				$.ajax({
+					url : '/user/'+username+'/seguir',
+					type : 'post',
+				});
+			});
+
+		} else {
+			boton.classList.remove("btn-danger");
+			boton.classList.add("btn-outline-danger");
+			boton.innerText = "Seguir";
+			document.getElementById("seguidores").innerText = parseInt(document.getElementById("seguidores").innerText)-1;
+
+			$(document).ready(function() {
+				$.ajax({
+					url : '/user/'+username+'/dejarDeSeguir',
+					type : 'post',
+
+				});
+			});
+
+		}
+	}
+</script>
 <div class="col">
 	<div class="caja">
 		<div class="cabecera">
 			<div class="row d-flex justify-content-around">
 				<div class="foto my-5">
-					<img class="fotoPerfil" th:src="@{${usuario.fotoPerfil}}" >
+					<img class="fotoPerfil" th:src="@{${usuario.fotoPerfil}}">
 				</div>
 				<div class="nombre">
 					<div class="row d-flex justify-content-around">
@@ -11,9 +47,9 @@
 							<h2 th:text="${usuario.loginName}"></h2>
 						</div>
 						<div class="follow my-2 ml-auto">
-							<span class="seguimiento mx-auto"><b>Seguidores [<span
+							<span class="seguimiento mx-auto"><b>Seguidores [<span id="seguidores"
 									th:text="${seguidores}"></span>]
-							</b></span> <span class="seguimiento mx-auto"><b>Seguidos [<span
+							</b></span> <span class="seguimiento mx-auto"><b>Seguidos [<span id="seguidos"
 									th:text="${seguidos}"></span>]
 							</b></span>
 						</div>
@@ -30,14 +66,18 @@
 					</div>
 					<div th:if="${propietario} == null"
 						class="d-flex justify-content-between my-4">
-						<div class="col contacto">
-							<form action="/seguir">
-								<button type="submit"
-									class="ml-auto  btn-block btn btn-outline-danger">Seguir</button>
-							</form>
+						<div class="col contacto" th:if="${seguido} != null">
+							<button type="button"
+								class="ml-auto  btn-block btn btn-danger"
+								onclick="seguir(this)">Dejar de seguir</button>
+						</div>
+						<div class="col contacto" th:unless="${seguido} != null">
+							<button type="button"
+								class="ml-auto  btn-block btn btn-outline-danger"
+								onclick="seguir(this)">Seguir</button>
 						</div>
 						<div class="col contacto">
-							<form action="/seguir">
+							<form action="#">
 								<button type="submit"
 									class="ml-auto btn-block btn btn-outline-danger">Mensaje</button>
 							</form>
@@ -48,8 +88,7 @@
 						<form
 							th:action="@{/user/{userLogged}/opciones(userLogged=${session.userLogged.loginName})}"
 							method="get">
-							<button type="submit"
-								class="ml-auto btn-block btn btn-danger">Editar
+							<button type="submit" class="ml-auto btn-block btn btn-danger">Editar
 								perfil</button>
 						</form>
 					</div>
@@ -60,10 +99,11 @@
 			<div class="row d-flex justify-content-around ">
 				<div th:each="publicacion: ${publicaciones}">
 					<div class="col-4 publicacion">
-						<img width="200px" height="200px" th:src="@{${publicacion.contenido}}">
+						<img width="200px" height="200px"
+							th:src="@{${publicacion.contenido}}">
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	</div>
+</div>

@@ -7,14 +7,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.tfg.domain.Seguimiento;
+import org.tfg.domain.Usuario;
 
 @Repository
 public interface SeguimientoRepository extends JpaRepository<Seguimiento, Long> {
 	
-	@Query("SELECT seguidor FROM Seguimiento WHERE seguido = :id")
-	public Collection<Seguimiento> findSeguidoresByIdUsuario(@Param("id") Long id);
+	@Query(value = "SELECT seguidor_id FROM seguimiento WHERE seguido_id = :id", nativeQuery = true)
+	public Collection<Long> findSeguidoresByIdUsuario(@Param("id") Long id);
 	
-	@Query("SELECT seguido FROM Seguimiento WHERE seguidor = :id")
-	public Collection<Seguimiento> findSeguidosByIdUsuario(@Param("id") Long id);
+	@Query(value = "SELECT seguido_id FROM seguimiento WHERE seguidor_id = :id", nativeQuery = true)
+	public Collection<Long> findSeguidosByIdUsuario(@Param("id") Long id);
+	
+	public Seguimiento getBySeguidoAndSeguidor(Usuario seguido, Usuario seguidor);
 
 }

@@ -10,16 +10,21 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Seguimiento {
 	
+	public Seguimiento() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	private double valoracion;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	private Usuario seguidor;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	private Usuario seguido;
 
 	public Seguimiento(double valoracion, Usuario seguidor, Usuario seguido) {

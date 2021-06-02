@@ -1,6 +1,7 @@
 package org.tfg.domain;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -18,7 +19,7 @@ public class Comentario {
 	
 	private String texto;
 	
-	private LocalDate fechaPublicacion;
+	private LocalDateTime fechaPublicacion;
 	
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	private Usuario comentador;
@@ -26,12 +27,14 @@ public class Comentario {
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	private Publicacion publicacionComentada;
 
-	public Comentario() {}
+	public Comentario() {
+		this.fechaPublicacion = LocalDateTime.now();
+	}
 	
 	public Comentario(String texto, LocalDate fechaPublicacion, Usuario comentador, Publicacion publicacionComentada) {
 		super();
 		this.texto = texto;
-		this.fechaPublicacion = fechaPublicacion;
+		this.fechaPublicacion = LocalDateTime.now();
 		this.comentador = comentador;
 		this.publicacionComentada = publicacionComentada;
 	}
@@ -44,11 +47,11 @@ public class Comentario {
 		this.texto = texto;
 	}
 
-	public LocalDate getFechaPublicacion() {
+	public LocalDateTime getFechaPublicacion() {
 		return fechaPublicacion;
 	}
 
-	public void setFechaPublicacion(LocalDate fechaPublicacion) {
+	public void setFechaPublicacion(LocalDateTime fechaPublicacion) {
 		this.fechaPublicacion = fechaPublicacion;
 	}
 

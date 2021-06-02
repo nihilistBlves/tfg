@@ -1,6 +1,7 @@
 package org.tfg.domain;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -16,7 +17,7 @@ public class Wave {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private LocalDate fechaLike;
+	private LocalDateTime fechaLike;
 
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	private Usuario daWave;
@@ -25,12 +26,12 @@ public class Wave {
 	private Publicacion publicacionWaved;
 
 	public Wave() {
-		this.fechaLike = LocalDate.now();
+		this.fechaLike = LocalDateTime.now();
 	}
 
 	public Wave(Usuario daWave, Publicacion publicacionWaved) {
 		super();
-		this.fechaLike = LocalDate.now();
+		this.fechaLike = LocalDateTime.now();
 		this.daWave = daWave;
 		this.publicacionWaved = publicacionWaved;
 	}
@@ -39,11 +40,11 @@ public class Wave {
 		return id;
 	}
 
-	public LocalDate getFechaLike() {
+	public LocalDateTime getFechaLike() {
 		return fechaLike;
 	}
 
-	public void setFechaLike(LocalDate fechaLike) {
+	public void setFechaLike(LocalDateTime fechaLike) {
 		this.fechaLike = fechaLike;
 	}
 

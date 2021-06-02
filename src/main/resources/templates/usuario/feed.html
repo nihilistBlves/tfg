@@ -194,12 +194,12 @@
 						<div class="col-md-12">
 							<div class="card-body feed-body">
 								<div class="card-tittle feed-tittle">
-									<b th:text="${publicacion.duenioPublicacion.loginName}">Nombre</b>
+									<img class="foto-perfil" th:src="@{${publicacion.duenioPublicacion.fotoPerfil}}">
+									<a th:href="@{/user/{loginName}(loginName=${publicacion.duenioPublicacion.loginName})}"><b th:text="${publicacion.duenioPublicacion.loginName}"></b></a>
+									<span class="text-muted float-right" id="fecha" th:text="${publicacion.fechaPublicacion.toLocalDate}"></span>
 								</div>
 								<div class="card-text feed-text">
 									<p th:id="${publicacion.id}" th:text="${publicacion.descripcion}"></p>
-									<p class="text-muted text-right" id="fecha"
-										th:text="${publicacion.fechaPublicacion}"></p>
 								</div>
 								<div class="leer-mas">
 									<a class="leer" onclick="leer(this)">Leer m�s</a>
@@ -220,7 +220,7 @@
 									<div class="form-group">
 										<div class="d-flex pt-4 comentarios">
 											<img class="foto-perfil col-2"
-												th:src="@{${publicacion.duenioPublicacion.fotoPerfil}}">
+												th:src="@{${session.userLogged.fotoPerfil}}">
 											<input type="text" class="form-control col-4" placeholder="Comentar"
 												name="comentario" id="comentario" />
 											<input type="hidden" th:value="${publicacion.id}" />

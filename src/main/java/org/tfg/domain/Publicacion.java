@@ -1,6 +1,7 @@
 package org.tfg.domain;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
@@ -15,7 +16,7 @@ import javax.persistence.OneToMany;
 //import org.springframework.web.multipart.MultipartFile;
 
 @Entity
-public class Publicacion {
+public class Publicacion implements Comparable<Publicacion> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +27,8 @@ public class Publicacion {
 	@Column(columnDefinition = "TEXT")
 	private String descripcion;
 
-	private LocalDate fechaPublicacion;
+	@Column(columnDefinition = "TIMESTAMP")
+	private LocalDateTime fechaPublicacion;
 
 	private String tipoContenido;
 
@@ -40,7 +42,7 @@ public class Publicacion {
 		this.id = id;
 		this.contenido = contenido;
 		this.descripcion = descripcion;
-		this.fechaPublicacion = LocalDate.now();
+		this.fechaPublicacion = LocalDateTime.now();
 		this.tipoContenido = tipoContenido;
 		this.duenioPublicacion = duenioPublicacion;
 
@@ -48,7 +50,7 @@ public class Publicacion {
 
 	public Publicacion() {
 		super();
-		this.fechaPublicacion = LocalDate.now();
+		this.fechaPublicacion = LocalDateTime.now();
 	}
 
 	public String getDescripcion() {
@@ -59,11 +61,11 @@ public class Publicacion {
 		this.descripcion = descripcion;
 	}
 
-	public LocalDate getFechaPublicacion() {
+	public LocalDateTime getFechaPublicacion() {
 		return fechaPublicacion;
 	}
 
-	public void setFechaPublicacion(LocalDate fechaPublicacion) {
+	public void setFechaPublicacion(LocalDateTime fechaPublicacion) {
 		this.fechaPublicacion = fechaPublicacion;
 	}
 
@@ -99,4 +101,8 @@ public class Publicacion {
 		this.tipoContenido = tipoContenido;
 	}
 
+	@Override
+	public int compareTo(Publicacion publicacion) {
+		return getFechaPublicacion().compareTo(publicacion.getFechaPublicacion());
+	}
 }
