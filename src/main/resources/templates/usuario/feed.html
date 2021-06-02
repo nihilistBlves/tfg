@@ -132,33 +132,66 @@
 
 	}
 	
-	/*window.onload = function(){
-		setTimeout(function(){
-		var divComentarios = document.getElementsByClassName("cargaComentarios");
+	/*function comprobarWaves(){
+		var arrayIdPublicaciones = document.getElementsByName("idPublicacionWave");
+		var data=[];
 		
-		for(var i in divComentarios){
-			//console.log(divComentarios[i]);
-			console.log(divComentarios[i].children[0].getAttribute("value"));
-			var idPublicacion = divComentarios[i].children[0].getAttribute("value");
+		for(var i=0; i<arrayIdPublicaciones.length; i++){
+			data[i]=arrayIdPublicaciones[i].getAttribute("value");
+			console.log(arrayIdPublicaciones[i].getAttribute("value"));
 			
-			$(document).ready(function () {
-			$.ajax({
-				data: {"idPublicacion": idPublicacion},
-				url: "/verComentarios",
-				type: "get",
-				success: function (comentarios) {
-					console.log(comentarios);
-					divComentarios[i].innerHTML=comentarios;
-
-				}
-
-			});
-		});
 			
 		}
-		},2000);
+		
+		for(var i in data){ console.log(data[i])}
+		
+		$(document).ready(function(){
+			
+			$.ajax({
+				data:{"publicaciones":data},
+				url:"/mostrarWaves",
+				type:"post",
+				success: function(){
+					
+				}
+			})
+			
+		})
 		
 	}*/
+	
+		function comprobarWaves(){
+		var arrayIdPublicaciones = document.getElementsByName("idPublicacionWave");
+		var valor=0;
+		
+		for(var i=0; i<arrayIdPublicaciones.length; i++){
+			console.log(arrayIdPublicaciones[i].getAttribute("value"));
+			valor=parseInt(arrayIdPublicaciones[i].getAttribute("value"));
+			
+			$(document).ready(function(){
+				var parametros={"publicaciones":valor};
+				console.log(parametros);
+			$.ajax({
+				data:parametros,
+				url:"/mostrarWaves",
+				type:"post",
+				success: function(q){
+					
+				}
+			})
+			
+		})
+			
+		}
+		
+	}
+	
+	window.onload = function(){
+		setTimeout(function(){
+		comprobarWaves();
+		},2000);
+		
+	}
 	
 	//Comentarios
 </script>
@@ -215,7 +248,7 @@
 									
 
 									<div th:id="|coment-${publicacion.id}|" class="cargaComentarios" style="display: none;">
-										<imput type="hidden" th:value="${publicacion.id}" />
+										<imput type="hidden" th:value="${publicacion.id}" name="idPublicacionWave"/>
 									</div>
 									
 									<div class="form-group">

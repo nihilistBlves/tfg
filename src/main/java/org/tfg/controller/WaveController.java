@@ -1,6 +1,8 @@
 package org.tfg.controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
@@ -9,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.tfg.domain.Publicacion;
 import org.tfg.domain.Usuario;
 import org.tfg.domain.Wave;
@@ -59,5 +63,20 @@ public class WaveController {
 		waveRepository.deleteByDaWaveAndPublicacionWaved((Usuario) s.getAttribute("userLogged"), publicacion);
 		return "redirect:/feed";
 	}
+	
+	@PostMapping("/mostrarWaves")
+	@ResponseBody
+	public String wavesExistentes(@RequestParam("publicaciones")Long publicaciones, HttpSession s) {
+		
+		
+		Usuario usuario = (Usuario) s.getAttribute("userLogged");
+	
+		
+		Wave wave= waveRepository.wavesDados(publicaciones,usuario.getId()); 	
+		
+		
+		return "";
+	}
 
 }
+
