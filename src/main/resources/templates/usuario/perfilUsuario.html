@@ -1,19 +1,19 @@
 
 <script th:inline="javascript">
-
 	function seguir(boton) {
-		
-		var username = /*[[${usuario.loginName}]]*/ "";
+
+		var username = /*[[${usuario.loginName}]]*/"";
 
 		if (boton.classList.contains("btn-outline-danger")) {
 			boton.classList.remove("btn-outline-danger");
 			boton.classList.add("btn-danger");
 			boton.innerText = "Dejar de seguir";
-			document.getElementById("seguidores").innerText = parseInt(document.getElementById("seguidores").innerText)+1;
+			document.getElementById("seguidores").innerText = parseInt(document
+					.getElementById("seguidores").innerText) + 1;
 
 			$(document).ready(function() {
 				$.ajax({
-					url : '/user/'+username+'/seguir',
+					url : '/user/' + username + '/seguir',
 					type : 'post',
 				});
 			});
@@ -22,11 +22,12 @@
 			boton.classList.remove("btn-danger");
 			boton.classList.add("btn-outline-danger");
 			boton.innerText = "Seguir";
-			document.getElementById("seguidores").innerText = parseInt(document.getElementById("seguidores").innerText)-1;
+			document.getElementById("seguidores").innerText = parseInt(document
+					.getElementById("seguidores").innerText) - 1;
 
 			$(document).ready(function() {
 				$.ajax({
-					url : '/user/'+username+'/dejarDeSeguir',
+					url : '/user/' + username + '/dejarDeSeguir',
 					type : 'post',
 
 				});
@@ -35,106 +36,130 @@
 		}
 	}
 
-	$(document).ready(function () {
-		
-		$(".text").on("click",function(){
-			
-			var nombre = "pepepe";
-			
-			var datos = document.getElementById("datos");
-			
-			var parametros ={
-					
-					tipo: "texto",
-					nombre: nombre,
-			} 
-		
-			$.ajax({
-				data: parametros, 
-				url: '/tipoArchivo', 
-				type: 'post', 
-				success: function (publicaciones) {
-					console.log(publicaciones);
-					datos.innerHTML=publicaciones;
-				}
-				
-			});
-		});
-		
-	$(".image").on("click",function(){
-			
-			var nombre = "pepepe";
-			
-			var datos = document.getElementById("datos");
-			
-			var parametros ={
-					
-					tipo: "img",
-					nombre: nombre,
-			} 
-		
-			$.ajax({
-				data: parametros, 
-				url: '/tipoArchivo', 
-				type: 'post', 
-				success: function (publicaciones) {
-					console.log(publicaciones);
-					datos.innerHTML=publicaciones;
-				}
-				
-			});
-		});
-	
-	$(".music").on("click",function(){
-		
-		var nombre = "pepepe";
-		
-		var datos = document.getElementById("datos");
-		
-		var parametros ={
-				
-				tipo: "audio",
-				nombre: nombre,
-		} 
-	
-		$.ajax({
-			data: parametros, 
-			url: '/tipoArchivo', 
-			type: 'post', 
-			success: function (publicaciones) {
-				console.log(publicaciones);
-				datos.innerHTML=publicaciones;
-			}
-			
-		});
-	});
-	$(".video").on("click",function(){
-		
-		var nombre = "pepepe";
-		
-		var datos = document.getElementById("datos");
-		
-		var parametros ={
-				
-				tipo: "video",
-				nombre: nombre,
-		} 
-	
-		$.ajax({
-			data: parametros, 
-			url: '/tipoArchivo', 
-			type: 'post', 
-			success: function (publicaciones) {
-				console.log(publicaciones);
-				datos.innerHTML=publicaciones;
-			}
-			
-		});
-	});
-			
-		});
-		
+	$(document).ready(function() {
 
+		$(".text").on("click", function() {
+
+			var username = /*[[${usuario.loginName}]]*/"";
+
+			var datos = document.getElementById("datos");
+
+			var parametros = {
+
+				tipo : "texto",
+				nombre : username,
+			}
+
+			$.ajax({
+				data : parametros,
+				url : '/tipoArchivo',
+				type : 'post',
+				success : function(publicaciones) {
+					console.log(publicaciones);
+					datos.innerHTML = publicaciones;
+				}
+
+			});
+		});
+
+		$(".image").on("click", function() {
+
+			var username = /*[[${usuario.loginName}]]*/"";
+
+			var datos = document.getElementById("datos");
+
+			var parametros = {
+
+				tipo : "img",
+				nombre : username,
+			}
+
+			$.ajax({
+				data : parametros,
+				url : '/tipoArchivo',
+				type : 'post',
+				success : function(publicaciones) {
+					console.log(publicaciones);
+					datos.innerHTML = publicaciones;
+				}
+
+			});
+		});
+
+		$(".music").on("click", function() {
+
+			var username = /*[[${usuario.loginName}]]*/"";
+
+			var datos = document.getElementById("datos");
+
+			var parametros = {
+
+				tipo : "audio",
+				nombre : username,
+			}
+
+			$.ajax({
+				data : parametros,
+				url : '/tipoArchivo',
+				type : 'post',
+				success : function(publicaciones) {
+					console.log(publicaciones);
+					datos.innerHTML = publicaciones;
+				}
+			});
+		});
+		$(".video").on("click", function() {
+
+			var username = /*[[${usuario.loginName}]]*/"";
+
+			var datos = document.getElementById("datos");
+
+			var parametros = {
+
+				tipo : "video",
+				nombre : username,
+			}
+
+			$.ajax({
+				data : parametros,
+				url : '/tipoArchivo',
+				type : 'post',
+				success : function(publicaciones) {
+					console.log(publicaciones);
+					datos.innerHTML = publicaciones;
+				}
+
+			});
+		});
+
+		$(function() {
+
+			var datos = document.getElementById("datos");
+
+			var username = /*[[${usuario.loginName}]]*/"";
+			
+			console.log(username);
+
+			var parametros = {
+
+				tipo : "img",
+				nombre : username,
+			}
+
+			$.ajax({
+				data : parametros,
+				url : '/tipoArchivo',
+				type : 'post',
+				success : function(publicaciones) {
+					console.log(publicaciones);
+					datos.innerHTML = publicaciones;
+				}
+
+			});
+
+		});
+
+	});
 </script>
 <div class="col">
 	<div class="caja">
@@ -146,13 +171,13 @@
 				<div class="nombre">
 					<div class="row d-flex justify-content-around">
 						<div class="col">
-							<h2 th:text="${usuario.loginName}"></h2>
+							<h2 class="name" th:text="${usuario.loginName}"></h2>
 						</div>
 						<div class="follow my-2 ml-auto">
-							<span class="seguimiento mx-auto"><b>Seguidores [<span id="seguidores"
-									th:text="${seguidores}"></span>]
-							</b></span> <span class="seguimiento mx-auto"><b>Seguidos [<span id="seguidos"
-									th:text="${seguidos}"></span>]
+							<span class="seguimiento mx-auto"><b>Seguidores [<span
+									id="seguidores" th:text="${seguidores}"></span>]
+							</b></span> <span class="seguimiento mx-auto"><b>Seguidos [<span
+									id="seguidos" th:text="${seguidos}"></span>]
 							</b></span>
 						</div>
 					</div>
@@ -169,8 +194,7 @@
 					<div th:if="${propietario} == null"
 						class="d-flex justify-content-between my-4">
 						<div class="col contacto" th:if="${seguido} != null">
-							<button type="button"
-								class="ml-auto  btn-block btn btn-danger"
+							<button type="button" class="ml-auto  btn-block btn btn-danger"
 								onclick="seguir(this)">Dejar de seguir</button>
 						</div>
 						<div class="col contacto" th:unless="${seguido} != null">
@@ -198,33 +222,24 @@
 			</div>
 		</div>
 		<div class="row d-flex justify-content-center ">
-		<div class="p-4 text">
-		<i class="bi bi-file-text-fill"></i>
-		</div>
-		<div class="p-4 image">
-		<i class="bi bi-image-fill"></i>
-		</div>
-		<div class="p-4 music">
-		<i class="bi bi-file-music-fill"></i>
-		</div>
-		<div class="p-4 video">
-		<i class="bi bi-camera-video-fill"></i>
-		</div>
-		</div>
-		<div class="cuerpo">
-
-			<div class="row d-flex justify-content-around ">
-				<div th:each="publicacion: ${publicaciones}">
-					<div class="col-4 publicacion">
-						<img width="200px" height="200px"
-							th:src="@{${publicacion.contenido}}">
-					</div>
-				</div>
-
-			<div class="row d-flex justify-content-around" id="datos">
-
+			<div class="p-3 mr-4 text ">
+				<i class="bi bi-file-text-fill"></i>
+			</div>
+			<div class="p-3 mr-4 image">
+				<i class="bi bi-image-fill"></i>
+			</div>
+			<div class="p-3 mr-4 music">
+				<i class="bi bi-file-music-fill"></i>
+			</div>
+			<div class="p-3 video">
+				<i class="bi bi-camera-video-fill"></i>
 			</div>
 		</div>
+		<div class="cuerpo " onload="carga()">
+
+
+
+			<div class="row d-flex justify-content-around" id="datos"></div>
+		</div>
 	</div>
-</div>
 </div>

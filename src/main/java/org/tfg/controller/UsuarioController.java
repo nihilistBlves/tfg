@@ -4,19 +4,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
-
 import javax.servlet.http.HttpSession;
-
-import org.apache.tomcat.jni.File;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -33,7 +26,6 @@ import org.tfg.domain.Comentario;
 import org.tfg.domain.Publicacion;
 import org.tfg.domain.Seguimiento;
 import org.tfg.domain.Usuario;
-import org.tfg.domain.Wave;
 import org.tfg.exception.DangerException;
 import org.tfg.helper.H;
 import org.tfg.helper.PRG;
@@ -164,7 +156,7 @@ public class UsuarioController {
 
 				if (p.getDescripcion() != null) {
 
-					publicacionesTipo += "<div class='col-4 publicacion'>" + "	<p>" + p.getDescripcion() + "</p>"
+					publicacionesTipo += "<div class=' publicacion bg-white ' width='200px' heigth='800px'>" + "	<p class='text-dark text-center text-uppercase font-weight-bold publicacion-text'>" + p.getDescripcion() + "</p>"
 							+ "</div>";
 				}
 
@@ -180,7 +172,8 @@ public class UsuarioController {
 
 				if (p.getTipoContenido().equals(tipo)) {
 
-					publicacionesTipo += "<img class='card-img feed-img' src=" + p.getContenido() + ">";
+					publicacionesTipo += "<div class='' width='200px' heigth='800px'>" +"<img class='publicacion-img' src=" + p.getContenido() + ">"
+							+ "</div>";
 				}
 
 			}
@@ -193,7 +186,10 @@ public class UsuarioController {
 
 				if (p.getTipoContenido().equals(tipo)) {
 
-					publicacionesTipo += "<audio src=" + p.getContenido() + " controls type='audio/mpeg'>" + "</audio>";
+
+					publicacionesTipo += "<div class='publicacion' width='200px' heigth='800px'>" +"<audio src=" + p.getContenido() + " controls type='audio/mpeg'>"
+					+"</audio>" + "</div>";
+
 				}
 
 			}
@@ -206,8 +202,10 @@ public class UsuarioController {
 
 				if (p.getTipoContenido().equals(tipo)) {
 
-					publicacionesTipo += "<video width='500px' height='300px' controls>" + "<source src="
-							+ p.getContenido() + " type='video/mp4' />" + "</video>";
+
+					publicacionesTipo += "<div class='' width='200px' heigth='800px'>" + "<video class='publicacion-video'  controls>"+
+					"<source src="+p.getContenido()+" type='video/mp4' />"+ "</video>" + "</div>";
+
 				}
 
 			}

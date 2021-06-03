@@ -31,23 +31,61 @@
 	width: 100%;
 }
 
-.publicacion {
-	margin-bottom: 20px;
-}
-
 .contacto {
 	padding: 4px;
 }
-.bi-file-text-fill{
-	font-size:80px;
+.bi-file-text-fill,.bi-image-fill,.bi-file-music-fill,.bi-camera-video-fill{
+	font-size:300%;
 }
-.bi-image-fill{
-	font-size:80px;
+.bi-file-text-fill:hover,.bi-image-fill:hover,.bi-file-music-fill:hover,.bi-camera-video-fill:hover{
+	color:#f90d4e;
 }
-.bi-file-music-fill{
-	font-size:80px;
+
+.publicacion {
+	margin-bottom: 20px;
+	padding:10px;
+  	box-shadow: 10px 5px 5px rgba(13, 13, 12, 0.36);
+	overflow-y:auto;
+}
+
+
+.publicacion::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.publicacion::-webkit-scrollbar:vertical {
+    width:10px;
+}
+
+.publicacion::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
+    display: none;
+} 
+
+.publicacion::-webkit-scrollbar:horizontal {
+    height: 10px;
+}
+
+.publicacion::-webkit-scrollbar-thumb {
+    background-color: rgba(97, 97, 94, 0.40);
+    border-radius: 20px;
+    border: 2px solid #f1f2f3;
+}
+
+.publicacion::-webkit-scrollbar-track {
+    border-radius: 10px;  
+}
+
+
+.publicacion-text,.publicacion-img,.publicacion-video{
+		
+	width:300px;
+	height:300px;
+}
+.text,.image,.music,.video{
+	border-radius:22px 22px 0px 0px;
+	background-color:gainsboro;
 
 }
-.bi-camera-video-fill{
-	font-size:80px;
+.cuerpo{
+	margin-top:0;
 }

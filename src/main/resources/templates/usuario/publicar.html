@@ -7,7 +7,11 @@
 						<div class="form-group">
 							<h4>Introduzca el texto de la publicación</h4>
 							<textarea class="form-control" id="mensaje" name="mensaje"
-								rows="18" cols="2" placeholder="Escriba aquí "></textarea>
+								rows="18" cols="2" placeholder="Escriba aquí "
+								onkeyup="validarLimite(this)"></textarea>
+							<div class="row  p--1 d-flex justify-content-end">
+								<span class=" contador ">0/150</span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -22,8 +26,7 @@
 									</div>
 									<div class="box-tools pull-right">
 										<button type="button"
-											class="btn btn-danger btn-xs remove-preview">
-											Borrar</button>
+											class="btn btn-danger btn-xs remove-preview">Borrar</button>
 									</div>
 								</div>
 								<div class="box-body"></div>
