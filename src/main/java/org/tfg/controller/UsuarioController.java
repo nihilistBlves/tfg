@@ -57,7 +57,7 @@ public class UsuarioController {
 
 	@Autowired
 	private WaveRepository waveRepository;
-	
+
 	@Autowired
 	private ComentarioRepository comentarioRepository;
 
@@ -71,11 +71,14 @@ public class UsuarioController {
 			}
 
 			Usuario usuario = (Usuario) s.getAttribute("userLogged");
-			
-			ArrayList<Publicacion> publicacionesSeguidos = (ArrayList<Publicacion>) publicacionRepository.feedDelUsuarioLogeado(usuario.getId());
-			Collections.sort(publicacionesSeguidos, Collections.reverseOrder());
 
-			m.put("waves", waveRepository.findAll());
+			ArrayList<Publicacion> publicacionesSeguidos = (ArrayList<Publicacion>) publicacionRepository
+					.feedDelUsuarioLogeado(usuario.getId());
+			Collections.sort(publicacionesSeguidos, Collections.reverseOrder());
+			
+			Long[] publicacionesWavedByUserLogged = waveRepository.idsPublicacionWavedByUser(usuario.getId());
+
+			m.put("publicacionesWaved", publicacionesWavedByUserLogged);
 			m.put("publicaciones", publicacionesSeguidos);
 			m.put("view", "usuario/feed");
 			return "_t/frameFeed";
@@ -111,28 +114,26 @@ public class UsuarioController {
 			return "redirect:/feed";
 		} else {
 
-			
 			H.mPut(m, s);
-
 
 			Usuario usuarioCargado = usuarioRepository.getByLoginName(username);
 
-			Collection<Long> seguidores = seguimientoRepository.findSeguidoresByIdUsuario(usuarioRepository.getByLoginName(username).getId());
-			Collection<Long> seguidos = seguimientoRepository.findSeguidosByIdUsuario(usuarioRepository.getByLoginName(username).getId());
-			
-			if(s.getAttribute("userLogged") != null) {
+			Collection<Long> seguidores = seguimientoRepository
+					.findSeguidoresByIdUsuario(usuarioRepository.getByLoginName(username).getId());
+			Collection<Long> seguidos = seguimientoRepository
+					.findSeguidosByIdUsuario(usuarioRepository.getByLoginName(username).getId());
+
+			if (s.getAttribute("userLogged") != null) {
 				if (seguidores.contains(((Usuario) s.getAttribute("userLogged")).getId())) {
 					m.put("seguido", true);
 				}
 			}
-
 
 			m.put("publicaciones", publicacionRepository.getByDuenioPublicacion(usuarioCargado));
 			m.put("usuario", usuarioRepository.getByLoginName(username));
 
 			m.put("seguidores", seguidores.size());
 			m.put("seguidos", seguidos.size());
-
 
 			if (s.getAttribute("userLogged") != null) {
 				if (username.equals(((Usuario) s.getAttribute("userLogged")).getLoginName())) {
@@ -149,8 +150,7 @@ public class UsuarioController {
 	@PostMapping("/tipoArchivo")
 	@ResponseBody
 	public String elegirArchivo(@RequestParam("tipo") String tipo, @RequestParam("nombre") String nombre) {
-		
-		
+
 		System.out.println(tipo);
 
 		String publicacionesTipo = "";
@@ -178,7 +178,7 @@ public class UsuarioController {
 
 			for (Publicacion p : publicaciones) {
 
-				if (p.getTipoContenido().equals(tipo) ) {
+				if (p.getTipoContenido().equals(tipo)) {
 
 					publicacionesTipo += "<img class='card-img feed-img' src=" + p.getContenido() + ">";
 				}
@@ -191,10 +191,9 @@ public class UsuarioController {
 
 			for (Publicacion p : publicaciones) {
 
-				if (p.getTipoContenido().equals(tipo) ) {
+				if (p.getTipoContenido().equals(tipo)) {
 
-					publicacionesTipo += "<audio src=" + p.getContenido() + " controls type='audio/mpeg'>"
-					+"</audio>";
+					publicacionesTipo += "<audio src=" + p.getContenido() + " controls type='audio/mpeg'>" + "</audio>";
 				}
 
 			}
@@ -205,11 +204,10 @@ public class UsuarioController {
 
 			for (Publicacion p : publicaciones) {
 
-				if (p.getTipoContenido().equals(tipo) ) {
+				if (p.getTipoContenido().equals(tipo)) {
 
-					publicacionesTipo +="<video width='500px' height='300px' controls>"+
-					"<source src="+p.getContenido()+" type='video/mp4' />"+
-				"</video>";
+					publicacionesTipo += "<video width='500px' height='300px' controls>" + "<source src="
+							+ p.getContenido() + " type='video/mp4' />" + "</video>";
 				}
 
 			}
@@ -227,15 +225,16 @@ public class UsuarioController {
 		nuevoSeguimiento.setSeguido(usuarioAlQueSeguir);
 		nuevoSeguimiento.setSeguidor((Usuario) s.getAttribute("userLogged"));
 		seguimientoRepository.save(nuevoSeguimiento);
-		return "redirect:/user/"+username;
+		return "redirect:/user/" + username;
 	}
-	
+
 	@PostMapping("/user/{loginName}/dejarDeSeguir")
 	public String postDejarDeSeguir(@PathVariable("loginName") String username, ModelMap m, HttpSession s) {
 		Usuario usuarioSeguido = usuarioRepository.getByLoginName(username);
-		Seguimiento seguimientoParaBorrar = seguimientoRepository.getBySeguidoAndSeguidor(usuarioSeguido, (Usuario) s.getAttribute("userLogged"));
+		Seguimiento seguimientoParaBorrar = seguimientoRepository.getBySeguidoAndSeguidor(usuarioSeguido,
+				(Usuario) s.getAttribute("userLogged"));
 		seguimientoRepository.delete(seguimientoParaBorrar);
-		return "redirect:/user/"+username;
+		return "redirect:/user/" + username;
 	}
 
 	// ===========================================================================
@@ -459,10 +458,10 @@ public class UsuarioController {
 
 //		 comprobamos si esta vacio o nulo
 		if (!originalFilename.equals("")) {
-			
+
 			extensionArchivo = originalFilename.substring(originalFilename.lastIndexOf("."));
 			nuevoNombreArchivo = nuevoNombreRandom + extensionArchivo;
-			
+
 			// comprobamos el tamaño del archivo en bytes y aqui 2MB
 			if (file.getSize() <= 2000000) {
 
@@ -600,40 +599,34 @@ public class UsuarioController {
 	// COMENTARIOS
 	// =========================================================================
 
-		
-		@PostMapping("crearComentario")
-		@Transactional
-		@ResponseBody
-		public String comentar(@RequestParam("comentario") String comentario, @RequestParam("idPublicacion") Long idPublicacion ,HttpSession s) {
-			
-			Publicacion publicacion =  publicacionRepository.getOne(idPublicacion);
-			Usuario usuario = (Usuario) s.getAttribute("userLogged");
-			Comentario coment = new Comentario();
-			
-			coment.setTexto(comentario);
-			coment.setPublicacionComentada(publicacion);
-			coment.setComentador(usuario);
-			comentarioRepository.save(coment);
-			
-			Collection <Comentario> comentarios=comentarioRepository.getByPublicacionComentada(publicacion);
-			
-			String allComentarios="";
-			for(Comentario c: comentarios) {
-				
-				allComentarios+="<div class='card'>"
-						+ "<div class='card-body'>"
-						+"<span class='userComent'>"
-						+"<img src='"+c.getComentador().getFotoPerfil()+"' class='fotoComent' />"
-						+c.getComentador().getLoginName()
-						+"</span>"
-						+ c.getTexto()
-						+"</div></div>";
-				
-			}
-			return allComentarios;
-			
-			//return "redirect:/feed";
+	@PostMapping("crearComentario")
+	@Transactional
+	@ResponseBody
+	public String comentar(@RequestParam("comentario") String comentario,
+			@RequestParam("idPublicacion") Long idPublicacion, HttpSession s) {
 
+		Publicacion publicacion = publicacionRepository.getOne(idPublicacion);
+		Usuario usuario = (Usuario) s.getAttribute("userLogged");
+		Comentario coment = new Comentario();
+
+		coment.setTexto(comentario);
+		coment.setPublicacionComentada(publicacion);
+		coment.setComentador(usuario);
+		comentarioRepository.save(coment);
+
+		Collection<Comentario> comentarios = comentarioRepository.getByPublicacionComentada(publicacion);
+
+		String allComentarios = "";
+		for (Comentario c : comentarios) {
+
+			allComentarios += "<div class='card'>" + "<div class='card-body'>" + "<span class='userComent'>"
+					+ "<img src='" + c.getComentador().getFotoPerfil() + "' class='fotoComent' />"
+					+ c.getComentador().getLoginName() + "</span>" + c.getTexto() + "</div></div>";
+
+		}
+		return allComentarios;
+
+		// return "redirect:/feed";
 
 		// return "redirect:/feed";
 	}

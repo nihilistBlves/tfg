@@ -1,32 +1,21 @@
 package org.tfg.controller;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.tfg.domain.Publicacion;
 import org.tfg.domain.Usuario;
 import org.tfg.domain.Wave;
 import org.tfg.repositories.PublicacionRepository;
-import org.tfg.repositories.UsuarioRepository;
 import org.tfg.repositories.WaveRepository;
 
 @Controller
 public class WaveController {
-
-	@Autowired
-	private UsuarioRepository usuarioRepository;
 
 	@Autowired
 	private PublicacionRepository publicacionRepository;
@@ -35,7 +24,7 @@ public class WaveController {
 	private WaveRepository waveRepository;
 
 	@PostMapping("/crearWave")
-	public String crearWave(@RequestParam("wave") Long idPublicacion, HttpSession s, ModelMap m) {
+	public String crearWave(@RequestParam("idPublicacion") Long idPublicacion, HttpSession s, ModelMap m) {
 
 		Usuario usuario = (Usuario) s.getAttribute("userLogged");
 		Publicacion publicacion = publicacionRepository.getById(idPublicacion);
@@ -44,39 +33,22 @@ public class WaveController {
 
 		wave.setDaWave(usuario);
 		wave.setPublicacionWaved(publicacion);
-
 		waveRepository.save(wave);
-
-		System.out.println(wave.getId());
-		// m.put("idWave", wave.getId());
+		publicacion.setCantidadWaves(publicacion.getCantidadWaves()+1);
+		publicacionRepository.save(publicacion);
 		return "redirect:/feed";
 
 	}
 
 	@PostMapping("/borrarWave")
 	@Transactional
-	public String borrarWave(@RequestParam("wave") Long idPublicacion, HttpSession s) {
+	public String borrarWave(@RequestParam("idPublicacion") Long idPublicacion, HttpSession s, ModelMap m) {
 
-		// waveRepository.deleteByPublicacionWavedId(idPublicacion);
-		// waveRepository.deleteById(idWave);
 		Publicacion publicacion = publicacionRepository.getById(idPublicacion);
 		waveRepository.deleteByDaWaveAndPublicacionWaved((Usuario) s.getAttribute("userLogged"), publicacion);
+		publicacion.setCantidadWaves(publicacion.getCantidadWaves()-1);
+		publicacionRepository.save(publicacion);
 		return "redirect:/feed";
-	}
-	
-	@PostMapping("/mostrarWaves")
-	@ResponseBody
-	public String wavesExistentes(@RequestParam("publicaciones")Long publicaciones, HttpSession s) {
-		
-		
-		Usuario usuario = (Usuario) s.getAttribute("userLogged");
-	
-		
-		Wave wave= waveRepository.wavesDados(publicaciones,usuario.getId()); 	
-		
-		
-		return "";
 	}
 
 }
-

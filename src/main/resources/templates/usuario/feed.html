@@ -6,17 +6,17 @@
 
 		objeto.text = "Leer menos";
 
-		objeto.onclick = function () {
+		objeto.onclick = function() {
 			objeto.parentNode.parentNode.children[1].style.height = "200px";
 			objeto.text = "Leer m�s";
-			objeto.onclick = function () {
-				leer(objeto)
+			objeto.onclick = function() {
+				leer(objeto);
 			};
 
 		};
 	}
 
-//Waves
+	//Waves
 
 	/*window.onload = function(){
 		
@@ -32,35 +32,40 @@
 	}*/
 
 	function wave(w) {
-
-		console.log(w.nextSibling.nextSibling.firstChild);
-		if (w.checked == true) {
-			w.nextSibling.nextSibling.firstChild.src = "./img/sub.png";
+		
+		var idPublicacion = w.id.slice(5,);
+		
+		if (w.style.color == "black") {
+			w.style.color = "#f90d4e";
+			w.previousSibling.innerText = parseInt(w.previousSibling.innerText)+1;
+			
 			var parametros = {
-				"wave": w.value
+				"idPublicacion" : idPublicacion,
 			}
-			$(document).ready(function () {
+
+			$(document).ready(function() {
 				$.ajax({
-					data: parametros, //datos que se envian a traves de ajax
-					url: '/crearWave', //archivo que recibe la peticion
-					type: 'post', //método de envio
+					data : parametros,
+					url : '/crearWave', //archivo que recibe la peticion
+					type : 'post', //método de envio
 
 				});
 			});
 
 		} else {
+			w.style.color = "black";
+			w.previousSibling.innerText = parseInt(w.previousSibling.innerText)-1;
 
-			w.nextSibling.nextSibling.firstChild.src = "./img/unsub.png";
 			var parametros = {
-				"wave": w.value,
-
+				"idPublicacion" : idPublicacion,
 			}
-			$(document).ready(function () {
+
+			$(document).ready(function() {
 				$.ajax({
-					data: parametros, //datos que se envian a traves de ajax
-					url: '/borrarWave', //archivo que recibe la peticion
-					type: 'post', //método de envio
-					
+					data : parametros, //datos que se envian a traves de ajax
+					url : '/borrarWave', //archivo que recibe la peticion
+					type : 'post', //método de envio
+
 				});
 			});
 
@@ -68,31 +73,33 @@
 
 	}
 
-//Comentarios
+	//Comentarios
 
 	function verComentarios(div) {
-		
+
 		var divReal = div.parentNode.parentNode.previousSibling.previousSibling;
 		console.log(divReal.children[0].getAttribute("value"));
-		var idPublicacion=divReal.children[0].getAttribute("value");
-		
-		if(divReal.style.display=="none"){
+		var idPublicacion = divReal.children[0].getAttribute("value");
+
+		if (divReal.style.display == "none") {
 			divReal.style.display = "block";
-			div.value="Ocultar comentarios";
-		}else{
+			div.value = "Ocultar comentarios";
+		} else {
 			divReal.style.display = "none";
-			div.value="Ver comentarios";
+			div.value = "Ver comentarios";
 		}
 
-		$(document).ready(function () {
+		$(document).ready(function() {
 
 			$.ajax({
-				data:{"idPublicacion":idPublicacion},
-				url: "/verComentarios",
-				type: "get",
-				success: function (comentarios) {
+				data : {
+					"idPublicacion" : idPublicacion,
+				},
+				url : "/verComentarios",
+				type : "get",
+				success : function(comentarios) {
 					console.log(comentarios);
-					divReal.innerHTML=comentarios;
+					divReal.innerHTML = comentarios;
 
 				}
 
@@ -103,115 +110,54 @@
 	function comentar(btn) {
 		var comentario = btn.previousSibling.previousSibling.previousSibling.previousSibling.value;
 		btn.previousSibling.previousSibling.previousSibling.previousSibling.value = "";
-		
+
 		var idPublicacion = btn.previousSibling.previousSibling.value;
-		
+
 		var divReal = btn.parentNode.parentNode.previousSibling.previousSibling;
 
-
 		var parametros = {
-			"comentario": comentario,
-			"idPublicacion": idPublicacion
+			"comentario" : comentario,
+			"idPublicacion" : idPublicacion
 		}
-		
-		$(document).ready(function () {
+
+		$(document).ready(function() {
 
 			$.ajax({
-				data: parametros,
-				url: "/crearComentario",
-				type: "post",
-				success: function (comentarios) {
+				data : parametros,
+				url : "/crearComentario",
+				type : "post",
+				success : function(comentarios) {
 					console.log(comentarios);
-					divReal.innerHTML=comentarios;
+					divReal.innerHTML = comentarios;
 
 				}
 
 			});
 		});
 
-
 	}
-	
-	/*function comprobarWaves(){
-		var arrayIdPublicaciones = document.getElementsByName("idPublicacionWave");
-		var data=[];
-		
-		for(var i=0; i<arrayIdPublicaciones.length; i++){
-			data[i]=arrayIdPublicaciones[i].getAttribute("value");
-			console.log(arrayIdPublicaciones[i].getAttribute("value"));
-			
-			
-		}
-		
-		for(var i in data){ console.log(data[i])}
-		
-		$(document).ready(function(){
-			
-			$.ajax({
-				data:{"publicaciones":data},
-				url:"/mostrarWaves",
-				type:"post",
-				success: function(){
-					
-				}
-			})
-			
-		})
-		
-	}*/
-	
-		function comprobarWaves(){
-		var arrayIdPublicaciones = document.getElementsByName("idPublicacionWave");
-		var valor=0;
-		
-		for(var i=0; i<arrayIdPublicaciones.length; i++){
-			console.log(arrayIdPublicaciones[i].getAttribute("value"));
-			valor=parseInt(arrayIdPublicaciones[i].getAttribute("value"));
-			
-			$(document).ready(function(){
-				var parametros={"publicaciones":valor};
-				console.log(parametros);
-			$.ajax({
-				data:parametros,
-				url:"/mostrarWaves",
-				type:"post",
-				success: function(q){
-					
-				}
-			})
-			
-		})
-			
-		}
-		
-	}
-	
-	window.onload = function(){
-		setTimeout(function(){
-		comprobarWaves();
-		},2000);
-		
-	}
-	
-	//Comentarios
 </script>
 <div class="col-lg">
 	<div id="centro" class=" justify-content-center align-items-center">
 		<!-- 			cargar publicaciones -->
 		<div th:each="publicacion: ${publicaciones}">
 			<div id="perfiles">
-				<div id="borde-perfil" class="d-flex justify-content-center align-items-center">
+				<div id="borde-perfil"
+					class="d-flex justify-content-center align-items-center">
 
-					<div class="card card-feed d-flex justify-content-center align-items-center">
+					<div
+						class="card card-feed d-flex justify-content-center align-items-center">
 
 
 						<!-- 				img solo desde static -->
 						<div th:if="${publicacion.tipoContenido}=='img'">
-							<img class="card-img feed-img" th:src="@{${publicacion.contenido}}">
+							<img class="card-img feed-img"
+								th:src="@{${publicacion.contenido}}">
 						</div>
 
 						<!-- 		Para video -->
-						<div th:if="${publicacion.tipoContenido}=='video'" class="card-film feed-film">
+						<div th:if="${publicacion.tipoContenido}=='video'"
+							class="card-film feed-film">
 							<video width="500px" height="300px" controls>
 								<source th:src="@{${publicacion.contenido}}" type="video/mp4" />
 							</video>
@@ -219,8 +165,10 @@
 
 
 
-						<div th:if="${publicacion.tipoContenido}=='audio'" class="card-audio feed-audio">
-							<audio th:src="@{${publicacion.contenido}}" controls type="audio/mpeg">
+						<div th:if="${publicacion.tipoContenido}=='audio'"
+							class="card-audio feed-audio">
+							<audio th:src="@{${publicacion.contenido}}" controls
+								type="audio/mpeg">
 							</audio>
 						</div>
 
@@ -228,39 +176,49 @@
 						<div class="col-md-12">
 							<div class="card-body feed-body">
 								<div class="card-tittle feed-tittle">
-									<img class="foto-perfil" th:src="@{${publicacion.duenioPublicacion.fotoPerfil}}">
-									<a th:href="@{/user/{loginName}(loginName=${publicacion.duenioPublicacion.loginName})}"><b th:text="${publicacion.duenioPublicacion.loginName}"></b></a>
-									<span class="text-muted float-right" id="fecha" th:text="${publicacion.fechaPublicacion.toLocalDate}"></span>
+									<img class="foto-perfil"
+										th:src="@{${publicacion.duenioPublicacion.fotoPerfil}}">
+									<a
+										th:href="@{/user/{loginName}(loginName=${publicacion.duenioPublicacion.loginName})}"><b
+										th:text="${publicacion.duenioPublicacion.loginName}"></b></a> <span
+										class="text-muted float-right" id="fecha"
+										th:text="${publicacion.fechaPublicacion.toLocalDate}"></span>
 								</div>
 								<div class="card-text feed-text">
-									<p th:id="${publicacion.id}" th:text="${publicacion.descripcion}"></p>
+									<p th:id="${publicacion.id}"
+										th:text="${publicacion.descripcion}"></p>
 								</div>
 								<div class="leer-mas">
 									<a class="leer" onclick="leer(this)">Leer m�s</a>
 								</div>
+
 								<div class="card-footer text-right">
 									<div class="icons">
-										<input type="checkbox" th:id="|wave-${publicacion.id}|"
-											th:value="${publicacion.id}" style="display: none;" onchange="wave(this)" />
-										<label th:for="|wave-${publicacion.id}|"><img src="./img/unsub.png" /></label>
+										<div th:if="${#arrays.contains(publicacionesWaved, publicacion.id)}">
+											<b th:text=${publicacion.cantidadWaves}></b><i th:id="|wave-${publicacion.id}|" style="color: #f90d4e;font-size: 2em;" class="bi bi-soundwave" role="button" onclick="wave(this)"></i>
+										</div>
+										<div th:unless="${#arrays.contains(publicacionesWaved, publicacion.id)}">
+											<b th:text=${publicacion.cantidadWaves}></b><i th:id="|wave-${publicacion.id}|" style="color: black;font-size: 2em;" class="bi bi-soundwave" role="button" onclick="wave(this)"></i>
+										</div>
 									</div>
-									
-									
+
+
 
 									<div th:id="|coment-${publicacion.id}|" class="cargaComentarios" style="display: none;">
-										<imput type="hidden" th:value="${publicacion.id}" name="idPublicacionWave"/>
+										<input type="hidden" th:value="${publicacion.id}"
+											name="idPublicacionWave" />
 									</div>
-									
+
 									<div class="form-group">
 										<div class="d-flex pt-4 comentarios">
 											<img class="foto-perfil col-2"
-												th:src="@{${session.userLogged.fotoPerfil}}">
-											<input type="text" class="form-control col-4" placeholder="Comentar"
-												name="comentario" id="comentario" />
-											<input type="hidden" th:value="${publicacion.id}" />
-											<input type="button" class="btn btn-info btn-sm" value="Comentar"
-												onClick="comentar(this)" />
-											<input type="button" class="btn btn-info btn-sm" value="Ver Comentarios"
+												th:src="@{${session.userLogged.fotoPerfil}}"> <input
+												type="text" class="form-control col-4"
+												placeholder="Comentar" name="comentario" id="comentario" />
+											<input type="hidden" th:value="${publicacion.id}" /> <input
+												type="button" class="btn btn-info btn-sm" value="Comentar"
+												onClick="comentar(this)" /> <input type="button"
+												class="btn btn-info btn-sm" value="Ver Comentarios"
 												onClick="verComentarios(this)" />
 										</div>
 									</div>

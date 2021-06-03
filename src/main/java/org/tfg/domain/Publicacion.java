@@ -23,6 +23,8 @@ public class Publicacion implements Comparable<Publicacion> {
 	private Long id;
 
 	private String contenido;
+	
+	private int cantidadWaves;
 
 	@Column(columnDefinition = "TEXT")
 	private String descripcion;
@@ -42,6 +44,7 @@ public class Publicacion implements Comparable<Publicacion> {
 		this.id = id;
 		this.contenido = contenido;
 		this.descripcion = descripcion;
+		this.cantidadWaves = 0;
 		this.fechaPublicacion = LocalDateTime.now();
 		this.tipoContenido = tipoContenido;
 		this.duenioPublicacion = duenioPublicacion;
@@ -51,6 +54,15 @@ public class Publicacion implements Comparable<Publicacion> {
 	public Publicacion() {
 		super();
 		this.fechaPublicacion = LocalDateTime.now();
+		this.cantidadWaves = 0;
+	}
+
+	public int getCantidadWaves() {
+		return cantidadWaves;
+	}
+
+	public void setCantidadWaves(int cantidadWaves) {
+		this.cantidadWaves = cantidadWaves;
 	}
 
 	public String getDescripcion() {

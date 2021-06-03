@@ -11,14 +11,15 @@ import org.tfg.domain.Usuario;
 import org.tfg.domain.Wave;
 
 @Repository
-public interface WaveRepository extends JpaRepository<Wave, Long>{
+public interface WaveRepository extends JpaRepository<Wave, Long> {
 
 	public Wave getById(Long id);
-	public Wave deleteByPublicacionWavedId(Long id);
-	public void deleteByDaWaveAndPublicacionWaved(Usuario attribute, Publicacion publicacion);
-	@Query(value = "SELECT * FROM wave WHERE wave.publicacion_waved_id = :idPublicacion AND wave.da_wave_id = :idUsuario"
-			+ "", nativeQuery = true)
-	public Wave wavesDados(@Param("idPublicacion") Long idPublicacion, @Param("idUsuario") Long idUsuario);
 
-	
+	public Wave deleteByPublicacionWavedId(Long id);
+
+	public void deleteByDaWaveAndPublicacionWaved(Usuario attribute, Publicacion publicacion);
+
+	@Query(value = "SELECT wave.publicacion_waved_id FROM wave WHERE wave.da_wave_id = :idUsuario", nativeQuery = true)
+	public Long[] idsPublicacionWavedByUser(@Param("idUsuario") Long idUsuario);
+
 }
