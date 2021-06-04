@@ -1,106 +1,133 @@
 
 <style>
 .box {
-  border-radius:22px;
-  border:2px solid orange;
-  background-color:transparent;
-  }
-#barra {
-	float: right;
-	top: -400px;
+	border-radius: 22px;
+	border: 2px solid orange;
+	background-color: transparent;
+}
+.busqueda{
+border:0;
+background:rgba(255, 255, 251, 1);
+
+}
+.busqueda:focus{
+outline:none;
+}
+.opciones{
+border-bottom:orange 1px solid;
+}
+.opcionesExplorar{
+	list-style:none;
 }
 
-#borde-perfil {
-	overflow: scroll;
-	overflow-x: hidden;
-	height: 480px;
+.opcionesExplorar>li{
+	margin-left:20%;
+	color:white;
+	
 }
+/* #barra { */
+/* 	float: right; */
+/* 	top: -400px; */
+/* } */
 
-#borde-perfil::-webkit-scrollbar {
-	width: 1em;
-}
+/* #borde-perfil { */
+/* 	overflow: scroll; */
+/* 	overflow-x: hidden; */
+/* 	height: 480px; */
+/* } */
 
-#borde-perfil::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	border-radius: 10px;
-}
+/* #borde-perfil::-webkit-scrollbar { */
+/* 	width: 1em; */
+/* } */
 
-#borde-perfil::-webkit-scrollbar-thumb {
-	background-color: rgb(252, 244, 246);
-	border-radius: 10px;
-}
+/* #borde-perfil::-webkit-scrollbar-track { */
+/* 	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
+/* 	border-radius: 10px; */
+/* } */
+
+/* #borde-perfil::-webkit-scrollbar-thumb { */
+/* 	background-color: rgb(252, 244, 246); */
+/* 	border-radius: 10px; */
+/* } */
 </style>
+<script type="text/javascript">
+	function buscar(obj) {
 
+		var busqueda = obj.value;
+
+		var datos = document.getElementById("recogidos");
+
+		var dato = {
+
+			busqueda : busqueda,
+			tipo : "usuario"
+		}
+		$.ajax({
+			data : dato,
+			url : '/buscar',
+			type : 'post',
+			success : function(busquedaFiltrada) {
+				console.log(busquedaFiltrada);
+				datos.innerHTML = busquedaFiltrada;
+			}
+
+		});
+
+	}
+</script>
 </head>
 <body>
 	<div class="container-fluid">
-	<div class="box my-3">
-		<div class=" row justify-content-center ">
-			<div class="col-3">
-				<div class="form-group  text-center">
-					<label class="text-white" for="ciudades">Ciudad</label> <select
-						class="form-control" id="ciudades">
-						<option>Madrid</option>
-						<option>Barcelona</option>
-						<option>Zaragoza</option>
-						<option>Segovia</option>
-						<option>Avila</option>
-					</select>
-				</div>
-			</div>
-			<div class="col-3">
-				<div class="form-group  text-center">
-					<label class="text-white" for="exampleFormControlSelect1">Instrumento</label> <select
-						class="form-control" id="exampleFormControlSelect1">
-						<option>Trompeta</option>
-						<option>Saxofon</option>
-						<option>Bateria</option>
-						<option>guitarra</option>
-						<option>Piano</option>
-					</select>
-				</div>
-			</div>
-		</div>
-		</div>
-		
-		
-		
-		<div id="centro" class=" mx-auto col-6">
-			<div class="card mb-3" style="max-width: 540px;">
-				<div class="row no-gutters">
-					<div class="col-md-4">
-						<img src="/img/user.jpg" class="card-img" alt="...">
+		<div class="box my-3">
+			<div class=" row justify-content-center ">
+				<div class="col-3">
+					<div class="form-group  text-center">
+						<label class="text-white" for="ciudades">Ciudad</label> <select
+							class="form-control" id="ciudades" data-style="btn-primary">
+							<option>Madrid</option>
+							<option>Barcelona</option>
+							<option>Zaragoza</option>
+							<option>Segovia</option>
+							<option>Avila</option>
+						</select>
 					</div>
-					<div class="col-md-8">
-						<div class="card-body">
-							<h5 class="card-title">Nombre</h5>
-							<p class="card-text">Texto </p>
-							<p class="card-text">
-								<small class="text-muted">Last updated 3 mins ago</small>
-							</p>
-						</div>
+				</div>
+				<div class="col-3">
+					<div class="form-group  text-center">
+						<label class="text-white" for="exampleFormControlSelect1">Instrumento</label>
+						<select class="form-control" id="exampleFormControlSelect1">
+							<option>Trompeta</option>
+							<option>Saxofon</option>
+							<option>Bateria</option>
+							<option>guitarra</option>
+							<option>Piano</option>
+						</select>
 					</div>
 				</div>
 			</div>
 		</div>
-		
-			<div id="centro" class=" mx-auto col-6">
-			<div class="card mb-3" style="max-width: 540px;">
-				<div class="row no-gutters">
-					<div class="col-md-4">
-						<img src="/img/user.jpg" class="card-img" alt="...">
-					</div>
-					<div class="col-md-8">
-						<div class="card-body">
-							<h5 class="card-title">Nombre</h5>
-							<p class="card-text">Texto </p>
-							<p class="card-text">
-								<small class="text-muted">Last updated 3 mins ago</small>
-							</p>
-						</div>
-					</div>
-				</div>
-			</div>
+
+		<div class="form-group  text-center d-flex ">
+			<input type="text" name="buscar" id="busqueda" class="busqueda" onkeyup="buscar(this)">
 		</div>
-		
+
+		<div class=" opciones">
+		<ul class="d-flex text-center opcionesExplorar">
+		<li >Usuarios</li>
+		<li >Publicaciones</li>
+		<li >Instrumentos</li>
+		</ul>
+		</div>
+
+
+
+		<div class="mt-5" id="recogidos"></div>
+
 	</div>
+	
+	
+	
+<!-- 	recursos css -->
+<!-- https://gradientbuttons.colorion.co/ -->
+<!-- https://onaircode.com/bootstrap-gradient-button-examples/ -->
+<!-- https://www.campusmvp.es/recursos/post/bootstrap-spinners-notificaciones-toast-e-interruptores.aspx -->
