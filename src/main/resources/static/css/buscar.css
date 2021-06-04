@@ -1,0 +1,72 @@
+
+.box {
+	border-radius: 22px;
+	border: 2px solid orange;
+	background-color: transparent;
+}
+
+.busqueda {
+	border: 0;
+	background: rgba(255, 255, 251, 1);
+}
+
+.busqueda:focus {
+	outline: none;
+}
+
+#menu, #subMenu {
+	border-bottom: orange 1px solid;
+}
+
+#opcionesExplorar, #subOpcionesExplorar {
+	list-style: none;
+	color: white;
+}
+.buscar-card{
+    background-color: rgba(255,255,255);
+    border:none;
+/*     width: 400px; */
+/*     height: 200px; */
+max-width: 540px;
+}
+.buscar-img{
+	width: 100%;
+    height: 100%;
+
+}
+.buscar-text{
+	 padding: 10px;
+    font-weight: bold;
+    font-size: 1rem;
+    height: 200px;
+   background-color: rgba(226, 231, 231, 0.349);
+   overflow: hidden;
+}
+.buscar-instrumentos{
+	
+}
+
+/* #barra { */
+/* 	float: right; */
+/* 	top: -400px; */
+/* } */
+
+/* #borde-perfil { */
+/* 	overflow: scroll; */
+/* 	overflow-x: hidden; */
+/* 	height: 480px; */
+/* } */
+
+/* #borde-perfil::-webkit-scrollbar { */
+/* 	width: 1em; */
+/* } */
+
+/* #borde-perfil::-webkit-scrollbar-track { */
+/* 	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
+/* 	border-radius: 10px; */
+/* } */
+
+/* #borde-perfil::-webkit-scrollbar-thumb { */
+/* 	background-color: rgb(252, 244, 246); */
+/* 	border-radius: 10px; */
+/* } */

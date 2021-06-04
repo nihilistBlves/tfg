@@ -23,43 +23,53 @@ public class BusquedaController {
 
 	@PostMapping("/buscar")
 	@ResponseBody
-	private String busqueda(@RequestParam("busqueda") String busqueda,@RequestParam("tipo") String tipo ) {
-		
-		
-		
+	private String busqueda(@RequestParam("busqueda") String busqueda, @RequestParam("tipo") String tipo) {
+
 		Collection<Usuario> usuarios = usuarioRepository.findUsuariosByLoginNameBusqueda(busqueda);
-		String usuariosEncontrados="";
-		
-		if(busqueda.length()!=0) {
-	
-		for( Usuario usuario : usuarios) {
-			
-			usuariosEncontrados+="<div id='centro' class=' mx-auto col-6'>"
-					+ "			<div class='card mb-3' style='max-width: 540px;'>"
-					+ "				<div class='row no-gutters\'>"
-					+ "					<div class='col-md-4'>"
-					+ "						<img src="+usuario.getFotoPerfil()+" class='card-img' alt=''>"
-					+ "					</div>\r\n"
-					+ "					<div class='col-md-8'>"
-					+ "						<div class='card-body'>"
-					+ "							<h5 class='card-title'>"+usuario.getLoginName()+"</h5>"
-					+ "							<p class='card-text d-block '>"+usuario.getDescripcionPerfil()+"</p>"
-					+ "							<p class='card-text'>"
-					+ "								<small class='text-muted'>"+"#Trompeta"+usuario.getInstrumentos()+"</small>"
-					+ "							</p>\r\n"
-					+ "						</div>\r\n"
-					+ "					</div>\r\n"
-					+ "				</div>\r\n"
-					+ "			</div>\r\n"
-					+ "		</div>";
-		}
-		
-		}else {
+		String usuariosEncontrados = "";
+
+		if (busqueda.length() != 0) {
+
+			for (Usuario usuario : usuarios) {
+
+				usuariosEncontrados +=  "<div class='d-block mx-auto card m-3 ' style='max-width: 540px;'>"
+				+ " <div class='row no-gutters'>"
+				+ "<div class='col-md-4'>"
+				+ " <img src="+usuario.getFotoPerfil()+" class='img-fluid buscar-img' alt='...'>"
+				+ " </div>"
+				   + " <div class='col-md-8'>"
+				   + " <div class='card-body'>"
+				   + " <h5 class='card-title'>"+usuario.getLoginName()+"</h5>"
+				   + "  <p class='card-text'>"+usuario.getDescripcionPerfil()+"</p>"
+				   + "  <p class='card-text'><small class='text-muted'>"+"trompeta"+usuario.getInstrumentos()+"</small></p>"
+				   + "  </div>"
+				   + " </div>"
+				+ "  </div>"
+				+ "</div>";
+//					
+//					
+//					
+//					+ "						<img src="+usuario.getFotoPerfil()+" class='card-img feed-img' alt=''>"
+//					+ "					<div class='col-8'>"
+//					+ "						<div class='card-body'>"
+//					+ "							<h5 class='card-title'>"+usuario.getLoginName()+"</h5>"
+//					+ "							<p class='buscar-text '>"+usuario.getDescripcionPerfil()+"</p>"
+//					+ "							<p class='card-text'>"
+//					+ "								<small class='text-muted'>"+"#Trompeta"+usuario.getInstrumentos()+"</small>"
+//					+ "							</p>"
+//					+ "						</div>\r\n"
+//					+ "					</div>\r\n"
+//					+ "				</div>\r\n"
+//					+ "			</div>\r\n"
+//					+ "		</div>";
+			}
+
+		} else {
 			return usuariosEncontrados = "";
 		}
 		return usuariosEncontrados;
 
-}
-	//instrumentos por input
-	//select desde tablas bdd que busquen usuaruios y publicaciones
+	}
+	// instrumentos por input
+	// select desde tablas bdd que busquen usuaruios y publicaciones
 }

@@ -1,133 +1,131 @@
 
-<style>
-.box {
-	border-radius: 22px;
-	border: 2px solid orange;
-	background-color: transparent;
-}
-.busqueda{
-border:0;
-background:rgba(255, 255, 251, 1);
-
-}
-.busqueda:focus{
-outline:none;
-}
-.opciones{
-border-bottom:orange 1px solid;
-}
-.opcionesExplorar{
-	list-style:none;
-}
-
-.opcionesExplorar>li{
-	margin-left:20%;
-	color:white;
-	
-}
-/* #barra { */
-/* 	float: right; */
-/* 	top: -400px; */
-/* } */
-
-/* #borde-perfil { */
-/* 	overflow: scroll; */
-/* 	overflow-x: hidden; */
-/* 	height: 480px; */
-/* } */
-
-/* #borde-perfil::-webkit-scrollbar { */
-/* 	width: 1em; */
-/* } */
-
-/* #borde-perfil::-webkit-scrollbar-track { */
-/* 	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
-/* 	border-radius: 10px; */
-/* } */
-
-/* #borde-perfil::-webkit-scrollbar-thumb { */
-/* 	background-color: rgb(252, 244, 246); */
-/* 	border-radius: 10px; */
-/* } */
-</style>
 <script type="text/javascript">
-	function buscar(obj) {
+// 	function buscar(obj) {
 
-		var busqueda = obj.value;
+// 		var busqueda = obj.value;
 
-		var datos = document.getElementById("recogidos");
+// 		var datos = document.getElementById("recogidos");
 
-		var dato = {
+// 		var dato = {
 
-			busqueda : busqueda,
-			tipo : "usuario"
-		}
-		$.ajax({
-			data : dato,
-			url : '/buscar',
-			type : 'post',
-			success : function(busquedaFiltrada) {
-				console.log(busquedaFiltrada);
-				datos.innerHTML = busquedaFiltrada;
+// 			busqueda : busqueda,
+// 			tipo : "usuario"
+// 		}
+// 		$.ajax({
+// 			data : dato,
+// 			url : '/buscar',
+// 			type : 'post',
+// 			success : function(busquedaFiltrada) {
+// 				console.log(busquedaFiltrada);
+// 				datos.innerHTML = busquedaFiltrada;
+// 			}
+
+// 		});
+
+// 	}
+
+	$(document).ready(function() {
+
+			$("#busqueda").keyup(function(){
+
+			var busqueda = document.getElementById("busqueda").value;
+
+			var datos = document.getElementById("recogidos");
+
+			var dato = {
+
+				busqueda : busqueda,
+				tipo : "usuario"
 			}
+			$.ajax({
+				data : dato,
+				url : '/buscar',
+				type : 'post',
+				success : function(busquedaFiltrada) {
+					console.log(busquedaFiltrada);
+					datos.innerHTML = busquedaFiltrada;		
+// 					$("#recogidos").animate({height: '300px', opacity: '0.4'}, "slow");
+
+				}
+
+			});
 
 		});
+		$("#subMenu").hide();
 
-	}
+		$("#publicaciones").click(function() {
+
+			$("#subMenu").fadeIn(2000);
+
+		});
+		
+	});
 </script>
 </head>
 <body>
 	<div class="container-fluid">
 		<div class="box my-3">
-			<div class=" row justify-content-center ">
-				<div class="col-3">
-					<div class="form-group  text-center">
-						<label class="text-white" for="ciudades">Ciudad</label> <select
-							class="form-control" id="ciudades" data-style="btn-primary">
-							<option>Madrid</option>
-							<option>Barcelona</option>
-							<option>Zaragoza</option>
-							<option>Segovia</option>
-							<option>Avila</option>
-						</select>
-					</div>
+			<div class=" row justify-content-center my-3 mb-0">
+				<div class="form-group  text-center d-flexbox ">
+				<label class="text-white">¿Que desea buscar?</label>
+					<input type="text" name="buscar" id="busqueda" class="form-control busqueda">
+					<!-- 			onkeyup="buscar(this)" -->
+
 				</div>
-				<div class="col-3">
-					<div class="form-group  text-center">
-						<label class="text-white" for="exampleFormControlSelect1">Instrumento</label>
-						<select class="form-control" id="exampleFormControlSelect1">
-							<option>Trompeta</option>
-							<option>Saxofon</option>
-							<option>Bateria</option>
-							<option>guitarra</option>
-							<option>Piano</option>
-						</select>
-					</div>
+			</div>
+			<div class=" row justify-content-center ">
+			<div class="col-3">
+				<div class="form-group  text-center">
+					<label class="text-white" for="ciudades">Ciudad</label> <select
+						class="form-control" id="ciudades" data-style="btn-primary">
+						<option>Madrid</option>
+						<option>Barcelona</option>
+						<option>Zaragoza</option>
+						<option>Segovia</option>
+						<option>Avila</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-3">
+				<div class="form-group  text-center">
+					<label class="text-white" for="exampleFormControlSelect1">Instrumento</label>
+					<select class="form-control" id="exampleFormControlSelect1">
+						<option>Trompeta</option>
+						<option>Saxofon</option>
+						<option>Bateria</option>
+						<option>guitarra</option>
+						<option>Piano</option>
+					</select>
 				</div>
 			</div>
 		</div>
-
-		<div class="form-group  text-center d-flex ">
-			<input type="text" name="buscar" id="busqueda" class="busqueda" onkeyup="buscar(this)">
-		</div>
-
-		<div class=" opciones">
-		<ul class="d-flex text-center opcionesExplorar">
-		<li >Usuarios</li>
-		<li >Publicaciones</li>
-		<li >Instrumentos</li>
-		</ul>
-		</div>
-
-
-
-		<div class="mt-5" id="recogidos"></div>
-
 	</div>
-	
-	
-	
-<!-- 	recursos css -->
-<!-- https://gradientbuttons.colorion.co/ -->
-<!-- https://onaircode.com/bootstrap-gradient-button-examples/ -->
-<!-- https://www.campusmvp.es/recursos/post/bootstrap-spinners-notificaciones-toast-e-interruptores.aspx -->
+
+	<div class="col" id="menu">
+		<ul class="d-flex justify-content-around text-center"
+			id="opcionesExplorar">
+			<li class="col-4" id="usuarios">Usuarios</li>
+			<li class="col-4" id="publicaciones">Publicaciones</li>
+			<li class="col-4" id="Instrumentos">Instrumentos</li>
+		</ul>
+	</div>
+	<div class="col" id="subMenu">
+		<ul class="d-flex justify-content-around " id="subOpcionesExplorar">
+			<li class="" id="fotos">Fotos</li>
+			<li class="" id="videos">Videos</li>
+			<li class="" id="audios">Audios</li>
+			<li class="" id="texto">Texto</li>
+		</ul>
+	</div>
+
+
+	<div class="mt-5 col" id="recogidos"></div>
+		
+	</div>
+
+
+
+	<!-- 	recursos css -->
+	<!-- https://gradientbuttons.colorion.co/ -->
+	<!-- https://onaircode.com/bootstrap-gradient-button-examples/ -->
+	<!-- https://www.campusmvp.es/recursos/post/bootstrap-spinners-notificaciones-toast-e-interruptores.aspx -->
