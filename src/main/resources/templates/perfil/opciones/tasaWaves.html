@@ -27,12 +27,36 @@ tspan{
 </style>
 <script>
 
-$(document).ready(function(){
+const fecha = new Date();
+const fin= fecha.getDate()+7;
+
+
 	
+	$(document).ready(function(){
+	$.ajax({
+		url: '/wavesMes', //archivo que recibe la peticion
+		type: 'get', //método de envio
+		success: function(datos){
+			var array = datos.split("-");
+			var wave=[];
 	
-	
+			for(var i in array){
+				wave.push(parseInt(array[i]));
+		
+			}
+			drawChart(wave);
+		}		
+		});	
 });
 
+
+
+
+
+function drawChart(wave){
+	
+	
+	console.log(wave);
 Highcharts.chart('container', {
 chart: {
         labels: {
@@ -57,13 +81,14 @@ chart: {
 
  xAxis: {
         //startOfWeek: 1,
-        type: 'datetime',
+        /*type: 'datetime',
 
         labels: {
             formatter: function () {
-                return Highcharts.dateFormat('%e. %b', this.value);
+                return Highcharts.dateFormat('%b \'%y', this.value);
             }
-        }
+        },*/
+        categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
     },
 
   legend: {
@@ -77,15 +102,18 @@ chart: {
       label: {
         connectorAllowed: false
       },
-      startOfWeek:1
-    }
+
+    },
+    
   },
+	
+	
 
       series: [{
-        data: [12,48,65,11,22,44,77],//WAVES POR SEMANA
+        data: wave,//WAVES POR SEMANA
        	name: 'Waves',//Nombre etiqueta
-        pointStart: Date.UTC(2021, 5, 1),//CONFIGURAR EL EMPIEZE
-        pointInterval: 24 * 3600 *1000 //CONFIGURAR RANGO
+        //pointStart: Date.UTC(fecha.getFullYear(), 0,1),//CONFIGURAR EL EMPIEZE
+        //pointInterval:12 * 30 * 24 * 3600 *1000 //CONFIGURAR RANGO
     }],
 
 /*
@@ -110,4 +138,5 @@ xAxis: {
   
 
 });
+}
 </script>
