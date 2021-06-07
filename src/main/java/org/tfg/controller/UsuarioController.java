@@ -38,6 +38,7 @@ import org.tfg.exception.DangerException;
 import org.tfg.helper.H;
 import org.tfg.helper.PRG;
 import org.tfg.repositories.ComentarioRepository;
+import org.tfg.repositories.InstrumentoRepository;
 import org.tfg.repositories.PublicacionRepository;
 import org.tfg.repositories.SeguimientoRepository;
 import org.tfg.repositories.UsuarioRepository;
@@ -48,6 +49,9 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+
+	@Autowired
+	private InstrumentoRepository instrumentoRepository;
 
 	@Autowired
 	private SeguimientoRepository seguimientoRepository;
@@ -75,7 +79,7 @@ public class UsuarioController {
 			ArrayList<Publicacion> publicacionesSeguidos = (ArrayList<Publicacion>) publicacionRepository
 					.feedDelUsuarioLogeado(usuario.getId());
 			Collections.sort(publicacionesSeguidos, Collections.reverseOrder());
-			
+
 			Long[] publicacionesWavedByUserLogged = waveRepository.idsPublicacionWavedByUser(usuario.getId());
 
 			m.put("publicacionesWaved", publicacionesWavedByUserLogged);
@@ -425,16 +429,16 @@ public class UsuarioController {
 	}
 
 	@GetMapping("/editarPerfil")
-	public String editarPerfil() {
-
+	public String editarPerfil(ModelMap m) {
+		m.put("instrumentos", instrumentoRepository.findAll());
 		return "perfil/opciones/editarPerfil";
 	}
 
 	@PostMapping("/editarPerfil")
 	public String editarPerfil(@RequestParam("file") MultipartFile file, RedirectAttributes attributes,
 			@RequestParam("nombre") String nombre, @RequestParam("apellidos") String apellidos,
-			@RequestParam("edad") String edad, @RequestParam("descripcion") String descripcion, HttpSession s)
-			throws IOException {
+			@RequestParam("edad") String edad, @RequestParam("descripcion") String descripcion,
+			@RequestParam("instrumentos") List<String> instrumentos, HttpSession s) throws IOException {
 
 		Usuario usuario = (Usuario) s.getAttribute("userLogged");
 		String originalFilename = file.getOriginalFilename().toLowerCase();
@@ -453,9 +457,13 @@ public class UsuarioController {
 			LocalDate date = LocalDate.parse(edad);
 			usuario.setFechaNacimiento(date);
 		}
-		if (descripcion != null)
+		if (descripcion != null) {
 			usuario.setDescripcionPerfil(descripcion);
-
+		}
+		if (!instrumentos.isEmpty()) {
+			usuario.setInstrumentos(instrumentoRepository.getInstrumentosByArray(instrumentos));
+		}
+		
 //		 comprobamos si esta vacio o nulo
 		if (!originalFilename.equals("")) {
 

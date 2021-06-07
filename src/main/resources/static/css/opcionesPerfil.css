@@ -1,35 +1,26 @@
+.opcionesPerfil {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
 
-.opcionesPerfil { 
+.opcion {
+	color: #FFFFFF;
+	background-color: #272636;
+}
 
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        
-     .opcion {
-       
+.opcion:hover {
+	color: #FFFFFF;
+	background-color: #272636;
+	border-left: white 4px solid;
+}
 
-            color: #FFFFFF;
-           
-            background-color: #272636;
-        }
-
-        .opcion:hover {
-        color: #FFFFFF;
-           
-            background-color: #272636;
-            border-left: white 4px solid;
-         
-        }
-
-        #opciones {
-/*             overflow: scroll; */
-/*             overflow-x: hidden; */
-            height: auto;
-            background-color:white;
-
-           
-        }
+#opciones {
+	/*             overflow: scroll; */
+	/*             overflow-x: hidden; */
+	height: auto;
+	background-color: white;
+}
 
 /*         #opciones::-webkit-scrollbar { */
 /*             width: 1em; */
@@ -44,14 +35,23 @@
 /*             background-color: rgba(221,221,221,0.6); */
 /*             border-radius: 10px; */
 /*         } */
-        .form-control{
-       	 border:none;
-        }
+.form-control {
+	border: none;
+}
 
-        .contador{
-            color:grey;
-            position:relative;
-			top:-40px;
-			left:8%;
-
-        }
+.contador {
+	color: grey;
+	position: relative;
+	top: -40px;
+	left: 8%;
+}
+.instrumentoLabel {
+	margin: 0.5em;
+	padding: 0.3em;
+	border: #f90d4e 0.1em solid;
+	border-radius: 0.3em;
+}
+.instrumentoLabel:hover {
+	background-color: #f90d4e;
+	color: white;
+}

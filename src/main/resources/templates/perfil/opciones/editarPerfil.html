@@ -3,13 +3,31 @@
 		var select = button.previousSibling.previousSibling;
 		var optionSeleccionada = select.options[select.selectedIndex].value;
 		select.remove(select.selectedIndex);
+
 		var nuevoInstrumentoAgregado = document.createElement("input");
 		nuevoInstrumentoAgregado.type = "checkbox";
 		nuevoInstrumentoAgregado.checked = true;
-		nuevoInstrumentoAgregado.name = "instrumentos[]";
+		nuevoInstrumentoAgregado.name = "instrumentos";
+		nuevoInstrumentoAgregado.id = optionSeleccionada;
 		nuevoInstrumentoAgregado.value = optionSeleccionada;
-		document.getElementById("botonAgregarInstrumento").after(nuevoInstrumentoAgregado);
-		
+		nuevoInstrumentoAgregado.hidden = "hidden";
+
+		var label = document.createElement("label");
+		label.htmlFor = optionSeleccionada;
+		label.className = "instrumentoLabel";
+		label.innerHTML = optionSeleccionada;
+		label.onclick = function() {
+			label.remove();
+			nuevoInstrumentoAgregado.remove();
+			var optionReset = document.createElement("option");
+			optionReset.value = optionSeleccionada;
+			optionReset.text = optionSeleccionada;
+			select.insertBefore(optionReset, select.options[0]);
+		};
+
+		document.getElementById("divInstrumentos").append(
+				nuevoInstrumentoAgregado);
+		document.getElementById(optionSeleccionada).after(label);
 	}
 </script>
 <div class="container d-flex justify-content-center">
@@ -69,6 +87,7 @@
 					</select> <input type="button" class="btn btn-outline-danger"
 						id="botonAgregarInstrumento" onclick="agregarInstrumento(this)"
 						value="+">
+					<div class="d-flexbox" id="divInstrumentos" style="height: auto;width: 25em;"></div>
 				</div>
 
 
