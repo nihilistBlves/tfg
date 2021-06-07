@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.tfg.domain.Publicacion;
 import org.tfg.domain.Usuario;
 import org.tfg.domain.Wave;
@@ -49,6 +51,41 @@ public class WaveController {
 		publicacion.setCantidadWaves(publicacion.getCantidadWaves()-1);
 		publicacionRepository.save(publicacion);
 		return "redirect:/feed";
+	}
+	
+	@GetMapping("/wavesMes")
+	@ResponseBody
+	public String wavesMes(HttpSession s) {
+		
+		Usuario usuario = (Usuario) s.getAttribute("userLogged");
+		
+		Long [] ene = waveRepository.idsPublicacionWavedByEne(usuario.getId());
+		Long [] feb = waveRepository.idsPublicacionWavedByFeb(usuario.getId());
+		Long [] mar = waveRepository.idsPublicacionWavedByMar(usuario.getId());
+		Long [] abr = waveRepository.idsPublicacionWavedByAbr(usuario.getId());
+		Long [] may = waveRepository.idsPublicacionWavedByMay(usuario.getId());
+		Long [] jun = waveRepository.idsPublicacionWavedByJun(usuario.getId());
+		Long [] jul = waveRepository.idsPublicacionWavedByJul(usuario.getId());
+		Long [] ago = waveRepository.idsPublicacionWavedByAgo(usuario.getId());
+		Long [] sep = waveRepository.idsPublicacionWavedBySep(usuario.getId());
+		Long [] oct = waveRepository.idsPublicacionWavedByOct(usuario.getId());
+		Long [] nov = waveRepository.idsPublicacionWavedByNov(usuario.getId());
+		Long [] dic = waveRepository.idsPublicacionWavedByDic(usuario.getId());
+		
+		String numWaves=ene.length+"-"
+		+feb.length+"-"
+		+mar.length+"-"
+		+abr.length+"-"
+		+may.length+"-"
+		+jun.length+"-"
+		+jul.length+"-"
+		+ago.length+"-"
+		+sep.length+"-"
+		+oct.length+"-"
+		+nov.length+"-"
+		+dic.length;
+		
+		return numWaves;
 	}
 
 }

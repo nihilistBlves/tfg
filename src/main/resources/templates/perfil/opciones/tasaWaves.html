@@ -1,1 +1,142 @@
-Aqui va el grafico con las tasas de waves
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<figure class="highcharts-figure">
+  <div id="container"></div>
+  
+</figure>
+<style>
+.highcharts-point, .highcharts-graph{
+	fill: #f90d4e !important;
+	stroke: #f90d4e !important;
+}
+
+.highcharts-tracker-line{
+	fill:#fff;
+}
+
+.highcharts-label-box{
+	
+	stroke:#f90d4e;
+}
+
+tspan{
+	fill:#f90d4e;
+}
+
+
+
+</style>
+<script>
+
+const fecha = new Date();
+const fin= fecha.getDate()+7;
+
+
+	
+	$(document).ready(function(){
+	$.ajax({
+		url: '/wavesMes', //archivo que recibe la peticion
+		type: 'get', //método de envio
+		success: function(datos){
+			var array = datos.split("-");
+			var wave=[];
+	
+			for(var i in array){
+				wave.push(parseInt(array[i]));
+		
+			}
+			drawChart(wave);
+		}		
+		});	
+});
+
+
+
+
+
+function drawChart(wave){
+	
+	
+	console.log(wave);
+Highcharts.chart('container', {
+chart: {
+        labels: {
+            style: {
+                color: '#f90d4e'
+            }
+        }
+    },
+  title: {
+    text: 'Tasa de mensual de waves'
+  },
+
+  subtitle: {
+    text: 'Aqui puedes ver tu tasa menusal de waves'
+  },
+
+  yAxis: {
+    title: {
+      text: 'Waves'
+    }
+  },
+
+ xAxis: {
+        //startOfWeek: 1,
+        /*type: 'datetime',
+
+        labels: {
+            formatter: function () {
+                return Highcharts.dateFormat('%b \'%y', this.value);
+            }
+        },*/
+        categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+    },
+
+  legend: {
+    layout: 'vertical',
+    align: 'right',
+    verticalAlign: 'middle'
+  },
+
+  plotOptions: {
+    series: {
+      label: {
+        connectorAllowed: false
+      },
+
+    },
+    
+  },
+	
+	
+
+      series: [{
+        data: wave,//WAVES POR SEMANA
+       	name: 'Waves',//Nombre etiqueta
+        //pointStart: Date.UTC(fecha.getFullYear(), 0,1),//CONFIGURAR EL EMPIEZE
+        //pointInterval:12 * 30 * 24 * 3600 *1000 //CONFIGURAR RANGO
+    }],
+
+/*
+xAxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    },
+*/
+  responsive: {
+    rules: [{
+      condition: {
+        maxWidth: 500
+      },
+      chartOptions: {
+        legend: {
+          layout: 'horizontal',
+          align: 'center',
+          verticalAlign: 'bottom'
+        }
+      }
+    }]
+  },
+  
+
+});
+}
+</script>
