@@ -22,6 +22,7 @@ import org.tfg.domain.VerificationToken;
 import org.tfg.events.EventoVerificacion;
 import org.tfg.exception.DangerException;
 import org.tfg.helper.H;
+import org.tfg.repositories.RolRepository;
 import org.tfg.repositories.UsuarioRepository;
 import org.tfg.repositories.VerificationTokenRepository;
 
@@ -30,6 +31,9 @@ public class AnonymousController {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private RolRepository rolRepository;
 
 	@Autowired
 	private ApplicationEventPublisher eventPublisher;
@@ -104,20 +108,17 @@ public class AnonymousController {
 
 		try {
 			if (usuarioRepository.getByLoginName(loginName) != null) {
-
 				H.setInfoModal("Error|El nombre de usuario introducido ya existe|btn-hover btn-red", s);
-
-
+				return "redirect:/";
+			} else if (loginName.isEmpty() || loginName.length() < 5 || loginName.length() > 25) {
+				H.setInfoModal("Error|El nombre de usuario debe contener de 5 a 25 caracteres|btn-hover btn-red", s);
 				return "redirect:/";
 			} else {
 				usuario.setLoginName(loginName);
 			}
 
-			if (!pass.equals(passConfirm)) {
-
+			if (!pass.equals(passConfirm) || pass.isEmpty() || passConfirm.isEmpty()) {
 				H.setInfoModal("Error|Las contraseñas no coinciden|btn-hover btn-red", s);
-
-
 				return "redirect:/";
 			} else {
 				BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -125,31 +126,34 @@ public class AnonymousController {
 			}
 
 			if (usuarioRepository.getByEmail(email) != null) {
-
-				H.setInfoModal("Error|El correo electrónico introducido ya está registrado|btn-hover btn-red", s);
-
-
+				H.setInfoModal("Error|El correo electrónico introducido ya está en uso|btn-hover btn-red", s);
+				return "redirect:/";
+			} else if (email.isEmpty()){
+				H.setInfoModal("Error|El correo electrónico introducido ya está en uso|btn-hover btn-red", s);
 				return "redirect:/";
 			} else {
 				usuario.setEmail(email);
 			}
-			// Añadir el rol a los usuarios/admin etc
-			// usuario.setRol();
+			usuario.setRol(rolRepository.getByTipo("auth"));
 
-			LocalDate fecha = LocalDate.parse(fNacimiento);
-
-			usuario.setFechaNacimiento(fecha);
+			if (!fNacimiento.isEmpty()) {
+				LocalDate fecha = LocalDate.parse(fNacimiento);
+				usuario.setFechaNacimiento(fecha);
+			} else {
+				H.setInfoModal("Error|La fecha de nacimiento no es válida|btn-hover btn-red", s);
+				return "redirect:/";
+			}
 
 			usuarioRepository.save(usuario);
 
 			String appUrl = request.getContextPath();
 
 			eventPublisher.publishEvent(new EventoVerificacion(usuario, request.getLocale(), appUrl));
+			
+			H.setInfoModal("Info|Te has registrado correctamente! Revisa tu bandeja de entrada para activar la cuenta antes de logear por primera vez|btn-hover btn-black", s);
 		} catch (Exception e) {
-			// TODO: handle exception
+			H.setInfoModal("Error|Ha ocurrido un error en el registro. Por favor vuelva a intentarlo.|btn-hover btn-red", s);
 		}
-		H.setInfoModal("Info|Te has registrado correctamente! Revisa tu bandeja de entrada para activar la cuenta antes de logear por primera vez|btn-hover btn-black", s);
-
 
 		return "redirect:/";
 	}

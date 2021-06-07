@@ -7,6 +7,6 @@ import org.tfg.domain.Rol;
 @Repository
 public interface RolRepository extends JpaRepository<Rol, Long> {
 	
-
+	public Rol getByTipo(String tipo);
 }
 

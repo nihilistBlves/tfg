@@ -186,9 +186,7 @@
 					</div>
 					<h4>Instrumentos</h4>
 					<div class=" my-auto w-auto p-3">
-						<p th:each="instrumento: ${usuario.instrumentos}">
-							<span class="text-break" th:text="${instrumento.nombre}"></span>
-						</p>
+						<label th:each="instrumento: ${usuario.instrumentos}" th:text="${instrumento.nombre}" class="instrumentoLabel"></label>
 
 					</div>
 					<div th:if="${propietario} == null"

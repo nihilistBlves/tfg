@@ -21,6 +21,11 @@ public class Instrumento {
 	@ManyToMany(cascade = CascadeType.ALL)
 	private Collection<Usuario> usuariosUsando;
 
+	public Instrumento() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public Instrumento(String nombre) {
 		super();
 		this.nombre = nombre;
