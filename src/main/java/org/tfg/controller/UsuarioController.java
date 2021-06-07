@@ -452,10 +452,10 @@ public class UsuarioController {
 			usuario.setApellidos(apellidos);
 		}
 
-		if (!edad.equals("")) {
-			LocalDate date = LocalDate.parse(edad);
-			usuario.setFechaNacimiento(date);
-		}
+//		if (!edad.equals("")) {
+//			LocalDate date = LocalDate.parse(edad);
+//			usuario.setFechaNacimiento(date);
+//		}
 		if (descripcion != null) {
 			usuario.setDescripcionPerfil(descripcion);
 		}

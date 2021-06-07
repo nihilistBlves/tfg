@@ -1,15 +1,15 @@
 package org.tfg.controller;
 
-import java.util.Collection;
 
+import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.tfg.domain.Publicacion;
+import org.tfg.domain.Ciudad;
 import org.tfg.domain.Usuario;
-import org.tfg.repositories.PublicacionRepository;
+import org.tfg.repositories.CiudadRepository;
 import org.tfg.repositories.UsuarioRepository;
 
 @Controller
@@ -19,16 +19,14 @@ public class BusquedaController {
 	private UsuarioRepository usuarioRepository;
 
 	@Autowired
-	private PublicacionRepository publicacionRepository;
-
+	private CiudadRepository ciudadRepository;
+	
 	@PostMapping("/buscar")
 	@ResponseBody
-	private String busqueda(@RequestParam("busqueda") String busqueda, @RequestParam("tipo") String tipo) {
+	private String busqueda(@RequestParam("busqueda") String busqueda, @RequestParam("tipo") String tipo,@RequestParam("id") String id) {
 
 		Collection<Usuario> usuarios = usuarioRepository.findUsuariosByLoginNameBusqueda(busqueda);
 		String usuariosEncontrados = "";
-
-		if (busqueda.length() != 0) {
 
 			if (tipo.equals("usuario")) {
 
@@ -43,30 +41,18 @@ public class BusquedaController {
 							+ "  <p class='card-text'><small class='text-muted'>" + "trompeta"
 							+ usuario.getInstrumentos() + "</small></p>" + "  </div>" + " </div>" + "  </div>"
 							+ "</div>";
-//					
-//					
-//					
-//					+ "						<img src="+usuario.getFotoPerfil()+" class='card-img feed-img' alt=''>"
-//					+ "					<div class='col-8'>"
-//					+ "						<div class='card-body'>"
-//					+ "							<h5 class='card-title'>"+usuario.getLoginName()+"</h5>"
-//					+ "							<p class='buscar-text '>"+usuario.getDescripcionPerfil()+"</p>"
-//					+ "							<p class='card-text'>"
-//					+ "								<small class='text-muted'>"+"#Trompeta"+usuario.getInstrumentos()+"</small>"
-//					+ "							</p>"
-//					+ "						</div>\r\n"
-//					+ "					</div>\r\n"
-//					+ "				</div>\r\n"
-//					+ "			</div>\r\n"
-//					+ "		</div>";
-				}
-			}
-				if (tipo.equals("ciudad")) {
 
+						}
+					return usuariosEncontrados;
+				}
+				if (tipo.equals("ciudad")) {
+					Long idParseado = Long.parseLong(id);
+
+					Ciudad ciudad = ciudadRepository.getOne(idParseado);
 					
+					Collection<Usuario> usuariosCiudad = usuarioRepository.findUsuarioByCiudad(ciudad);
 					
-					
-					for (Usuario usuario : usuarios) {
+					for (Usuario usuario : usuariosCiudad) {
 
 						usuariosEncontrados += "<div class='d-block mx-auto card m-3 ' style='max-width: 540px;'>"
 								+ " <div class='row no-gutters'>" + "<div class='col-md-4'>" + " <img src="
@@ -78,12 +64,17 @@ public class BusquedaController {
 								+ usuario.getInstrumentos() + "</small></p>" + "  </div>" + " </div>" + "  </div>"
 								+ "</div>";
 					}
+					
+					return usuariosEncontrados;
 				}
 				if (tipo.equals("instrumento")) {
 
+					Long idParseado = Long.parseLong(id);
+					
+					Collection<Usuario> usuariosInstrumentos = usuarioRepository.findUsuariosByIdInstrumento(idParseado);
 					
 					
-					for (Usuario usuario : usuarios) {
+					for (Usuario usuario : usuariosInstrumentos) {
 
 						usuariosEncontrados += "<div class='d-block mx-auto card m-3 ' style='max-width: 540px;'>"
 								+ " <div class='row no-gutters'>" + "<div class='col-md-4'>" + " <img src="
@@ -94,13 +85,12 @@ public class BusquedaController {
 								+ "  <p class='card-text'><small class='text-muted'>" + "trompeta"
 								+ usuario.getInstrumentos() + "</small></p>" + "  </div>" + " </div>" + "  </div>"
 								+ "</div>";
-					}
+						}
+									}
+				return usuariosEncontrados;
+			
+
 				}
-			} else {
-				return usuariosEncontrados = "";
-			}
-			return usuariosEncontrados;
+}
 
-		}
-
-	}
+		

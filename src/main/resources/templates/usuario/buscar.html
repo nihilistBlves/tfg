@@ -35,7 +35,8 @@
 			var dato = {
 
 				busqueda : busqueda,
-				tipo : "usuario"
+				tipo : "usuario",
+				id: ""
 			}
 			$.ajax({
 				data : dato,
@@ -52,18 +53,19 @@
 
 		});
 	
-			$("#ciudad").change(function(){
+			$("#ciudades").change(function(){
 				
-				var seleccion = document.getElementById("ciudad").value;
+				var seleccionCiudad = document.getElementById("ciudades").value;
 				
 				var datos = document.getElementById("recogidos");
 				
 				var dato = {
 
-						busqueda : busqueda,
-						tipo : "ciudad"
+						id : seleccionCiudad,
+						tipo : "ciudad",
+						busqueda:""
 					}
-				
+				console.log(seleccionCiudad);
 				$.ajax({
 					data : dato,
 					url : '/buscar',
@@ -78,18 +80,20 @@
 				});
 			});
 			
-	$("#instrumento").change(function(){
+	$("#instrumentos").change(function(){
 				
-				var seleccion = document.getElementById("instrumento").value;
+				var seleccionInstrumento = document.getElementById("instrumentos").value;
+				
 				
 				var datos = document.getElementById("recogidos");
 				
 				var dato = {
 
-						busqueda : busqueda,
-						tipo : "instrumento"
+						id : seleccionInstrumento,
+						tipo : "instrumento",
+						busqueda:""
 					}
-				
+				console.log(seleccionInstrumento);
 				$.ajax({
 					data : dato,
 					url : '/buscar',
@@ -122,16 +126,16 @@
 			<div class="col-3">
 				<div class="form-group  text-center">
 					<label class="text-white" for="ciudades">Ciudad</label>
-					 <select class="form-control" id="ciudad" data-style="btn-primary">
-						<option th:each="ciudad : ${ciudades}"  th:text="${ciudad.CiudadName}"></option>
+					 <select class="form-control" id="ciudades" name="ciudades" data-style="btn-primary">
+						<option th:each="ciudad : ${ciudades}"  th:text="${ciudad.CiudadName}" th:value="${ciudad.id}"></option>
 					</select>
 				</div>
 			</div>
 			<div class="col-3">
 				<div class="form-group  text-center">
 					<label class="text-white" for="exampleFormControlSelect1">Instrumento</label>
-					<select class="form-control" id="instrumento">
-						<option th:each="instrumento : ${instrumentos}"  th:text="${instrumento.nombre}"></option>
+					<select class="form-control" id="instrumentos" name="instrumentos">
+						<option th:each="instrumento : ${instrumentos}"  th:text="${instrumento.nombre}"  th:value="${instrumento.id}"></option>
 					</select>
 				</div>
 			</div>

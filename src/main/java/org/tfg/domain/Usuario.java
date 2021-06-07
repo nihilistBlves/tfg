@@ -35,6 +35,7 @@ public class Usuario {
 
 	private boolean enabled;
 
+
 	private String descripcionPerfil;
 	private String fotoPerfil;
 
@@ -49,7 +50,7 @@ public class Usuario {
 
 	public Usuario(String loginName, String email, String pass, String nombre, String apellidos,
 			LocalDate fechaNacimiento,boolean enabled, LocalDate fechaCreacion, String descripcionPerfil, String fotoPerfil,
-			Collection<Instrumento> instrumentos, Rol rol) {
+			Collection<Instrumento> instrumentos,Ciudad ciudad, Rol rol) {
 		super();
 		this.loginName = loginName;
 		this.email = email;
@@ -64,6 +65,7 @@ public class Usuario {
 		this.fotoPerfil = fotoPerfil;
 
 		this.instrumentos = instrumentos;
+		this.ciudad = ciudad;
 		this.rol = rol;
 	}
 

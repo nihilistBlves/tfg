@@ -19,6 +19,9 @@ public class Ciudad {
 	private String ciudadName;
 	
 
+
+
+
 	public Ciudad(String ciudadName) {
 		super();
 		this.ciudadName = ciudadName;
@@ -37,6 +40,16 @@ public class Ciudad {
 
 	public void setCiudadName(String ciudadName) {
 		this.ciudadName = ciudadName;
+	}
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	
