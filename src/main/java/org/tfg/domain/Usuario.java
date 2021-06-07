@@ -41,6 +41,9 @@ public class Usuario {
 	@ManyToOne
 	private Rol rol;
 	
+	@ManyToOne
+	private Ciudad ciudad;
+	
 	@ManyToMany(cascade = CascadeType.ALL)
 	private Collection<Instrumento> instrumentos;
 

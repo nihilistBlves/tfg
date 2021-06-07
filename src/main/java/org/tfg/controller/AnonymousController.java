@@ -1,6 +1,7 @@
 package org.tfg.controller;
 
 import java.io.File;
+
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -17,11 +18,14 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import org.tfg.domain.Usuario;
 import org.tfg.domain.VerificationToken;
 import org.tfg.events.EventoVerificacion;
 import org.tfg.exception.DangerException;
 import org.tfg.helper.H;
+import org.tfg.repositories.CiudadRepository;
+import org.tfg.repositories.InstrumentoRepository;
 import org.tfg.repositories.RolRepository;
 import org.tfg.repositories.UsuarioRepository;
 import org.tfg.repositories.VerificationTokenRepository;
@@ -40,7 +44,13 @@ public class AnonymousController {
 
 	@Autowired
 	private VerificationTokenRepository verificationTokenRepository;
+	
+	@Autowired
+	private CiudadRepository ciudadRepository;
 
+	@Autowired
+	private InstrumentoRepository instrumentoRepository;
+	
 	@GetMapping("/")
 	public String index(ModelMap m, HttpSession s) throws DangerException {
 		if (s.getAttribute("userLogged") != null) {
@@ -220,9 +230,15 @@ public class AnonymousController {
 	@GetMapping("/explorar")
 	public String explorar(ModelMap m) {
 		
+		m.put("ciudades", ciudadRepository.findAll());
+		m.put("instrumentos", instrumentoRepository.findAll());
+		
 		m.put("view", "usuario/buscar");
 		return "/_t/frameFeed";
 	}
+
+
+
 	
 
 }

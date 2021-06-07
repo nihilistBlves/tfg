@@ -7,9 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+import org.tfg.domain.Ciudad;
 import org.tfg.domain.Instrumento;
 import org.tfg.domain.Rol;
+import org.tfg.repositories.CiudadRepository;
 import org.tfg.repositories.InstrumentoRepository;
 import org.tfg.repositories.RolRepository;
 
@@ -21,6 +22,9 @@ public class TfgApplication implements CommandLineRunner {
 
 	@Autowired
 	RolRepository rolRepository;
+	
+	@Autowired
+	CiudadRepository ciudadRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(TfgApplication.class, args);
@@ -45,6 +49,19 @@ public class TfgApplication implements CommandLineRunner {
 			rolRepository.save(new Rol("admin"));
 		}
 
+		if(ciudadRepository.findAll().isEmpty()) {
+			
+			String [] ciudades = {"Madrid","Barcelona","Zaragoza","Sevilla","Málaga","Valencia"};
+			
+			List<Ciudad> listaCiudades = new ArrayList<Ciudad>();
+			for(int i =0; i< ciudades.length; i++) {
+				
+				Ciudad nuevaCiudad = new Ciudad(ciudades[i]);
+				listaCiudades.add(nuevaCiudad);
+			}
+			
+				ciudadRepository.saveAll(listaCiudades);
+		}
 	}
 
 }

@@ -51,13 +51,58 @@
 			});
 
 		});
-		$("#subMenu").hide();
+	
+			$("#ciudad").change(function(){
+				
+				var seleccion = document.getElementById("ciudad").value;
+				
+				var datos = document.getElementById("recogidos");
+				
+				var dato = {
 
-		$("#publicaciones").click(function() {
+						busqueda : busqueda,
+						tipo : "ciudad"
+					}
+				
+				$.ajax({
+					data : dato,
+					url : '/buscar',
+					type : 'post',
+					success : function(busquedaFiltrada) {
+						console.log(busquedaFiltrada);
+						datos.innerHTML = busquedaFiltrada;		
+	 					
 
-			$("#subMenu").fadeIn(2000);
+					}
 
-		});
+				});
+			});
+			
+	$("#instrumento").change(function(){
+				
+				var seleccion = document.getElementById("instrumento").value;
+				
+				var datos = document.getElementById("recogidos");
+				
+				var dato = {
+
+						busqueda : busqueda,
+						tipo : "instrumento"
+					}
+				
+				$.ajax({
+					data : dato,
+					url : '/buscar',
+					type : 'post',
+					success : function(busquedaFiltrada) {
+						console.log(busquedaFiltrada);
+						datos.innerHTML = busquedaFiltrada;		
+ 					
+
+					}
+
+				});
+			});
 		
 	});
 </script>
@@ -73,57 +118,49 @@
 
 				</div>
 			</div>
-			<div class=" row justify-content-center ">
+		<div class=" row justify-content-center ">
 			<div class="col-3">
 				<div class="form-group  text-center">
-					<label class="text-white" for="ciudades">Ciudad</label> <select
-						class="form-control" id="ciudades" data-style="btn-primary">
-						<option>Madrid</option>
-						<option>Barcelona</option>
-						<option>Zaragoza</option>
-						<option>Segovia</option>
-						<option>Avila</option>
+					<label class="text-white" for="ciudades">Ciudad</label>
+					 <select class="form-control" id="ciudad" data-style="btn-primary">
+						<option th:each="ciudad : ${ciudades}"  th:text="${ciudad.CiudadName}"></option>
 					</select>
 				</div>
 			</div>
 			<div class="col-3">
 				<div class="form-group  text-center">
 					<label class="text-white" for="exampleFormControlSelect1">Instrumento</label>
-					<select class="form-control" id="exampleFormControlSelect1">
-						<option>Trompeta</option>
-						<option>Saxofon</option>
-						<option>Bateria</option>
-						<option>guitarra</option>
-						<option>Piano</option>
+					<select class="form-control" id="instrumento">
+						<option th:each="instrumento : ${instrumentos}"  th:text="${instrumento.nombre}"></option>
 					</select>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="col" id="menu">
-		<ul class="d-flex justify-content-around text-center"
-			id="opcionesExplorar">
-			<li class="col-4" id="usuarios">Usuarios</li>
-			<li class="col-4" id="publicaciones">Publicaciones</li>
-			<li class="col-4" id="Instrumentos">Instrumentos</li>
-		</ul>
-	</div>
-	<div class="col" id="subMenu">
-		<ul class="d-flex justify-content-around " id="subOpcionesExplorar">
-			<li class="" id="fotos">Fotos</li>
-			<li class="" id="videos">Videos</li>
-			<li class="" id="audios">Audios</li>
-			<li class="" id="texto">Texto</li>
-		</ul>
-	</div>
+
+<!-- 	<div class="col" id="menu"> -->
+<!-- 		<ul class="d-flex justify-content-around text-center" -->
+<!-- 			id="opcionesExplorar"> -->
+<!-- 			<li class="col-4" id="usuarios">Usuarios</li> -->
+<!-- 			<li class="col-4" id="publicaciones">Publicaciones</li> -->
+<!-- 			<li class="col-4" id="Instrumentos">Instrumentos</li> -->
+<!-- 		</ul> -->
+<!-- 	</div> -->
+<!-- 	<div class="col" id="subMenu"> -->
+<!-- 		<ul class="d-flex justify-content-around " id="subOpcionesExplorar"> -->
+<!-- 			<li class="" id="fotos">Fotos</li> -->
+<!-- 			<li class="" id="videos">Videos</li> -->
+<!-- 			<li class="" id="audios">Audios</li> -->
+<!-- 			<li class="" id="texto">Texto</li> -->
+<!-- 		</ul> -->
+<!-- 	</div> -->
 
 
 	<div class="mt-5 col" id="recogidos"></div>
 		
 	</div>
 
-
+</div>
 
 	<!-- 	recursos css -->
 	<!-- https://gradientbuttons.colorion.co/ -->

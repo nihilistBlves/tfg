@@ -30,22 +30,19 @@ public class BusquedaController {
 
 		if (busqueda.length() != 0) {
 
-			for (Usuario usuario : usuarios) {
+			if (tipo.equals("usuario")) {
 
-				usuariosEncontrados +=  "<div class='d-block mx-auto card m-3 ' style='max-width: 540px;'>"
-				+ " <div class='row no-gutters'>"
-				+ "<div class='col-md-4'>"
-				+ " <img src="+usuario.getFotoPerfil()+" class='img-fluid buscar-img' alt='...'>"
-				+ " </div>"
-				   + " <div class='col-md-8'>"
-				   + " <div class='card-body'>"
-				   + " <h5 class='card-title'>"+usuario.getLoginName()+"</h5>"
-				   + "  <p class='card-text'>"+usuario.getDescripcionPerfil()+"</p>"
-				   + "  <p class='card-text'><small class='text-muted'>"+"trompeta"+usuario.getInstrumentos()+"</small></p>"
-				   + "  </div>"
-				   + " </div>"
-				+ "  </div>"
-				+ "</div>";
+				for (Usuario usuario : usuarios) {
+
+					usuariosEncontrados += "<div class='d-block mx-auto card m-3 ' style='max-width: 540px;'>"
+							+ " <div class='row no-gutters'>" + "<div class='col-md-4'>" + " <img src="
+							+ usuario.getFotoPerfil() + " class='img-fluid buscar-img' alt='...'>" + " </div>"
+							+ " <div class='col-md-8'>" + " <div class='card-body'>" + " <h5 class='card-title'>"
+							+ usuario.getLoginName() + "</h5>" + "  <p class='card-text'>"
+							+ usuario.getDescripcionPerfil() + "</p>"
+							+ "  <p class='card-text'><small class='text-muted'>" + "trompeta"
+							+ usuario.getInstrumentos() + "</small></p>" + "  </div>" + " </div>" + "  </div>"
+							+ "</div>";
 //					
 //					
 //					
@@ -62,14 +59,48 @@ public class BusquedaController {
 //					+ "				</div>\r\n"
 //					+ "			</div>\r\n"
 //					+ "		</div>";
+				}
 			}
+				if (tipo.equals("ciudad")) {
 
-		} else {
-			return usuariosEncontrados = "";
+					
+					
+					
+					for (Usuario usuario : usuarios) {
+
+						usuariosEncontrados += "<div class='d-block mx-auto card m-3 ' style='max-width: 540px;'>"
+								+ " <div class='row no-gutters'>" + "<div class='col-md-4'>" + " <img src="
+								+ usuario.getFotoPerfil() + " class='img-fluid buscar-img' alt='...'>" + " </div>"
+								+ " <div class='col-md-8'>" + " <div class='card-body'>" + " <h5 class='card-title'>"
+								+ usuario.getLoginName() + "</h5>" + "  <p class='card-text'>"
+								+ usuario.getDescripcionPerfil() + "</p>"
+								+ "  <p class='card-text'><small class='text-muted'>" + "trompeta"
+								+ usuario.getInstrumentos() + "</small></p>" + "  </div>" + " </div>" + "  </div>"
+								+ "</div>";
+					}
+				}
+				if (tipo.equals("instrumento")) {
+
+					
+					
+					for (Usuario usuario : usuarios) {
+
+						usuariosEncontrados += "<div class='d-block mx-auto card m-3 ' style='max-width: 540px;'>"
+								+ " <div class='row no-gutters'>" + "<div class='col-md-4'>" + " <img src="
+								+ usuario.getFotoPerfil() + " class='img-fluid buscar-img' alt='...'>" + " </div>"
+								+ " <div class='col-md-8'>" + " <div class='card-body'>" + " <h5 class='card-title'>"
+								+ usuario.getLoginName() + "</h5>" + "  <p class='card-text'>"
+								+ usuario.getDescripcionPerfil() + "</p>"
+								+ "  <p class='card-text'><small class='text-muted'>" + "trompeta"
+								+ usuario.getInstrumentos() + "</small></p>" + "  </div>" + " </div>" + "  </div>"
+								+ "</div>";
+					}
+				}
+			} else {
+				return usuariosEncontrados = "";
+			}
+			return usuariosEncontrados;
+
 		}
-		return usuariosEncontrados;
 
 	}
-	// instrumentos por input
-	// select desde tablas bdd que busquen usuaruios y publicaciones
-}
