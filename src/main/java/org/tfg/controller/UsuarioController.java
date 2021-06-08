@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.tfg.domain.Ciudad;
 import org.tfg.domain.Comentario;
 import org.tfg.domain.Publicacion;
 import org.tfg.domain.Seguimiento;
@@ -30,6 +31,7 @@ import org.tfg.domain.Usuario;
 import org.tfg.exception.DangerException;
 import org.tfg.helper.H;
 import org.tfg.helper.PRG;
+import org.tfg.repositories.CiudadRepository;
 import org.tfg.repositories.ComentarioRepository;
 import org.tfg.repositories.InstrumentoRepository;
 import org.tfg.repositories.PublicacionRepository;
@@ -57,7 +59,10 @@ public class UsuarioController {
 
 	@Autowired
 	private ComentarioRepository comentarioRepository;
-
+	
+	@Autowired
+	private CiudadRepository ciudadRepository;
+	
 	@GetMapping("/feed")
 	public String getFeed(ModelMap m, HttpSession s) {
 
@@ -155,11 +160,11 @@ public class UsuarioController {
 
 		Collection<Publicacion> publicaciones = publicacionRepository.getByDuenioPublicacion(usuario);
 
-		if (tipo.equals("texto")) {
+		if (tipo.equals("texto") ) {
 
 			for (Publicacion p : publicaciones) {
 
-				if (p.getDescripcion() != null) {
+				if (p.getTipoContenido().equals(tipo)) {
 
 					publicacionesTipo += "<div class=' publicacion bg-white ' width='200px' heigth='800px'>" + "	<p class='text-dark text-center text-uppercase font-weight-bold publicacion-text'>" + p.getDescripcion() + "</p>"
 							+ "</div>";
@@ -430,14 +435,15 @@ public class UsuarioController {
 	@GetMapping("/editarPerfil")
 	public String editarPerfil(ModelMap m) {
 		m.put("instrumentos", instrumentoRepository.findAll());
+		m.put("ciudades", ciudadRepository.findAll());
 		return "perfil/opciones/editarPerfil";
 	}
 
 	@PostMapping("/editarPerfil")
 	public String editarPerfil(@RequestParam("file") MultipartFile file, RedirectAttributes attributes,
 			@RequestParam("nombre") String nombre, @RequestParam("apellidos") String apellidos,
-			@RequestParam("edad") String edad, @RequestParam("descripcion") String descripcion,
-			@RequestParam("instrumentos") List<String> instrumentos, HttpSession s) throws IOException {
+			@RequestParam("edad") String edad,@RequestParam("idCiudad") Long idCiudad, @RequestParam("descripcion") String descripcion,
+			@RequestParam(value="instrumentos",required=false) List<String> instrumentos, HttpSession s) throws IOException {
 
 		Usuario usuario = (Usuario) s.getAttribute("userLogged");
 		String originalFilename = file.getOriginalFilename().toLowerCase();
@@ -452,14 +458,22 @@ public class UsuarioController {
 			usuario.setApellidos(apellidos);
 		}
 
-//		if (!edad.equals("")) {
-//			LocalDate date = LocalDate.parse(edad);
-//			usuario.setFechaNacimiento(date);
-//		}
+		if (!edad.equals("")) {
+			LocalDate date = LocalDate.parse(edad);
+			usuario.setFechaNacimiento(date);
+		}
+		
+		if (idCiudad  != null) {
+			
+			Ciudad ciudad = ciudadRepository.getOne(idCiudad);
+			
+			usuario.setCiudad(ciudad);
+		}
+		
 		if (descripcion != null) {
 			usuario.setDescripcionPerfil(descripcion);
 		}
-		if (!instrumentos.isEmpty()) {
+		if (instrumentos!= null) {
 			usuario.setInstrumentos(instrumentoRepository.getInstrumentosByArray(instrumentos));
 		}
 		
@@ -621,8 +635,10 @@ public class UsuarioController {
 		coment.setComentador(usuario);
 		comentarioRepository.save(coment);
 
-		Collection<Comentario> comentarios = comentarioRepository.getByPublicacionComentada(publicacion);
+		ArrayList<Comentario> comentarios = (ArrayList<Comentario>)comentarioRepository.getByPublicacionComentada(publicacion);
 
+		Collections.sort(comentarios,Collections.reverseOrder());
+		
 		String allComentarios = "";
 		for (Comentario c : comentarios) {
 

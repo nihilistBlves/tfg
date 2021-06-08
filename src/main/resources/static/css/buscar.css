@@ -14,14 +14,7 @@
 	outline: none;
 }
 
-#menu, #subMenu {
-	border-bottom: orange 1px solid;
-}
 
-#opcionesExplorar, #subOpcionesExplorar {
-	list-style: none;
-	color: white;
-}
 .buscar-card{
     background-color: rgba(255,255,255);
     border:none;
@@ -41,9 +34,6 @@ max-width: 540px;
     height: 200px;
    background-color: rgba(226, 231, 231, 0.349);
    overflow: hidden;
-}
-.buscar-instrumentos{
-	
 }
 
 /* #barra { */

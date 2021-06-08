@@ -32,10 +32,7 @@ public class Usuario {
 	private String apellidos;
 	private LocalDate fechaNacimiento;
 	private LocalDateTime fechaCreacion;
-
 	private boolean enabled;
-
-
 	private String descripcionPerfil;
 	private String fotoPerfil;
 
@@ -183,5 +180,11 @@ public class Usuario {
 		this.fotoPerfil = fotoPerfil;
 	}
 	
-	
+	public Ciudad getCiudad() {
+		return ciudad;
+	}
+
+	public void setCiudad(Ciudad ciudad) {
+		this.ciudad = ciudad;
+	}
 }

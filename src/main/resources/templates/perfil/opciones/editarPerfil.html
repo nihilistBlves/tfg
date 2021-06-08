@@ -67,8 +67,10 @@
 				</div>
 				
 				<div class="form-group p-2">
-					<label for="ciudad">Ciudad</label> <input type="date"
-						class="form-control" id="ciudad" name="edad">
+					<label for="ciudad">Ciudad</label>
+					 <select class="form-control select" id="ciudades" name="idCiudad" data-style="btn-primary">
+						<option class="options" th:each="ciudad : ${ciudades}"  th:text="${ciudad.CiudadName}" th:value="${ciudad.id}"></option>
+					</select>
 				</div>
 
 

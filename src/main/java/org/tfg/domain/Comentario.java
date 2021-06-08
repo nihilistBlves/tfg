@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Comentario {
+public class Comentario implements Comparable<Comentario>{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,6 +69,11 @@ public class Comentario {
 
 	public void setPublicacionComentada(Publicacion publicacionComentada) {
 		this.publicacionComentada = publicacionComentada;
+	}
+
+	@Override
+	public int compareTo(Comentario comentario) {		
+		return getFechaPublicacion().compareTo(comentario.getFechaPublicacion());
 	}
 	
 	

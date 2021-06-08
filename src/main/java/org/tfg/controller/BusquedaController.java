@@ -4,12 +4,15 @@ package org.tfg.controller;
 import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.tfg.domain.Ciudad;
 import org.tfg.domain.Usuario;
 import org.tfg.repositories.CiudadRepository;
+import org.tfg.repositories.InstrumentoRepository;
 import org.tfg.repositories.UsuarioRepository;
 
 @Controller
@@ -21,7 +24,21 @@ public class BusquedaController {
 	@Autowired
 	private CiudadRepository ciudadRepository;
 	
-	@PostMapping("/buscar")
+	@Autowired
+	private InstrumentoRepository instrumentoRepository;
+	
+	@GetMapping("/explorar")
+	public String explorar(ModelMap m) {
+		
+		m.put("ciudades", ciudadRepository.findAll());
+		m.put("instrumentos", instrumentoRepository.findAll());
+		
+		m.put("view", "usuario/buscar");
+		return "/_t/frameFeed";
+	}
+
+	
+	@PostMapping("/explorar")
 	@ResponseBody
 	private String busqueda(@RequestParam("busqueda") String busqueda, @RequestParam("tipo") String tipo,@RequestParam("id") String id) {
 

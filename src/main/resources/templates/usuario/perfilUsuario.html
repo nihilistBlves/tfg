@@ -174,11 +174,34 @@
 							<h2 class="name" th:text="${usuario.loginName}"></h2>
 						</div>
 						<div class="follow my-2 ml-auto">
-							<span class="seguimiento mx-auto"><b>Seguidores [<span
-									id="seguidores" th:text="${seguidores}"></span>]
-							</b></span> <span class="seguimiento mx-auto"><b>Seguidos [<span
-									id="seguidos" th:text="${seguidos}"></span>]
-							</b></span>
+							<span class="seguimiento mx-auto">
+							<b>Seguidores 
+							<span th:if="${seguidores}==0">
+							<span
+							class="badge badge-secondary" id="seguidores" th:text="${seguidores}">
+							</span>
+							</span>
+							<span th:unless="${seguidores}==0">
+							<span
+							class="badge badge-danger" id="seguidores" th:text="${seguidores}">
+							</span> 
+							</span>
+							</b>
+							</span>
+							 <span class="seguimiento mx-auto">
+							 <b>Seguidos
+							 <span th:if="${seguidos}==0">
+							  <span
+								class="badge badge-secondary"	id="seguidos" th:text="${seguidos}">
+								</span>
+								</span>
+								<span th:unless="${seguidos}==0">
+								<span
+								class="badge badge-danger"	id="seguidos" th:text="${seguidos}">
+								</span>
+								</span>
+							</b>
+							</span>
 						</div>
 					</div>
 					<div class="w-100 h-auto  p-3 ">

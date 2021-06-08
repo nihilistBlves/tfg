@@ -45,11 +45,6 @@ public class AnonymousController {
 	@Autowired
 	private VerificationTokenRepository verificationTokenRepository;
 	
-	@Autowired
-	private CiudadRepository ciudadRepository;
-
-	@Autowired
-	private InstrumentoRepository instrumentoRepository;
 	
 	@GetMapping("/")
 	public String index(ModelMap m, HttpSession s) throws DangerException {
@@ -227,15 +222,6 @@ public class AnonymousController {
 
 	}
 	
-	@GetMapping("/explorar")
-	public String explorar(ModelMap m) {
-		
-		m.put("ciudades", ciudadRepository.findAll());
-		m.put("instrumentos", instrumentoRepository.findAll());
-		
-		m.put("view", "usuario/buscar");
-		return "/_t/frameFeed";
-	}
 
 
 

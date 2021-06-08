@@ -1,20 +1,20 @@
 <script>
 	//falta que cuando se comente se carguen los comentarios
-	function leer(objeto) {
+// 	function leer(objeto) {
 
-		objeto.parentNode.parentNode.children[1].style.height = "auto";
+// 		objeto.parentNode.parentNode.children[1].style.height = "auto";
 
-		objeto.text = "Leer menos";
+// 		objeto.text = "Leer menos";
 
-		objeto.onclick = function() {
-			objeto.parentNode.parentNode.children[1].style.height = "200px";
-			objeto.text = "Leer m�s";
-			objeto.onclick = function() {
-				leer(objeto);
-			};
+// 		objeto.onclick = function() {
+// 			objeto.parentNode.parentNode.children[1].style.height = "200px";
+// 			objeto.text = "Leer m�s";
+// 			objeto.onclick = function() {
+// 				leer(objeto);
+// 			};
 
-		};
-	}
+// 		};
+// 	}
 
 	//Waves
 
@@ -35,8 +35,12 @@
 		
 		var idPublicacion = w.id.slice(5,);
 		
+		var badge= w.previousSibling;
+		
 		if (w.style.color == "black") {
 			w.style.color = "#f90d4e";
+			badge.removeAttribute("class");
+			badge.setAttribute("class", "badge badge-danger");
 			w.previousSibling.innerText = parseInt(w.previousSibling.innerText)+1;
 			
 			var parametros = {
@@ -54,6 +58,8 @@
 
 		} else {
 			w.style.color = "black";
+			badge.removeAttribute("class");
+			badge.setAttribute("class", "badge badge-secondary")
 			w.previousSibling.innerText = parseInt(w.previousSibling.innerText)-1;
 
 			var parametros = {
@@ -81,31 +87,38 @@
 		console.log(divReal.children[0].getAttribute("value"));
 		var idPublicacion = divReal.children[0].getAttribute("value");
 
-		if (divReal.style.display == "none") {
-			divReal.style.display = "block";
-			div.value = "Ocultar comentarios";
-		} else {
-			divReal.style.display = "none";
-			div.value = "Ver comentarios";
-		}
+// 		if (divReal.style.display == "none") {
+// 			divReal.style.display = "block";
+// 			div.value = "Ocultar comentarios";
+// 		} else {
+// 			divReal.style.display = "none";
+// 			div.value = "Ver comentarios";
+// 		}
 
-		$(document).ready(function() {
+		var parametros = {
+				
+				"idPublicacion" : idPublicacion
+			}
 
-			$.ajax({
-				data : {
-					"idPublicacion" : idPublicacion,
-				},
-				url : "/verComentarios",
-				type : "get",
-				success : function(comentarios) {
-					console.log(comentarios);
-					divReal.innerHTML = comentarios;
+			console.log(divReal);
+			
+			$(document).ready(function() {
 
-				}
+				$.ajax({
+					data : parametros,
+					url : "/verComentario",
+					type : "post",
+					success : function(comentarios) {
+						console.log(comentarios);
+						divReal.innerHTML = comentarios;
 
+					}
+
+				});
 			});
-		});
-	}
+
+		}
+	
 
 	function comentar(btn) {
 		var comentario = btn.previousSibling.previousSibling.previousSibling.previousSibling.value;
@@ -113,13 +126,15 @@
 
 		var idPublicacion = btn.previousSibling.previousSibling.value;
 
-		var divReal = btn.parentNode.parentNode.previousSibling.previousSibling;
+		var divReal = btn.parentNode.parentNode.lastElementChild;
 
 		var parametros = {
 			"comentario" : comentario,
 			"idPublicacion" : idPublicacion
 		}
 
+		console.log(divReal);
+		
 		$(document).ready(function() {
 
 			$.ajax({
@@ -136,6 +151,32 @@
 		});
 
 	}
+	
+	
+	
+	
+		
+	
+// 	$(document).ready(function() {
+
+// 		var idPublicacion = document.getElementsByClassName("comentarioss")[0];
+		
+// 		$.ajax({
+// 			data : {
+// 				"idPublicacion" : idPublicacion,
+// 			},
+// 			url : "/verComentarios",
+// 			type : "get",
+// 			success : function(comentarios) {
+// 				console.log(comentarios);
+// 				divReal.innerHTML = comentarios;
+
+// 			}
+
+// 		});
+
+// 	});
+
 </script>
 <div class="col-lg">
 	<div id="centro" class=" justify-content-center align-items-center">
@@ -175,52 +216,68 @@
 
 						<div class="col-md-12">
 							<div class="card-body feed-body">
-								<div class="card-tittle feed-tittle">
-									<img class="foto-perfil"
+								<div class="card-tittle feed-tittle p-0 mt-3">
+									<img class="foto-perfil col-5"
 										th:src="@{${publicacion.duenioPublicacion.fotoPerfil}}">
 									<a
 										th:href="@{/user/{loginName}(loginName=${publicacion.duenioPublicacion.loginName})}"><b
 										th:text="${publicacion.duenioPublicacion.loginName}"></b></a> <span
-										class="text-muted float-right" id="fecha"
+										class="text-muted float-right mt-2" id="fecha"
 										th:text="${publicacion.fechaPublicacion.toLocalDate}"></span>
 								</div>
 								<div class="card-text feed-text">
 									<p th:id="${publicacion.id}"
 										th:text="${publicacion.descripcion}"></p>
 								</div>
-								<div class="leer-mas">
-									<a class="leer" onclick="leer(this)">Leer m�s</a>
-								</div>
+<!-- 								<div class="leer-mas"> -->
+<!-- 									<a class="leer" onclick="leer(this)">Leer más</a> -->
+<!-- 								</div> -->
 
 								<div class="card-footer text-right">
 									<div class="icons">
-										<div th:if="${#arrays.contains(publicacionesWaved, publicacion.id)}">
-											<b th:text=${publicacion.cantidadWaves}></b><i th:id="|wave-${publicacion.id}|" style="color: #f90d4e;font-size: 2em;" class="bi bi-soundwave" role="button" onclick="wave(this)"></i>
+										<div
+											th:if="${#arrays.contains(publicacionesWaved, publicacion.id)}">
+											<b th:text=${publicacion.cantidadWaves} class="badge badge-secondary"></b><i
+												th:id="|wave-${publicacion.id}|"
+												style="color: #f90d4e; font-size: 2em;"
+												class="bi bi-soundwave" role="button" onclick="wave(this)"></i>
 										</div>
-										<div th:unless="${#arrays.contains(publicacionesWaved, publicacion.id)}">
-											<b th:text=${publicacion.cantidadWaves}></b><i th:id="|wave-${publicacion.id}|" style="color: black;font-size: 2em;" class="bi bi-soundwave" role="button" onclick="wave(this)"></i>
+										<div
+											th:unless="${#arrays.contains(publicacionesWaved, publicacion.id)}" >
+											<b th:text=${publicacion.cantidadWaves} class="badge badge-secondary"></b><i
+												th:id="|wave-${publicacion.id}|"
+												style="color: black; font-size: 2em;"
+												class="bi bi-soundwave" role="button" onclick="wave(this)"></i>
 										</div>
 									</div>
 
 
 
-									<div th:id="|coment-${publicacion.id}|" class="cargaComentarios" style="display: none;">
-										<input type="hidden" th:value="${publicacion.id}"
-											name="idPublicacionWave" />
-									</div>
+
 
 									<div class="form-group">
 										<div class="d-flex pt-4 comentarios">
 											<img class="foto-perfil col-2"
 												th:src="@{${session.userLogged.fotoPerfil}}"> <input
-												type="text" class="form-control col-4"
+												type="text" class="form-control col-7"
 												placeholder="Comentar" name="comentario" id="comentario" />
 											<input type="hidden" th:value="${publicacion.id}" /> <input
-												type="button" class="btn btn-info btn-sm" value="Comentar"
-												onClick="comentar(this)" /> <input type="button"
-												class="btn btn-info btn-sm" value="Ver Comentarios"
-												onClick="verComentarios(this)" />
-										</div>
+												type="button" class=" ml-4 btn-hover btn-red"
+												value="Comentar" onClick="comentar(this)" />
+
+<!-- 											<div th:id="|coment-${publicacion.id}|" -->
+<!-- 												class="cargaComentarios"> -->
+<!-- 												<input type="hidden" th:value="${publicacion.id}" -->
+<!-- 													name="idPublicacionWave" /> -->
+<!-- 											</div> -->
+											</div>
+											
+<!-- 											//hacer condicional para el tamaño -->
+											
+											<div class="comentarioss mt-3" onload="verComentarios(this)" style="height:200px;overflow-y:auto">
+											</div>
+
+										
 									</div>
 									<!--Comentarios -->
 
