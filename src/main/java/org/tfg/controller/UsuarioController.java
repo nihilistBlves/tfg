@@ -590,12 +590,49 @@ public class UsuarioController {
 		return "perfil/opciones/publicacionesFavoritas";
 	}
 
+	//=============================================================================
+	//================================EDITAR=PERFIL================================
+	//=============================================================================
 	@GetMapping("editarCuenta")
-	public String seleccionTipoCuenta() {
-
+	public String seleccionTipoCuenta(ModelMap m, HttpSession s) {
+		Usuario usuario = (Usuario) s.getAttribute("userLogged");
+		System.out.println(usuario.isTipoCuenta());
+		m.put("tipo",usuario.isTipoCuenta());
 		return "perfil/opciones/cuenta";
 	}
 
+	@GetMapping("cuentaPublica")
+	@Transactional
+	@ResponseBody
+	public String cambioPublica(HttpSession s) {
+		Usuario usuario = (Usuario) s.getAttribute("userLogged");
+		usuario.setTipoCuenta(false);
+		usuarioRepository.save(usuario);
+		
+		return "redirect: user/"+usuario.getLoginName()+"/opciones";
+	}
+	
+	@GetMapping("cuentaPrivada")
+	@Transactional
+	@ResponseBody
+	public String cambioPrivada(HttpSession s) {
+		Usuario usuario = (Usuario) s.getAttribute("userLogged");
+		usuario.setTipoCuenta(true);
+		usuarioRepository.save(usuario);
+		
+		return "redirect: user/"+usuario.getLoginName()+"/opciones";
+	}
+	
+	@GetMapping("cuentaEliminada")
+	public String eliminar(HttpSession s) {
+		
+
+		H.setInfoModal("Info|Se ha borrado el usuario correctamente|btn-hover btn-black", s);
+		usuarioRepository.delete((Usuario) s.getAttribute("userLogged"));
+		s.removeAttribute("userLogged");
+		return "redirect:/";
+	}
+	//======================================
 	@GetMapping("notificaciones")
 	public String notificaciones() {
 

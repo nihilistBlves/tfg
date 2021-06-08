@@ -34,7 +34,7 @@ public class Usuario {
 	private LocalDateTime fechaCreacion;
 
 	private boolean enabled;
-
+	private boolean tipoCuenta;
 
 	private String descripcionPerfil;
 	private String fotoPerfil;
@@ -49,7 +49,7 @@ public class Usuario {
 	private Collection<Instrumento> instrumentos;
 
 	public Usuario(String loginName, String email, String pass, String nombre, String apellidos,
-			LocalDate fechaNacimiento,boolean enabled, LocalDate fechaCreacion, String descripcionPerfil, String fotoPerfil,
+			LocalDate fechaNacimiento,boolean enabled,boolean tipoCuenta, LocalDate fechaCreacion, String descripcionPerfil, String fotoPerfil,
 			Collection<Instrumento> instrumentos,Ciudad ciudad, Rol rol) {
 		super();
 		this.loginName = loginName;
@@ -61,12 +61,21 @@ public class Usuario {
 
 		this.fechaCreacion = LocalDateTime.now();
 		this.enabled = false;
+		this.tipoCuenta= true;
 		this.descripcionPerfil = descripcionPerfil;
 		this.fotoPerfil = fotoPerfil;
 
 		this.instrumentos = instrumentos;
 		this.ciudad = ciudad;
 		this.rol = rol;
+	}
+
+	public boolean isTipoCuenta() {
+		return tipoCuenta;
+	}
+
+	public void setTipoCuenta(boolean tipoCuenta) {
+		this.tipoCuenta = tipoCuenta;
 	}
 
 	public Usuario() {
