@@ -2,6 +2,9 @@
 	aria-labelledby="loginModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
+<!-- 		<button type="button" class="close mt-3 col-2 ml-auto justify-content-center align-item-center" data-dismiss="modal" aria-label="Close"> -->
+<!--           <span aria-hidden="true">&times;</span> -->
+<!--         </button> -->
 			<form method="post" name="login" action="/login" novalidate>
 				<div class="row justify-content-center">
 					<div class="form-group col-10 grupo">
@@ -14,7 +17,7 @@
 					<div class="form-group col-10 grupo">
 						<label class="text-secondary" for="pass">Contrase&ntilde;a</label> <input
 							type="password" class="form-control inputs" name="password" id="passLog"
-							placeholder="Escriba su contrase�a..."> <span id="ver"
+							placeholder="Escriba su contrase�a..."> <span class="col-2 d-flex justify-content-start align-items-center iconos" id="ver"
 							onmouseover="ver(document.login.passLog)"
 							onmouseout="ocultar(document.login.passLog)"><i
 							class="bi bi-eye-fill"></i></span>

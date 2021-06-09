@@ -42,7 +42,7 @@ body{
     height: auto;
 }
 .feed-img{
-
+	max-width:300px;
     width: auto;
     height: 300px;
     margin-top: 10px;
@@ -57,7 +57,8 @@ body{
     margin-top: 0.4em;
 }
 .feed-body{
-  
+  	min-width:300px;
+  	max-width:550px;
     box-shadow:black;
     padding: 0px;
     
@@ -70,21 +71,28 @@ body{
    
 }
 .feed-text{
-   padding: 10px;
-    font-weight: bold;
-    font-size: 1rem;
-    height: 200px;
+   max-width:500px;
+/*    padding: 10px; */
+   font-weight: bold;
+   font-size: 1rem;
+   height: 200px;
    background-color: rgba(226, 231, 231, 0.349);
-   overflow: hidden;
+/*    overflow: hidden; */
 }
 .comentarios{
 	border-top: 2px solid #ffa000;
 	margin-top:5px;
+}.foto-post{
+	 width:15%;
+	 height:3em;
+	 border-radius: 50%;
+	 padding:0;
 }
 .foto-perfil{
-	width:100px;
-	 height:50px;
+	 width:4em;
+	 height:4em;
 	 border-radius: 50%;
+	 padding:0;
 }
 
 /*Cargar comentarios*/

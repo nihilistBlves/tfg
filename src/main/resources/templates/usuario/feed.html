@@ -84,59 +84,58 @@
 	function verComentarios() {
 
 		var divs = document.getElementsByClassName("comentarioss");
-		
-		//console.log(divs);
-		
-		for (var i = 0; i < divs.length; i++) {
+
+		for ( var i = 0; i < divs.length; i++) {
 		    
-			
 			var div = divs[i];
 			var idPublicacion= div.parentNode.children[0].children[2].value;
-			
-			
-			//console.log(div+"  "+idPublicacion);
 			var parametros = {
 					
 					"idPublicacion" : idPublicacion
 				}
+	
+		
+		
+		$(document).ready(function() {
 			
-// 				$(document).ready(function() {
-
-// 					$.ajax({
-// 						data : parametros,
-// 						url : "/verComentarios",
-// 						type : "GET",
-// 						success : function(comentarios) {
-// 							 div.value="";
-// 							 div.style.height="200px";
-// 					 		div.style.overflowY="auto";
-// 					 		div.innerHTML = comentarios;
-// 							console.log(comentarios);
-// 							div.innerHTML = comentarios;
-							
-// 							console.log(div);
-// 						}
-
-// 					});
-// 				});
-// 		}
-			
-			 $.ajax({
-				 type : 'GET',
-				 url : '/verComentarios',
-				 data : parametros,
-				 success : function (comentarios) {
+			$.ajax({
+				data : parametros,
+				url : "/verComentarios",
+				type : "GET",
+			success : function(comentarios) {
 					 div.value="";
 					 div.style.height="200px";
-					 div.style.overflowY="auto";
-					 div.innerHTML = comentarios;
-					 console.log(div);
-				 }
-				 });
+			 		div.style.overflowY="auto";
+			 		div.innerHTML = comentarios;
+					console.log(comentarios);
+					div.innerHTML = comentarios;
+					
+					console.log(div);
+				}
 
+			});
+			
+		});
 		}
-		
 	}
+		
+			
+// 			 $.ajax({
+// 				 type : 'GET',
+// 				 url : '/verComentarios',
+// 				 data : parametros,
+// 				 success : function (comentarios) {
+// 					 div.value="";
+// 					 div.style.height="200px";
+// 					 div.style.overflowY="auto";
+// 					 div.innerHTML = comentarios;
+// 					 console.log(div);
+// 				 }
+// 				 });
+
+		//}
+		
+	
 	function comentar(btn) {
 		var comentario = btn.previousSibling.previousSibling.previousSibling.previousSibling.value;
 		btn.previousSibling.previousSibling.previousSibling.previousSibling.value = "";
@@ -230,19 +229,19 @@
 						</div>
 
 
-						<div class="col-md-12">
+						<div class="row d-flex justify-content-center align-items-center">
 							<div class="card-body feed-body">
-								<div class="card-tittle feed-tittle p-0 mt-3">
-									<img class="foto-perfil col-5"
+								<div class="card-tittle feed-tittle p-0 mt-3 mb-1">
+									<img class="foto-post col-5"
 										th:src="@{${publicacion.duenioPublicacion.fotoPerfil}}">
 									<a
 										th:href="@{/user/{loginName}(loginName=${publicacion.duenioPublicacion.loginName})}"><b
-										th:text="${publicacion.duenioPublicacion.loginName}"></b></a> <span
-										class="text-muted float-right mt-2" id="fecha"
-										th:text="${publicacion.fechaPublicacion.toLocalDate}"></span>
+										th:text="${publicacion.duenioPublicacion.loginName}"></b></a> <small
+										class="text-muted float-right mt-3 " id="fecha"
+										th:text="${publicacion.fechaPublicacion.toLocalDate}"></small>
 								</div>
 								<div class="card-text feed-text">
-									<p th:id="${publicacion.id}"
+									<p class="text-break" th:id="${publicacion.id}"
 										th:text="${publicacion.descripcion}"></p>
 								</div>
 <!-- 								<div class="leer-mas"> -->
@@ -251,14 +250,14 @@
 
 								<div class="card-footer text-right d-flexbox">
 									<div class="icons">
-										<div
+										<div  class="row justify-content-end align-items-center"
 											th:if="${#arrays.contains(publicacionesWaved, publicacion.id)}">
 											<b th:text=${publicacion.cantidadWaves} class="badge badge-secondary"></b><i
 												th:id="|wave-${publicacion.id}|"
 												style="color: #f90d4e; font-size: 2em;"
 												class="bi bi-soundwave" role="button" onclick="wave(this)"></i>
 										</div>
-										<div
+										<div class="row justify-content-end align-items-center"
 											th:unless="${#arrays.contains(publicacionesWaved, publicacion.id)}" >
 											<b th:text=${publicacion.cantidadWaves} class="badge badge-secondary"></b><i
 												th:id="|wave-${publicacion.id}|"
@@ -267,14 +266,14 @@
 										</div>
 									</div>
 
-									<div class="form-group">
-										<div class="d-flex pt-4 comentarios">
+									<div class="form-group justify-content-end align-items-center">
+										<div class="d-flex justify-content-between pt-4 comentarios">
 											<img class="foto-perfil col-2"
 												th:src="@{${session.userLogged.fotoPerfil}}"> <input
-												type="text" class="form-control col-7"
+												type="text" class="form-control col-6"
 												placeholder="Comentar" name="comentario" id="comentario" />
 											<input type="hidden" th:value="${publicacion.id}" /> <input
-												type="button" class=" ml-4 btn-hover btn-red"
+												type="button" class=" btn-hover btn-red"
 												value="Comentar" onClick="comentar(this)" />
 
 <!-- 											<div th:id="|coment-${publicacion.id}|" -->
@@ -287,7 +286,7 @@
 <!-- 											//hacer condicional para el tamaño -->
 											
 											<div class="comentarioss mt-3 text-center" >
-												<b>No hay comentarios en esta publicación</b>
+												<span>No hay comentarios en esta publicación</span>
 											</div>
 
 										

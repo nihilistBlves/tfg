@@ -39,16 +39,15 @@ input,input:active{
     
     
 }
+.iconos{
+	margin-left:auto;
+}
 
 #ver{
-   border-radius: 15%;
-   border-color: solid black;
-   margin-top: -32px;
-   margin-left:310px;
+
    padding-bottom: 1px;
-   position: absolute;
-   top:80px;
-   left:50px;
+   position: relative;
+   top:-25px;
 
 
 }
