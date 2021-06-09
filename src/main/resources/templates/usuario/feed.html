@@ -81,44 +81,40 @@
 
 	//Comentarios
 
-	function verComentarios(div) {
+	function verComentarios() {
 
-		var divReal = div.parentNode.parentNode.previousSibling.previousSibling;
-		console.log(divReal.children[0].getAttribute("value"));
-		var idPublicacion = divReal.children[0].getAttribute("value");
-
-// 		if (divReal.style.display == "none") {
-// 			divReal.style.display = "block";
-// 			div.value = "Ocultar comentarios";
-// 		} else {
-// 			divReal.style.display = "none";
-// 			div.value = "Ver comentarios";
-// 		}
-
-		var parametros = {
-				
-				"idPublicacion" : idPublicacion
-			}
-
-			console.log(divReal);
+		var divs = document.getElementsByClassName("comentarioss");
+		
+		for (var i = 0; i < divs.length; i++) {
+		    
 			
-			$(document).ready(function() {
+			var div= divs[i];
+			var idPublicacion= div.parentNode.children[0].children[2].value;
+			
 
-				$.ajax({
-					data : parametros,
-					url : "/verComentario",
-					type : "post",
-					success : function(comentarios) {
-						console.log(comentarios);
-						divReal.innerHTML = comentarios;
+			console.log(div);
+			var parametros = {
+					
+					"idPublicacion" : idPublicacion
+				}
+			
+				$(document).ready(function() {
 
-					}
+					$.ajax({
+						data : parametros,
+						url : "/verComentarios",
+						type : "GET",
+						success : function(comentarios) {
+							console.log(comentarios);
+							div.innerHTML = comentarios;
 
+						}
+
+					});
 				});
-			});
 
 		}
-	
+		}
 
 	function comentar(btn) {
 		var comentario = btn.previousSibling.previousSibling.previousSibling.previousSibling.value;
@@ -152,8 +148,7 @@
 
 	}
 	
-	
-	
+      window.onload = verComentarios;
 	
 		
 	
@@ -274,7 +269,7 @@
 											
 <!-- 											//hacer condicional para el tamaño -->
 											
-											<div class="comentarioss mt-3" onload="verComentarios(this)" style="height:200px;overflow-y:auto">
+											<div class="comentarioss mt-3"  style="height:200px;overflow-y:auto">
 											</div>
 
 										
