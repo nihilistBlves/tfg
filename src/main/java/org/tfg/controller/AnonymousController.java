@@ -55,7 +55,7 @@ public class AnonymousController {
 				H.mPut(m, s);
 			}
 		}
-		return "/home/home";
+		return "home/home";
 	}
 
 	@GetMapping("/login")
@@ -99,7 +99,7 @@ public class AnonymousController {
 
 	@GetMapping("/registro")
 	public String registroGet() {
-		return "/home/registro";
+		return "home/registro";
 	}
 
 	@PostMapping("/registro")

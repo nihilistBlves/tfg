@@ -3,7 +3,8 @@ body{
     background-attachment: fixed;
 }
 #perfiles{
-    width: 40rem;
+    width: 100%;
+    max-width:40rem;
     height: 40rem;
     box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
     border-radius: 5px;
@@ -17,19 +18,19 @@ body{
 
 }
 
-#perfiles:before {
-    content: "";
-    position: absolute;
-    background: inherit;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    box-shadow: inset 0 0 2000px rgba(255, 255, 255, 0.5);
-    filter: blur(10px);
-    margin: -20px;
-  }
+/* #perfiles:before { */
+/*     content: ""; */
+/*     position: absolute; */
+/*     background: inherit; */
+/*     z-index: -1; */
+/*     top: 0; */
+/*     left: 0; */
+/*     right: 0; */
+/*     bottom: 0; */
+/*     box-shadow: inset 0 0 2000px rgba(255, 255, 255, 0.5); */
+/*     filter: blur(10px); */
+/*     margin: -20px; */
+/*   } */
 
 
 .card-feed{
@@ -103,4 +104,29 @@ body{
 	width:27px;
 	height:27px;
 	border-radius: 50%;
+}
+.comentarioss::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.comentarioss::-webkit-scrollbar:vertical {
+    width:10px;
+}
+
+.comentarioss::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
+    display: none;
+} 
+
+.comentarioss::-webkit-scrollbar:horizontal {
+    height: 10px;
+}
+
+.comentarioss::-webkit-scrollbar-thumb {
+    background-color: rgba(97, 97, 94, 0.40);
+    border-radius: 20px;
+    border: 2px solid #f1f2f3;
+}
+
+.comentarioss::-webkit-scrollbar-track {
+    border-radius: 10px;  
 }
