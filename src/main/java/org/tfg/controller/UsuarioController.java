@@ -437,7 +437,7 @@ public class UsuarioController {
 	public String editarPerfil(@RequestParam("file") MultipartFile file, RedirectAttributes attributes,
 			@RequestParam("nombre") String nombre, @RequestParam("apellidos") String apellidos,
 			@RequestParam("edad") String edad, @RequestParam("descripcion") String descripcion,
-			@RequestParam("instrumentos") List<String> instrumentos, HttpSession s) throws IOException {
+			@RequestParam(value = "instrumentos", required = false) List<String> instrumentos, HttpSession s) throws IOException {
 
 		Usuario usuario = (Usuario) s.getAttribute("userLogged");
 		String originalFilename = file.getOriginalFilename().toLowerCase();
@@ -459,7 +459,7 @@ public class UsuarioController {
 		if (descripcion != null) {
 			usuario.setDescripcionPerfil(descripcion);
 		}
-		if (!instrumentos.isEmpty()) {
+		if (!(instrumentos == null)) {
 			usuario.setInstrumentos(instrumentoRepository.getInstrumentosByArray(instrumentos));
 		}
 		
