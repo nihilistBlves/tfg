@@ -91,31 +91,42 @@
 			var div= divs[i];
 			var idPublicacion= div.parentNode.children[0].children[2].value;
 			
-
-			console.log(div);
+			
+			console.log(div+"  "+idPublicacion);
 			var parametros = {
 					
 					"idPublicacion" : idPublicacion
 				}
 			
-				$(document).ready(function() {
+// 				$(document).ready(function() {
 
-					$.ajax({
-						data : parametros,
-						url : "/verComentarios",
-						type : "GET",
-						success : function(comentarios) {
-							console.log(comentarios);
-							div.innerHTML = comentarios;
+// 					$.ajax({
+// 						data : parametros,
+// 						url : "/verComentarios",
+// 						type : "GET",
+// 						success : function(comentarios) {
+// 							console.log(comentarios);
+// 							div.innerHTML = comentarios;
+							
+// 							console.log(div);
+// 						}
 
-						}
-
-					});
-				});
+// 					});
+// 				});
+			
+			 $.ajax({
+				 type : 'GET',
+				 url : '/verComentarios',
+				 data : parametros,
+				 success : function (comentarios) {
+					 div.innerHTML = comentarios;
+					 console.log(div);
+				 }
+				 });
 
 		}
-		}
-
+		
+	}
 	function comentar(btn) {
 		var comentario = btn.previousSibling.previousSibling.previousSibling.previousSibling.value;
 		btn.previousSibling.previousSibling.previousSibling.previousSibling.value = "";
