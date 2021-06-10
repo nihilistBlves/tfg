@@ -10,11 +10,6 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Seguimiento {
 	
-	public Seguimiento() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -32,6 +27,11 @@ public class Seguimiento {
 		this.valoracion = valoracion;
 		this.seguidor = seguidor;
 		this.seguido = seguido;
+	}
+	
+	public Seguimiento() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	public double getValoracion() {

@@ -55,3 +55,15 @@
 	background-color: #f90d4e;
 	color: white;
 }
+.personas{
+	border:2px solid black;
+	border-radius:22px;
+}
+.titulo{
+	border-bottom:1px solid orange;
+}
+.seguidos{
+	list-style:none;
+	border:none;
+	
+}

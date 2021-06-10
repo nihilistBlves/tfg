@@ -266,11 +266,11 @@
             console.log("Correo="+validarEmail(f.email));
 */
 
-            if(validarNombre(f.loginName)&& /*validarApellido(f.apellido) && */validarFecha(f.edad) &&  validarRepetir(f.passConfirm,f.password) && validarEmail(f.email)){
-               f.aceptar.className="btn btn-success";
+            if(validarNombre(f.loginName)&& validarFecha(f.edad) &&  validarRepetir(f.passConfirm,f.password) && validarEmail(f.email)){
+               f.aceptar.className="btn-hover btn-red";
+               console.log("ok");
                f.aceptar.onclick=function(){
-
-                    document.getElementsByName("formulario")[0].submit();  
+                    document.getElementsByName("formulario")[0].submit();
                }
                 
 

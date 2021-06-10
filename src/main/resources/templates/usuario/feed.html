@@ -78,48 +78,48 @@
 		}
 
 	}
-
 	//Comentarios
-
-	function verComentarios() {
-
-		var divs = document.getElementsByClassName("comentarioss");
-
-		for ( var i = 0; i < divs.length; i++) {
-		    
-			var div = divs[i];
-			var idPublicacion= div.parentNode.children[0].children[2].value;
-			var parametros = {
-					
-					"idPublicacion" : idPublicacion
-				}
 	
+	
+// 	https://unipython.com/ajax-dentro-del-ciclo-for-en-java-script/
+	
+		var divs = document.getElementsByClassName("comentarioss");
+		var idPublicacion=[];
+var opcion=0;
 		
-		
-		$(document).ready(function() {
+	function verComentarios(indice) {
+
+	
+		if(opcion ==0){
+			for ( var i = divs.length-1; i >= 0; i--) {
+				
+
+			idPublicacion += divs[i].parentNode.children[0].children[2].value;
+			}
 			
+			console.log(idPublicacion);
+	}else{
+		if(indice < divs.length){
 			$.ajax({
-				data : parametros,
+				data : {idPublicacion : idPublicacion[indice]},
 				url : "/verComentarios",
 				type : "GET",
-			success : function(comentarios) {
-					 div.value="";
-					 div.style.height="200px";
-			 		div.style.overflowY="auto";
-			 		div.innerHTML = comentarios;
+			}).done(function(comentarios){
+					divs[i].value="";
+					divs[i].style.height="200px";
+					divs[i].style.overflowY="auto";
+					divs[i].innerHTML = comentarios;
 					console.log(comentarios);
-					div.innerHTML = comentarios;
-					
-					console.log(div);
-				}
-
+					verComentarios(indice + 1)
+				
+					console.log(idPublicacion[indice]+"asdas");
+			
 			});
-			
-		});
-		}
+			}
 	}
-		
-			
+		}
+
+    window.onload = verComentarios;	
 // 			 $.ajax({
 // 				 type : 'GET',
 // 				 url : '/verComentarios',
@@ -168,7 +168,7 @@
 
 	}
 	
-      window.onload = verComentarios;
+  
 	
 		
 	
@@ -244,22 +244,24 @@
 									<p class="text-break" th:id="${publicacion.id}"
 										th:text="${publicacion.descripcion}"></p>
 								</div>
-<!-- 								<div class="leer-mas"> -->
-<!-- 									<a class="leer" onclick="leer(this)">Leer más</a> -->
-<!-- 								</div> -->
+								<!-- 								<div class="leer-mas"> -->
+								<!-- 									<a class="leer" onclick="leer(this)">Leer más</a> -->
+								<!-- 								</div> -->
 
 								<div class="card-footer text-right d-flexbox">
 									<div class="icons">
-										<div  class="row justify-content-end align-items-center"
+										<div class="row justify-content-end align-items-center"
 											th:if="${#arrays.contains(publicacionesWaved, publicacion.id)}">
-											<b th:text=${publicacion.cantidadWaves} class="badge badge-secondary"></b><i
+											<b th:text=${publicacion.cantidadWaves}
+												class="badge badge-secondary"></b><i
 												th:id="|wave-${publicacion.id}|"
 												style="color: #f90d4e; font-size: 2em;"
 												class="bi bi-soundwave" role="button" onclick="wave(this)"></i>
 										</div>
 										<div class="row justify-content-end align-items-center"
-											th:unless="${#arrays.contains(publicacionesWaved, publicacion.id)}" >
-											<b th:text=${publicacion.cantidadWaves} class="badge badge-secondary"></b><i
+											th:unless="${#arrays.contains(publicacionesWaved, publicacion.id)}">
+											<b th:text=${publicacion.cantidadWaves}
+												class="badge badge-secondary"></b><i
 												th:id="|wave-${publicacion.id}|"
 												style="color: black; font-size: 2em;"
 												class="bi bi-soundwave" role="button" onclick="wave(this)"></i>
@@ -273,23 +275,23 @@
 												type="text" class="form-control col-6"
 												placeholder="Comentar" name="comentario" id="comentario" />
 											<input type="hidden" th:value="${publicacion.id}" /> <input
-												type="button" class=" btn-hover btn-red"
-												value="Comentar" onClick="comentar(this)" />
+												type="button" class=" btn-hover btn-red" value="Comentar"
+												onClick="comentar(this)" />
 
-<!-- 											<div th:id="|coment-${publicacion.id}|" -->
-<!-- 												class="cargaComentarios"> -->
-<!-- 												<input type="hidden" th:value="${publicacion.id}" -->
-<!-- 													name="idPublicacionWave" /> -->
-<!-- 											</div> -->
-											</div>
-											
-<!-- 											//hacer condicional para el tamaño -->
-											
-											<div class="comentarioss mt-3 text-center" >
-												<span>No hay comentarios en esta publicación</span>
-											</div>
+											<!-- 											<div th:id="|coment-${publicacion.id}|" -->
+											<!-- 												class="cargaComentarios"> -->
+											<!-- 												<input type="hidden" th:value="${publicacion.id}" -->
+											<!-- 													name="idPublicacionWave" /> -->
+											<!-- 											</div> -->
+										</div>
 
-										
+										<!-- 											//hacer condicional para el tamaño -->
+
+										<div class="comentarioss mt-3 text-center">
+											<span>No hay comentarios en esta publicación</span>
+										</div>
+
+
 									</div>
 									<!--Comentarios -->
 

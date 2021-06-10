@@ -239,8 +239,8 @@ public class UsuarioController {
 	@PostMapping("/user/{loginName}/dejarDeSeguir")
 	public String postDejarDeSeguir(@PathVariable("loginName") String username, ModelMap m, HttpSession s) {
 		Usuario usuarioSeguido = usuarioRepository.getByLoginName(username);
-		Seguimiento seguimientoParaBorrar = seguimientoRepository.getBySeguidoAndSeguidor(usuarioSeguido,
-				(Usuario) s.getAttribute("userLogged"));
+		Usuario usuarioLogged = (Usuario) s.getAttribute("userLogged");
+		Seguimiento seguimientoParaBorrar = seguimientoRepository.getSeguimientoParaBorrarSeguido(usuarioSeguido.getId(), usuarioLogged.getId());
 		seguimientoRepository.delete(seguimientoParaBorrar);
 		return "redirect:/user/" + username;
 	}
@@ -584,13 +584,42 @@ public class UsuarioController {
 	}
 
 	@GetMapping("seguidoresSeguidos")
-	public String seguidoresSeguidos(ModelMap m) {
-
-		// cargar usuarios de la bd y pasar a la vista
-		m.put("", "");
+	public String seguidoresSeguidos(ModelMap m,HttpSession s) {
+		
+		m.put("seguidores",usuarioRepository.findAllById(seguimientoRepository.findSeguidoresByIdUsuario(((Usuario) s.getAttribute("userLogged")).getId())));
+		m.put("seguidos", usuarioRepository.findAllById(seguimientoRepository.findSeguidosByIdUsuario(((Usuario) s.getAttribute("userLogged")).getId())));
 
 		return "perfil/opciones/seguidoresSeguidos";
 	}
+	@PostMapping("eliminarSeguido")
+	public String eliminarSeguido(@RequestParam("idSeguido") Long id, HttpSession s) {
+		Usuario usuarioLogged = (Usuario) s.getAttribute("userLogged");
+		Seguimiento seguimientoEliminar = seguimientoRepository.getSeguimientoParaBorrarSeguido(usuarioLogged.getId(),id);
+		
+		System.out.println(seguimientoEliminar);
+		seguimientoRepository.delete(seguimientoEliminar);
+		
+//		H.setInfoModal("Info|Seguidor eleminado correctamente|btn-hover btn-black", s);
+		
+		return "redirect:/editarPerfil";
+		
+	}
+	
+	@PostMapping("eliminarSeguidor")
+	public String eliminarSeguidor(@RequestParam("idSeguidor") Long id,HttpSession s) {
+
+		Usuario usuarioLogged = (Usuario) s.getAttribute("userLogged");
+		Seguimiento seguimientoEliminar = seguimientoRepository.getSeguimientoParaBorrarSeguidor(usuarioLogged.getId(), id);
+		
+		System.out.println(seguimientoEliminar);
+		seguimientoRepository.delete(seguimientoEliminar);
+		
+//		H.setInfoModal("Info|Seguidor eleminado correctamente|btn-hover btn-black", s);
+		
+		return "redirect:/editarPerfil";
+		
+	}
+	
 
 	@GetMapping("tasaWaves")
 	public String tasaWaves() {
