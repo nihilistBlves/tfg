@@ -1,0 +1,22 @@
+<div class="container d-flex justify-content-center">
+	<div class="row d-flex justify-content-center">
+		<div class="col chatbox">
+			<div th:each="mensaje: ${mensajes}" th:attr="data-id=${mensaje.id}" class="row">
+				<div th:if="${mensaje.remitente.id} == ${usuarioChat.id}"
+					th:text="${mensaje.texto}" class="mensaje float-left"></div>
+				<div th:unless="${mensaje.remitente.id} == ${usuarioChat.id}"
+					th:text="${mensaje.texto}" class="mensaje float-right"></div>
+			</div>
+			<div class="row d-flex justify-content-center">
+				<div class="col">
+					<input type="text" name="mensajeador"
+						placeholder="Escribe aqui tu mensaje...">
+					<button class="btn btn-info">
+						<i class="bi bi-arrow-left-circle-fill"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
