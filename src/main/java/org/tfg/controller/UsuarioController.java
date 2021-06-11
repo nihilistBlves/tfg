@@ -228,12 +228,17 @@ public class UsuarioController {
 
 	@PostMapping("/user/{loginName}/seguir")
 	public String postSeguir(@PathVariable("loginName") String username, ModelMap m, HttpSession s) {
-		Usuario usuarioAlQueSeguir = usuarioRepository.getByLoginName(username);
-		Seguimiento nuevoSeguimiento = new Seguimiento();
-		nuevoSeguimiento.setSeguido(usuarioAlQueSeguir);
-		nuevoSeguimiento.setSeguidor((Usuario) s.getAttribute("userLogged"));
-		seguimientoRepository.save(nuevoSeguimiento);
-		return "redirect:/user/" + username;
+		if (s.getAttribute("userLogged") != null) {
+			Usuario usuarioAlQueSeguir = usuarioRepository.getByLoginName(username);
+			Seguimiento nuevoSeguimiento = new Seguimiento();
+			nuevoSeguimiento.setSeguido(usuarioAlQueSeguir);
+			nuevoSeguimiento.setSeguidor((Usuario) s.getAttribute("userLogged"));
+			seguimientoRepository.save(nuevoSeguimiento);
+			return "redirect:/user/" + username;
+		} else {
+			H.setInfoModal("Error|Debes estar logueado para realizar esta acción|btn-hover btn-red", s);
+			return "redirect:/user/" + username;
+		}
 	}
 
 	@PostMapping("/user/{loginName}/dejarDeSeguir")
@@ -473,7 +478,7 @@ public class UsuarioController {
 		if (descripcion != null) {
 			usuario.setDescripcionPerfil(descripcion);
 		}
-		if (instrumentos!= null) {
+		if (!(instrumentos == null)) {
 			usuario.setInstrumentos(instrumentoRepository.getInstrumentosByArray(instrumentos));
 		}
 		

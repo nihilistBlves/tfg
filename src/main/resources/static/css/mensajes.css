@@ -1,0 +1,22 @@
+.opcion-chat:hover {
+	background-color: #c9c9c9;
+}
+#tituloChat {
+	padding: 5px;
+	background-color: white;
+	border-radius: 10px;
+}
+.chatbox {
+	overflow-y: auto;
+	height: 30em;
+	width: 40em;
+	border-radius: 10px;
+	background-color: white;
+	padding: 1em;
+}
+.mensaje {
+	margin: 0.2em;
+	padding: 0.5em;
+	border: 1px solid grey;
+	border-radius: 10px;
+}
