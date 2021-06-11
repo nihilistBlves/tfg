@@ -76,27 +76,29 @@
 
 				<div class="form-group p-2">
 					<label for="descripcion">Descripción:</label>
-					<textarea id="descripcion" maxlength="150" style="resize: none"
+					<textarea class="form-control" id="descripcion" maxlength="150" style="resize: none"
 						onkeyup="validarLimite(this)"
 						placeholder="Descripci�n de tu perfil de usuario..." cols="50"
 						rows="5" name="descripcion"></textarea>
-					<div class="row  p--1 d-flex justify-content-end">
+					<div class="row  p-1 d-flex justify-content-end">
 						<span class=" contador ">0/150</span>
 					</div>
 				</div>
 
 
-				<div class="form-group p-2">
-					<label for="listaInstrumentos">Lista de Instrumentos:</label> <select
-						id="instrumentos">
-						<option th:each="instrumento : 	${instrumentos}"
+				<div class="form-group p-2  d-flexbox">
+					<label for="listaInstrumentos">Lista de Instrumentos:</label>
+					<div class="d-inline-flex">
+					 <select class="form-control"id="instrumentos">
+						<option class="options" th:each="instrumento : 	${instrumentos}"
 							th:value="${instrumento.nombre}" th:text="${instrumento.nombre}">
-					</select> <input type="button" class="btn btn-outline-danger"
+					</select>
+					<button type="button" class="btn btn-outline-danger ml-4"
 						id="botonAgregarInstrumento" onclick="agregarInstrumento(this)"
-						value="+">
+						>+</button>
+						</div>
 					<div class="d-flexbox" id="divInstrumentos" style="height: auto;width: 25em;"></div>
 				</div>
-
 
 				<div class="form-group p-2 text-center">
 					<input type="submit" class="btn btn-dark" value="Guardar">

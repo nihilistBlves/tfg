@@ -166,7 +166,7 @@
 						<div class="col">
 							<h2 class="name" th:text="${usuario.loginName}"></h2>
 						</div>
-						<div class="follow my-2 ml-auto">
+						<div class="follow my-2 ml-auto d-flex">
 							<span class="seguimiento mx-auto">
 							<b>Seguidores 
 							<span th:if="${seguidores}==0">
@@ -240,21 +240,23 @@
 				</div>
 			</div>
 		</div>
-		<div class="row d-flex justify-content-center ">
-			<div class="p-3 mr-4 text ">
+		<div class="d-flex justify-content-center col-xs-12">
+			<div class="p-2 mr-4 text ">
 				<i class="bi bi-file-text-fill"></i>
 			</div>
-			<div class="p-3 mr-4 image">
+			<div class="p-2 mr-4 image">
 				<i class="bi bi-image-fill"></i>
 			</div>
-			<div class="p-3 mr-4 music">
+			<div class="p-2 mr-4 music">
 				<i class="bi bi-file-music-fill"></i>
 			</div>
-			<div class="p-3 video">
+			<div class="p-2 video">
 				<i class="bi bi-camera-video-fill"></i>
 			</div>
 		</div>
-		<div class="cuerpo " onload="carga()">
+
+		<div class="cuerpo" onload="carga()">
+
 			<div class="row d-flex justify-content-around" id="datos"></div>
 		</div>
 	</div>

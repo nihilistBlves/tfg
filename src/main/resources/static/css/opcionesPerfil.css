@@ -38,12 +38,14 @@
 .form-control {
 	border: none;
 }
-
+#descripcion{
+/* 	width:100%; */
+}
 .contador {
 	color: grey;
 	position: relative;
-	top: -40px;
-	left: 8%;
+	top: -32px;
+	left: -4%;
 }
 .instrumentoLabel {
 	margin: 0.5em;

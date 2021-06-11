@@ -182,7 +182,7 @@ public class UsuarioController {
 
 				if (p.getTipoContenido().equals(tipo)) {
 
-					publicacionesTipo += "<div class='' width='200px' heigth='800px'>" +"<img class='publicacion-img' src=" + p.getContenido() + ">"
+					publicacionesTipo += "<div class='mb-4' width='200px' heigth='800px'>" +"<img class='publicacion-img' src=" + p.getContenido() + ">"
 							+ "</div>";
 				}
 

@@ -1,19 +1,20 @@
 <script th:inline="javascript">
 
-	function mandarMensaje(obj) {
+	function mandarMensaje() {
+		
 		var parametros = {
 				mensaje: document.getElementsByName("mensajeador")[0].value,
 				idDestinatario: /*[[${usuarioChat.id}]]*/"",
 		}
 		
-		var divMensaje = document.createElement("div");
-		divMensaje.className = "mensaje float-right";
-		divMensaje.innerHTML = document.getElementsByName("mensajeador")[0].value;
-		document.getElementsByName("mensajeador")[0].value = "";
-		var divRowMensaje = document.createElement("div");
-		divRowMensaje.className = "row";
-		divRowMensaje.appendChild(divMensaje);
-		document.getElementsByClassName("mensaje")[document.getElementsByClassName("mensaje").length-1].parentElement.after(divRowMensaje);
+// 		var divMensaje = document.createElement("div");
+// 		divMensaje.className = "mensaje float-right";
+// 		divMensaje.innerHTML = document.getElementsByName("mensajeador")[0].value;
+// 		document.getElementsByName("mensajeador")[0].value = "";
+// 		var divRowMensaje = document.createElement("div");
+// 		divRowMensaje.className = "row";
+// 		divRowMensaje.appendChild(divMensaje);
+// 		document.getElementsByClassName("mensaje")[document.getElementsByClassName("mensaje").length-1].parentElement.after(divRowMensaje);
 		
 		$(document).ready(function() {
 			$.ajax({
@@ -25,25 +26,24 @@
 	}
 
 </script>
-<div class="container d-flex justify-content-center">
-	<div class="row d-flex justify-content-center">
-		<div class="col chatbox">
+<!-- <div class="container d-flex justify-content-center"> -->
+<!-- 	<div class="row d-flex justify-content-center"> -->
+		<div class="col chatbox mb-3">
 			<div th:each="mensaje: ${mensajes}" th:attr="data-id=${mensaje.id}" class="row">
-				<div th:if="${mensaje.remitente.id} == ${usuarioChat.id}"
-					th:text="${mensaje.texto}" class="mensaje float-left"></div>
-				<div th:unless="${mensaje.remitente.id} == ${usuarioChat.id}"
-					th:text="${mensaje.texto}" class="mensaje float-right"></div>
-			</div>
-			<div class="row d-flex justify-content-center">
-				<div class="col">
-					<input type="text" name="mensajeador"
-						placeholder="Escribe aqui tu mensaje...">
-					<button class="btn btn-info" onclick="mandarMensaje(this)">
-						<i class="bi bi-arrow-left-circle-fill"></i>
-					</button>
-				</div>
+				<div th:if="${mensaje.remitente.id} == ${usuarioChat.id}"  class="col  d-flex justify-content-start ">
+					<p id="remitente" class="text-left" th:text="${mensaje.texto}"></p>
+					</div>
+				<div th:unless="${mensaje.remitente.id} == ${usuarioChat.id}" class="col d-flex justify-content-end">
+				<p id="destinatario" class="text-right  " th:text="${mensaje.texto}"></p></div>
 			</div>
 		</div>
-	</div>
+				<div class="col d-flex justify-content-end p-0 bg-info">
+					<input class="form-control" type="text" name="mensajeador"
+						placeholder="Escribe aqui tu mensaje...">
+					<button class="btn btn-info" onclick="mandarMensaje()">
+						<i class="bi bi-arrow-left-circle"></i>
+					</button>
+				</div>
+<!-- 	</div> -->
 
-</div>
+<!-- </div> -->
