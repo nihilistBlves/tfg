@@ -78,7 +78,6 @@
 				url : '/tipoArchivo',
 				type : 'post',
 				success : function(publicaciones) {
-					console.log(publicaciones);
 					datos.innerHTML = publicaciones;
 				}
 
@@ -102,7 +101,6 @@
 				url : '/tipoArchivo',
 				type : 'post',
 				success : function(publicaciones) {
-					console.log(publicaciones);
 					datos.innerHTML = publicaciones;
 				}
 			});
@@ -124,7 +122,6 @@
 				url : '/tipoArchivo',
 				type : 'post',
 				success : function(publicaciones) {
-					console.log(publicaciones);
 					datos.innerHTML = publicaciones;
 				}
 
@@ -137,8 +134,6 @@
 
 			var username = /*[[${usuario.loginName}]]*/"";
 
-			console.log(username);
-
 			var parametros = {
 
 				tipo : "img",
@@ -150,7 +145,6 @@
 				url : '/tipoArchivo',
 				type : 'post',
 				success : function(publicaciones) {
-					console.log(publicaciones);
 					datos.innerHTML = publicaciones;
 				}
 
@@ -189,7 +183,8 @@
 							th:text="${instrumento.nombre}" class="instrumentoLabel"></label>
 
 					</div>
-					<div th:if="${propietario} == null"
+					<div
+						th:if="${propietario == null && session.userLogged != null}"
 						class="d-flex justify-content-between my-4">
 						<div class="col contacto" th:if="${seguido} != null">
 							<button type="button" class="ml-auto  btn-block btn btn-danger"
@@ -202,14 +197,16 @@
 						</div>
 						<div class="col contacto">
 							<form
-								th:action="@{/user/{userLogged}/opciones(userLogged=${session.userLogged.loginName})}">
+								th:action="@{/user/{userLogged}/messages(userLogged=${session.userLogged.loginName})}">
+								<input type="hidden" name="idPerfil" th:value="${usuario.id}">
 								<button type="submit"
 									class="ml-auto btn-block btn btn-outline-danger">Mensaje</button>
 							</form>
 						</div>
 					</div>
 
-					<div class="" th:if="${propietario} != null">
+					<div class="d-flex justify-content-between my-4"
+						th:if="${propietario != null && session.userLogged != null}">
 						<form
 							th:action="@{/user/{userLogged}/opciones(userLogged=${session.userLogged.loginName})}"
 							method="get">
@@ -235,9 +232,6 @@
 			</div>
 		</div>
 		<div class="cuerpo " onload="carga()">
-
-
-
 			<div class="row d-flex justify-content-around" id="datos"></div>
 		</div>
 	</div>

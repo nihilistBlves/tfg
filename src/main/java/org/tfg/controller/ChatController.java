@@ -58,5 +58,20 @@ public class ChatController {
 		
 		return "usuario/chat";
 	}
+	
+	@PostMapping("/mandarMensaje")
+	public String postMandarMensaje(@RequestParam("mensaje") String mensaje, @RequestParam("idDestinatario") Long idDestinatario, HttpSession s) {
+		Usuario userLogged = (Usuario) s.getAttribute("userLogged");
+		Usuario destinatario = usuarioRepository.getOne(idDestinatario);
+				
+		Mensaje nuevoMensaje = new Mensaje();
+		nuevoMensaje.setDestinatario(destinatario);
+		nuevoMensaje.setRemitente(userLogged);
+		nuevoMensaje.setTexto(mensaje);
+		
+		mensajeRepository.save(nuevoMensaje);
+		
+		return "redirect:/";
+	}
 
 }

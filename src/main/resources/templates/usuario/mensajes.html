@@ -12,7 +12,6 @@
 	};
 
 	function cargarChat(obj) {
-		console.log(obj.dataset.id);
 		var id = parseInt(obj.dataset.id);
 		
 		var parametros = {
@@ -27,7 +26,7 @@
 <div class="container my-auto" id="menuChat">
 	<div class="row my-5">
 		<div class="col-3 text-left">
-			<h3 class="text-center" id="tituloChat">Conversaciones <button class="btn btn-outline-danger"><i class="bi bi-plus-circle"></i></button></h3>
+			<h3 class="text-center" id="tituloChat">Conversaciones</h3>
 			<ul class="list-group">
 				<li th:each="usuario: ${usuariosConChatAbierto}" class="list-group-item opcion-chat" th:attr="data-id=${usuario.id}" onclick="cargarChat(this)">
 					<img th:src="${usuario.fotoPerfil}" height="40px" width="40px">

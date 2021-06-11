@@ -18,10 +18,10 @@ public class Mensaje implements Comparable<Mensaje>{
 	
 	private String texto;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	private Usuario remitente;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	private Usuario destinatario;
 	
 	private LocalDateTime fechaEnvio;
