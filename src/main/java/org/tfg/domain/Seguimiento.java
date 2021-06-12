@@ -14,7 +14,7 @@ public class Seguimiento {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private double valoracion;
+	private boolean aceptado;
 	
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	private Usuario seguidor;
@@ -22,9 +22,9 @@ public class Seguimiento {
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	private Usuario seguido;
 
-	public Seguimiento(double valoracion, Usuario seguidor, Usuario seguido) {
+	public Seguimiento(boolean aceptado, Usuario seguidor, Usuario seguido) {
 		super();
-		this.valoracion = valoracion;
+		this.aceptado = aceptado;
 		this.seguidor = seguidor;
 		this.seguido = seguido;
 	}
@@ -34,12 +34,12 @@ public class Seguimiento {
 		// TODO Auto-generated constructor stub
 	}
 
-	public double getValoracion() {
-		return valoracion;
+	public boolean getAceptado() {
+		return aceptado;
 	}
 
-	public void setValoracion(double valoracion) {
-		this.valoracion = valoracion;
+	public void setAceptado(boolean aceptado) {
+		this.aceptado = aceptado;
 	}
 
 	public Usuario getSeguidor() {

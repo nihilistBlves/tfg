@@ -16,10 +16,19 @@
 				<li th:if="${session.userLogged} != null" class="nav-item"><a class="nav-link"
 					th:href="@{/user/{userLogged}(userLogged=${session.userLogged.loginName})}"><i
 						class="bi bi-person-circle"></i></a></li>
+						<div th:if="${session.userLogged} != null">
+					<li class="nav-item" id="solicitudes">
+						<form th:action	="@{/user/{userLogged}/opciones(userLogged=${session.userLogged.loginName})}">
+							<input type="hidden" value="true" name="solicitud">
+							<button style="background-color: transparent; border: none !important;"><i class="bi bi-inbox-fill"></i>
+							</button>
+						</form>
+					</li>
+				</div>
+
 			</ul>
 			<div th:if="${session.userLogged} != null">
-				<form method="post" name="logout" action="/logout"
-					class="form-inline my-2 my-lg-0">
+				<form method="post" name="logout" action="/logout" class="form-inline my-2 my-lg-0">
 					<button class="btn " id="logOut" type="submit">
 						<i class="bi bi-box-arrow-right"></i> <span class="logOut">
 							Cerrar sesión</span>
@@ -29,6 +38,7 @@
 			<div th:unless="${session.userLogged} != null">
 				<button type="button" class=" text-light mr-3   btn-hover btn-black"
 					data-toggle="modal" data-target="#loginModal" id="btnlog">Login</button>
+
 			</div>
 		</div>
 	</nav>

@@ -1,38 +1,133 @@
-<div>
-    <label for="publica">Perfil Publico:</label><br>
-    <p>El perfil publico, podrá ser visto por todos los usuarios.
-        Seran visibles:
-            -Publicaciones.
-            -Seguidores.
-            -Personas a las que sigues
+<style>
 
-    </p>
-    <button>Publico</button>
-    <br>
-    <label for="publica">Perfil Privado:</label><br>
-    <p>El perfil privado, podrá ser visto solo por tus seguidores.
-    </p>
-    <button disabled>Privado</button>
-</div>
+.publica{
+	height:100% !important;
+}
+
+.botones{
+	margin-top:1em;
+	margin-bottom:1em;
+}
+
+.btnpuv{
+	height:88%;
+}
+
+.titulo{
+	margin-top:1em;
+	margin-bottom:1em;
+}
+
+</style>
+
+<script>
+
+function cambioPublica(){
+	
+	document.getElementsByClassName("botones")[0].disabled=true;
+	document.getElementsByClassName("botones")[1].disabled=false;
+	
+	$(document).ready(function(){
+			$.ajax({
+				url: "/cuentaPublica",
+				type: "get",		
+			});
+		});
+	
+	
+	
+}
+
+function cambioPrivada(){
+	document.getElementsByClassName("botones")[0].disabled=false;
+	document.getElementsByClassName("botones")[1].disabled=true;
+	$(document).ready(function(){
+			$.ajax({
+				url: "/cuentaPrivada",
+				type: "get",		
+			});
+		});
+}
+
+function eliminarCuenta(){
+	$(document).ready(function(){
+			$.ajax({
+				url: "/cuentaEliminada",
+				type: "get",		
+			});
+		});
+}
 
 
-<div>
+</script>
 
-    <h3>¿Seguro que deseas desactivar la cuenta?</h3>
-    <p>Si desactivas la cuenta, no sera visible para otros
-        usuarios.Tendras un plazo de <b>un mes</b> para poder
-        activarla, de lo contrario <b>se eliminara</b>
-    </p>
-    <button>Desactivar cuenta</button>
-
-</div>
-
-<div>
-
-    <h3>¿Seguro que deseas <b>eliminar</b> la cuenta?</h3>
-    <p>Si eliminas la cuenta, <b>la perderás permanentemente</b>
-        y <b>no</b> podrás recuperarla.
-    </p>
-    <button>Eliminar cuenta</button>
-
+<div class="container contenedor">
+	<div class="row justify-content-md-center">
+		<div class="row align-items-center">
+			<div class="col-12 titulo">
+				<h2 class="h2">Opciones de cuenta</h2>
+			</div>
+		</div>
+		<div th:if="${tipo}!=true">
+		<div class="row align-items-center">
+			<div class="col-6 align-self-start publica">
+				<button class="btn btn-secondary botones btnpuv" disabled onClick="cambioPublica()">
+					<h4 class="h4">Cuenta pública</h4>
+					<div class="list-group">
+						<span class="list-group-item list-group-item-action list-group-item-primary">Todo el mundo puede ver tus publicaciones</span>
+						<span class="list-group-item list-group-item-action list-group-item-primary">Los demás usuarios pueden seguir tu cuenta sin solicitud de seguimiento</span>
+						<span class="list-group-item list-group-item-action list-group-item-primary">Todos los usuarios pueden ver tu información y datos personales</span>
+					</div>
+				</button>
+			</div>
+			<div class="col-6 privada">
+				<button class="btn btn-secondary botones"  onClick="cambioPrivada()">
+					<h4 class="h4">Cuenta privada</h4>
+					<div class="list-group">
+						<span class="list-group-item list-group-item-action list-group-item-primary">Solo tus seguidores podrán ver tus publicaciones</span>
+						<span class="list-group-item list-group-item-action list-group-item-primary">Los demás usuarios solo podrán ver tu foto de perfil, nombre de usuario y descripción</span>
+						<span class="list-group-item list-group-item-action list-group-item-primary">Tus publicaciones no saldrán en la pantalla principal</span>
+					</div>
+				</button>
+			</div>
+		</div>
+		</div>
+		<div th:unless="${tipo}!=true">
+		<div class="row align-items-center">
+			<div class="col-6 align-self-start publica">
+				<button class="btn btn-secondary botones btnpuv"  onClick="cambioPublica()">
+					<h4 class="h4">Cuenta pública</h4>
+					<div class="list-group">
+						<span class="list-group-item list-group-item-action list-group-item-primary">Todo el mundo puede ver tus publicaciones</span>
+						<span class="list-group-item list-group-item-action list-group-item-primary">Los demás usuarios pueden seguir tu cuenta sin solicitud de seguimiento</span>
+						<span class="list-group-item list-group-item-action list-group-item-primary">Todos los usuarios pueden ver tu información y datos personales</span>
+					</div>
+				</button>
+			</div>
+			<div class="col-6 privada">
+				<button class="btn btn-secondary botones" disabled onClick="cambioPrivada()">
+					<h4 class="h4">Cuenta privada</h4>
+					<div class="list-group">
+						<span class="list-group-item list-group-item-action list-group-item-primary">Solo tus seguidores podrán ver tus publicaciones</span>
+						<span class="list-group-item list-group-item-action list-group-item-primary">Los demás usuarios solo podrán ver tu foto de perfil, nombre de usuario y descripción</span>
+						<span class="list-group-item list-group-item-action list-group-item-primary">Tus publicaciones no saldrán en la pantalla principal</span>
+					</div>
+				</button>
+			</div>
+		</div>
+		</div>
+		</div>
+		
+		<div class="row justify-content-center">
+			<div class="col-8 conelim">
+				<button class="btn btn-danger botones eliminar" onClick="eliminarCuenta()">
+					<h4 class="h4">Eliminar cuenta</h4>
+					<div class="list-group">
+						<span class="list-group-item list-group-item-action list-group-item-danger">¿Estás seguro de que deseas eliminar tu cuenta?</span>
+						<span class="list-group-item list-group-item-action list-group-item-danger">Si la eliminas perderás tus publicaciones y tu perfil definitvamente</span>
+					</div>
+				</button>
+			</div>
+		</div>
+	</div>
 </div>

@@ -13,8 +13,19 @@
 				<li class="list-group-item-action opcion p-3" id="favs">Publicaciones</li>
 			</ul>
 
+
 		</div>
 		<div id="opciones" class="col-9 "></div>
 	</div>
 </div>
-
+<script th:inline="javascript">
+    	window.onload = function(){
+			
+			var solicitud = /*[[${solicitud}]]*/"";
+			
+			if(solicitud){
+				$("#opciones").load("/notificaciones");
+			}
+	
+}
+    </script>
