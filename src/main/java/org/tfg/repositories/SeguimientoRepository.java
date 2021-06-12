@@ -3,9 +3,11 @@ package org.tfg.repositories;
 import java.util.Collection;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.tfg.domain.Seguimiento;
 import org.tfg.domain.Usuario;
 
@@ -19,5 +21,7 @@ public interface SeguimientoRepository extends JpaRepository<Seguimiento, Long> 
 	public Collection<Long> findSeguidosByIdUsuario(@Param("id") Long id);
 	
 	public Seguimiento getBySeguidoAndSeguidor(Usuario seguido, Usuario seguidor);
-
+	
+	
+	
 }

@@ -49,6 +49,15 @@ function cambioPrivada(){
 		});
 }
 
+function eliminarCuenta(){
+	$(document).ready(function(){
+			$.ajax({
+				url: "/cuentaEliminada",
+				type: "get",		
+			});
+		});
+}
+
 
 </script>
 
@@ -111,7 +120,7 @@ function cambioPrivada(){
 		
 		<div class="row justify-content-center">
 			<div class="col-8 conelim">
-				<button class="btn btn-danger botones eliminar">
+				<button class="btn btn-danger botones eliminar" onClick="eliminarCuenta()">
 					<h4 class="h4">Eliminar cuenta</h4>
 					<div class="list-group">
 						<span class="list-group-item list-group-item-action list-group-item-danger">¿Estás seguro de que deseas eliminar tu cuenta?</span>

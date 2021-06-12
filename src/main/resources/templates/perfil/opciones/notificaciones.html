@@ -1,17 +1,74 @@
-<div>
-<form method="post" action="">
-    <label for="notPu">Usuario seguido ha hecho una publicación.
-    </label>
-    <input id ="notPu" class="form-check " type="checkbox" checked data-toggle="toggle" data-style="ios"><br/>
-    <label for="notWave">Usuario ha dado Wave.
-    </label>
-    <input id="notWave" class="toggle.ios"type="checkbox" checked data-toggle="toggle" data-style="ios"><br/>
-    <label for="notFav">Usuario ha guardado una publicación.
-    </label>
-    <input id="notFav" class="toggle.ios"type="checkbox" checked data-toggle="toggle" data-style="ios"><br/>
-    <label for="notSeguido">Usuario te ha seguido.
-    </label>
-    <input id="notSeguido" class="toggle.ios"type="checkbox" checked data-toggle="toggle" data-style="ios"><br/>
-    </form>
-<!--Revisar classs para que sea como ios(  0) royo on off-->
+<script>
+
+	function eliminarPeticion(btn) {
+		var sacarId = btn.id.split("-");
+		var id_seg = sacarId[1];
+		console.log(id_seg);
+		$(document).ready(function () {
+
+			var parametros = {id_seguidor: id_seg};
+
+			$.ajax({
+				data: parametros,
+				url: "/eliminarPeticion",
+				type: "post",
+			});
+		});
+		
+		setTimeout(function(){
+			location.reload();
+		},1000)
+
+	}
+
+	function aceptarPeticion(btn) {
+		var sacarId = btn.id.split("-");
+		var id_seg = sacarId[1];
+		console.log(id_seg);
+		$(document).ready(function () {
+
+			var parametros = {id_seguidor: id_seg};
+
+			$.ajax({
+				data: parametros,
+				url: "/aceptarPeticion",
+				type: "post",
+
+			});
+		});
+		
+		setTimeout(function(){
+			location.reload();
+		},1000)
+
+	}
+
+
+
+</script>
+
+<div class="container">
+	<div class="row">
+		<div class="col-12">
+			<h2 class="h1">Peticiones de amistad</h2>
+		</div>
+		<div class="col-12">
+			<ul class="list-group">
+				<div th:if="${seguidores} != false">
+					<div th:each="seguidor:${seguidores}">
+						<li class="list-group-item">
+							<img class="foto-perfil" th:src="@{${seguidor.fotoPerfil}}">
+							<a th:href="@{/user/{seg}(seg=${seguidor.loginName})}">
+								<p th:text="${seguidor.loginName}"></p>
+							</a>
+							<button type="button" class="btn btn-success" th:id="|agregar-${seguidor.id}|"
+								onclick='aceptarPeticion(this)'><i class="bi bi-check"></i></button>
+							<button type="button" class="btn btn-danger" th:id="|eliminar-${seguidor.id}|"
+								onclick='eliminarPeticion(this)'><i class="bi bi-x"></i></button>
+						</li>
+					</div>
+				</div>
+			</ul>
+		</div>
+	</div>
 </div>

@@ -1,8 +1,11 @@
 
 
 $(document).ready(function() {
+	
+	
+	
 
-$("#opciones").load("/editarPerfil");
+	$("#opciones").load("/editarPerfil");
 
 	$("#perfil").on("click", function() {
 

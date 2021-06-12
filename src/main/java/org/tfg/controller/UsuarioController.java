@@ -75,6 +75,7 @@ public class UsuarioController {
 
 			Long[] publicacionesWavedByUserLogged = waveRepository.idsPublicacionWavedByUser(usuario.getId());
 
+			m.put("nombre", usuario.getLoginName());
 			m.put("publicacionesWaved", publicacionesWavedByUserLogged);
 			m.put("publicaciones", publicacionesSeguidos);
 			m.put("view", "usuario/feed");
@@ -132,10 +133,39 @@ public class UsuarioController {
 			m.put("seguidores", seguidores.size());
 			m.put("seguidos", seguidos.size());
 
+			boolean sigue = false;
+
+			Usuario usuarioSesion = (Usuario) s.getAttribute("userLogged");
+			for (Long seg : seguidores) {
+
+				if (usuarioSesion.getId() == seg) {
+					sigue = true;
+					break;
+				}
+			}
+			System.out.println(sigue);
+			m.put("mesigue", sigue);
+
 			if (s.getAttribute("userLogged") != null) {
 				if (username.equals(((Usuario) s.getAttribute("userLogged")).getLoginName())) {
 					m.put("propietario", "si");
 				}
+			}
+
+			Usuario logedId = (Usuario) s.getAttribute("userLogged");
+
+			m.put("logedId", logedId.getId());
+			m.put("perfilId", usuarioCargado.getId());
+
+			Usuario usuarioPerfil = usuarioRepository.getByLoginName(username);
+
+			Seguimiento seguimiento = seguimientoRepository.getBySeguidoAndSeguidor(usuarioPerfil,
+					(Usuario) s.getAttribute("userLogged"));
+
+			if (seguimiento != null) {
+				m.put("aceptar", seguimiento.getAceptado());
+			} else {
+				m.put("aceptar", false);
 			}
 
 			m.put("view", "usuario/perfilUsuario");
@@ -161,8 +191,9 @@ public class UsuarioController {
 
 				if (p.getDescripcion() != null) {
 
-					publicacionesTipo += "<div class=' publicacion bg-white ' width='200px' heigth='800px'>" + "	<p class='text-dark text-center text-uppercase font-weight-bold publicacion-text'>" + p.getDescripcion() + "</p>"
-							+ "</div>";
+					publicacionesTipo += "<div class=' publicacion bg-white ' width='200px' heigth='800px'>"
+							+ "	<p class='text-dark text-center text-uppercase font-weight-bold publicacion-text'>"
+							+ p.getDescripcion() + "</p>" + "</div>";
 				}
 
 			}
@@ -177,8 +208,8 @@ public class UsuarioController {
 
 				if (p.getTipoContenido().equals(tipo)) {
 
-					publicacionesTipo += "<div class='' width='200px' heigth='800px'>" +"<img class='publicacion-img' src=" + p.getContenido() + ">"
-							+ "</div>";
+					publicacionesTipo += "<div class='' width='200px' heigth='800px'>"
+							+ "<img class='publicacion-img' src=" + p.getContenido() + ">" + "</div>";
 				}
 
 			}
@@ -191,9 +222,8 @@ public class UsuarioController {
 
 				if (p.getTipoContenido().equals(tipo)) {
 
-
-					publicacionesTipo += "<div class='publicacion' width='200px' heigth='800px'>" +"<audio src=" + p.getContenido() + " controls type='audio/mpeg'>"
-					+"</audio>" + "</div>";
+					publicacionesTipo += "<div class='publicacion' width='200px' heigth='800px'>" + "<audio src="
+							+ p.getContenido() + " controls type='audio/mpeg'>" + "</audio>" + "</div>";
 
 				}
 
@@ -207,9 +237,9 @@ public class UsuarioController {
 
 				if (p.getTipoContenido().equals(tipo)) {
 
-
-					publicacionesTipo += "<div class='' width='200px' heigth='800px'>" + "<video class='publicacion-video'  controls>"+
-					"<source src="+p.getContenido()+" type='video/mp4' />"+ "</video>" + "</div>";
+					publicacionesTipo += "<div class='' width='200px' heigth='800px'>"
+							+ "<video class='publicacion-video'  controls>" + "<source src=" + p.getContenido()
+							+ " type='video/mp4' />" + "</video>" + "</div>";
 
 				}
 
@@ -224,9 +254,15 @@ public class UsuarioController {
 	@PostMapping("/user/{loginName}/seguir")
 	public String postSeguir(@PathVariable("loginName") String username, ModelMap m, HttpSession s) {
 		Usuario usuarioAlQueSeguir = usuarioRepository.getByLoginName(username);
+
 		Seguimiento nuevoSeguimiento = new Seguimiento();
 		nuevoSeguimiento.setSeguido(usuarioAlQueSeguir);
 		nuevoSeguimiento.setSeguidor((Usuario) s.getAttribute("userLogged"));
+		if (!usuarioAlQueSeguir.isTipoCuenta()) {
+			nuevoSeguimiento.setAceptado(true);
+		} else {
+			nuevoSeguimiento.setAceptado(false);
+		}
 		seguimientoRepository.save(nuevoSeguimiento);
 		return "redirect:/user/" + username;
 	}
@@ -415,10 +451,15 @@ public class UsuarioController {
 	// Opciones de perfil controller
 
 	@GetMapping("/user/{loginName}/opciones")
-	public String opcionesPerfil(@PathVariable("loginName") String username, ModelMap m, HttpSession s) {
+	public String opcionesPerfil(@PathVariable("loginName") String username,
+			@RequestParam(value = "solicitud", required = false) String solicitud, ModelMap m, HttpSession s) {
 		if (s.getAttribute("userLogged") != null) {
 			if (username.equals(((Usuario) s.getAttribute("userLogged")).getLoginName())) {
 				H.mPut(m, s);
+				if (solicitud != null) {
+					m.put("solicitud", true);
+				}
+
 				m.put("view", "perfil/opcionesPerfil");
 				return "/_t/frameFeed";
 			}
@@ -462,7 +503,7 @@ public class UsuarioController {
 		if (!instrumentos.isEmpty()) {
 			usuario.setInstrumentos(instrumentoRepository.getInstrumentosByArray(instrumentos));
 		}
-		
+
 //		 comprobamos si esta vacio o nulo
 		if (!originalFilename.equals("")) {
 
@@ -590,14 +631,14 @@ public class UsuarioController {
 		return "perfil/opciones/publicacionesFavoritas";
 	}
 
-	//=============================================================================
-	//================================EDITAR=PERFIL================================
-	//=============================================================================
+	// =============================================================================
+	// ================================EDITAR=PERFIL================================
+	// =============================================================================
 	@GetMapping("editarCuenta")
 	public String seleccionTipoCuenta(ModelMap m, HttpSession s) {
 		Usuario usuario = (Usuario) s.getAttribute("userLogged");
 		System.out.println(usuario.isTipoCuenta());
-		m.put("tipo",usuario.isTipoCuenta());
+		m.put("tipo", usuario.isTipoCuenta());
 		return "perfil/opciones/cuenta";
 	}
 
@@ -608,10 +649,23 @@ public class UsuarioController {
 		Usuario usuario = (Usuario) s.getAttribute("userLogged");
 		usuario.setTipoCuenta(false);
 		usuarioRepository.save(usuario);
-		
-		return "redirect: user/"+usuario.getLoginName()+"/opciones";
+
+		Collection<Long> seguidoresId = seguimientoRepository.findSeguidoresByIdUsuario(usuario.getId());
+		if (!seguidoresId.isEmpty()) {
+			for (Long id : seguidoresId) {
+
+				Usuario seguidor = usuarioRepository.getOne(id);
+
+				Seguimiento cambiarAceptado = seguimientoRepository.getBySeguidoAndSeguidor(usuario, seguidor);
+				cambiarAceptado.setAceptado(true);
+				seguimientoRepository.save(cambiarAceptado);
+			
+			}
+		}
+
+		return "redirect: user/" + usuario.getLoginName() + "/opciones";
 	}
-	
+
 	@GetMapping("cuentaPrivada")
 	@Transactional
 	@ResponseBody
@@ -619,24 +673,83 @@ public class UsuarioController {
 		Usuario usuario = (Usuario) s.getAttribute("userLogged");
 		usuario.setTipoCuenta(true);
 		usuarioRepository.save(usuario);
-		
-		return "redirect: user/"+usuario.getLoginName()+"/opciones";
+
+		return "redirect: user/" + usuario.getLoginName() + "/opciones";
 	}
-	
+
 	@GetMapping("cuentaEliminada")
 	public String eliminar(HttpSession s) {
-		
 
 		H.setInfoModal("Info|Se ha borrado el usuario correctamente|btn-hover btn-black", s);
 		usuarioRepository.delete((Usuario) s.getAttribute("userLogged"));
 		s.removeAttribute("userLogged");
 		return "redirect:/";
 	}
-	//======================================
+
+	// =========================================================================
+	// Notificaciones
+	// =========================================================================
 	@GetMapping("notificaciones")
-	public String notificaciones() {
+	public String notificaciones(HttpSession s, ModelMap m) {
+
+		Usuario usuario = (Usuario) s.getAttribute("userLogged");
+
+		Collection<Long> idSeguidores = seguimientoRepository.findSeguidoresByIdUsuario(usuario.getId());
+
+		Collection<Usuario> usuariosSeguidores = new ArrayList<Usuario>();
+
+		if (!idSeguidores.isEmpty()) {
+			for (Long isS : idSeguidores) {
+
+				System.out.println(isS);
+				Usuario seguidor = usuarioRepository.getOne(isS);
+				if (seguidor.isTipoCuenta()) {
+					Seguimiento thisSeguimiento = seguimientoRepository.getBySeguidoAndSeguidor(usuario, seguidor);
+					if (thisSeguimiento != null) {
+						if (thisSeguimiento.getAceptado() == false) {
+							usuariosSeguidores.add(seguidor);
+						}
+					}
+				}
+			}
+		}
+
+		if (!usuariosSeguidores.isEmpty()) {
+			m.put("seguidores", usuariosSeguidores);
+		} else {
+			m.put("seguidores", false);
+		}
 
 		return "perfil/opciones/notificaciones";
+	}
+
+	@PostMapping("/eliminarPeticion")
+	@Transactional
+	@ResponseBody
+	public String eliminarPeticion(@RequestParam("id_seguidor") Long id_seguidor, HttpSession s) {
+
+		Usuario seguidor = usuarioRepository.getOne(id_seguidor);
+		Usuario seguido = (Usuario) s.getAttribute("userLogged");
+
+		Seguimiento seguimientoParaBorrar = seguimientoRepository.getBySeguidoAndSeguidor(seguido, seguidor);
+		seguimientoRepository.delete(seguimientoParaBorrar);
+
+		return "";
+	}
+
+	@PostMapping("/aceptarPeticion")
+	@Transactional
+	@ResponseBody
+	public String aceptarPeticion(@RequestParam("id_seguidor") Long id_seguidor, HttpSession s) {
+
+		Usuario seguidor = usuarioRepository.getOne(id_seguidor);
+		Usuario seguido = (Usuario) s.getAttribute("userLogged");
+
+		Seguimiento seguimiento = seguimientoRepository.getBySeguidoAndSeguidor(seguido, seguidor);
+		seguimiento.setAceptado(true);
+		seguimientoRepository.save(seguimiento);
+
+		return "";
 	}
 
 	// =========================================================================
