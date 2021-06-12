@@ -1,13 +1,4 @@
-/* .opcion-chat:hover { */
-/* 	background-color: #c9c9c9; */
-/* } */
-/* .mensaje { */
-/* 	margin: 0.2em; */
-/* 	padding: 0.5em; */
-/* 	border: 1px solid grey; */
-/* 	border-radius: 10px; */
-/* } */
- #tituloChat { 
+#tituloChat { 
  	padding: 5px; 
  	background-color: white; 
  	border-radius: 10px; 
@@ -18,9 +9,11 @@
 	height:500px;
 }
 #conversaciones{
-/* 	border:1px solid gray; */
-	height:400px;
+	height:350px;
+	overflow-y:scroll;
+	overflow-x:hidden;
 }
+
 #remitente{
 	border-radius:22px;
 	background-color:rgba(186, 186, 183, 1);
@@ -33,32 +26,36 @@
 	background-color:rgba(255, 27, 90);
 	padding:3px 10px 3px 10px;
 }
-.chatbox {
+.chatbox ,#conversaciones{
 	overflow-y: scroll;
-	height:360px;
+	height:300px;
 }
-.chatbox::-webkit-scrollbar {
+.chatbox{
+	width:auto;
+}
+.chatbox::-webkit-scrollbar,#conversaciones::-webkit-scrollbar {
     -webkit-appearance: none;
 }
 
-.chatbox::-webkit-scrollbar:vertical {
+.chatbox::-webkit-scrollbar:vertical,#conversaciones::-webkit-scrollbar:vertical {
     width:10px;
 }
 
-.chatbox::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
+.chatbox::-webkit-scrollbar-button:increment,.chatbox::-webkit-scrollbar-button ,#conversaciones::-webkit-scrollbar-button:increment,
+#conversaciones::-webkit-scrollbar-button{
     display: none;
 } 
 
-.chatbox::-webkit-scrollbar:horizontal {
+.chatbox::-webkit-scrollbar:horizontal,#conversaciones::-webkit-scrollbar:horizontal {
     height: 10px;
 }
 
-.chatbox::-webkit-scrollbar-thumb {
+.chatbox::-webkit-scrollbar-thumb,#conversaciones::-webkit-scrollbar-thumb {
     background-color: rgba(97, 97, 94, 0.40);
     border-radius: 20px;
     border: 2px solid #f1f2f3;
 }
 
-.chatbox::-webkit-scrollbar-track {
+.chatbox::-webkit-scrollbar-track,#conversaciones::-webkit-scrollbar-track {
     border-radius: 10px;  
 }

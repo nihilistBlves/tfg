@@ -48,6 +48,7 @@ public class AnonymousController {
 	
 	@GetMapping("/")
 	public String index(ModelMap m, HttpSession s) throws DangerException {
+		
 		if (s.getAttribute("userLogged") != null) {
 			return "redirect:/feed";
 		} else {

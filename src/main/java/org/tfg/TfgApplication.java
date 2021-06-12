@@ -47,6 +47,7 @@ public class TfgApplication implements CommandLineRunner {
 		if (rolRepository.findAll().isEmpty()) {
 			rolRepository.save(new Rol("auth"));
 			rolRepository.save(new Rol("admin"));
+			
 		}
 
 		if(ciudadRepository.findAll().isEmpty()) {
