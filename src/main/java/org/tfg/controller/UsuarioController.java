@@ -297,7 +297,7 @@ public class UsuarioController {
 				H.mPut(m, s);
 			}
 			m.put("view", "usuario/publicar");
-			return "_t/frameFeed";
+			return "t/frameFeed";
 		} else {
 			H.setInfoModal("Error|Para acceder a este apartado debe estar logueado|btn-hover btn-red", s);
 			return "redirect:/";
@@ -472,7 +472,7 @@ public class UsuarioController {
 				}
 
 				m.put("view", "perfil/opcionesPerfil");
-				return "/_t/frameFeed";
+				return "t/frameFeed";
 			}
 		}
 		return "redirect:/user/" + username;
