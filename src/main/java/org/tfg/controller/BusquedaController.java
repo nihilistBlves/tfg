@@ -34,7 +34,7 @@ public class BusquedaController {
 		m.put("instrumentos", instrumentoRepository.findAll());
 		
 		m.put("view", "usuario/buscar");
-		return "_t/frameFeed";
+		return "t/frameFeed";
 	}
 
 	
