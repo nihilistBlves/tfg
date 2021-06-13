@@ -33,8 +33,9 @@ public class BusquedaController {
 		m.put("ciudades", ciudadRepository.findAll());
 		m.put("instrumentos", instrumentoRepository.findAll());
 		
-		m.put("view", "usuario/buscar");
-		return "t/frameFeed";
+//		m.put("view", "usuario/buscar");
+//		return "_t/frameFeed";
+		return "archivos/upload";
 	}
 
 	
