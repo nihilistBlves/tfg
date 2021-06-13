@@ -218,7 +218,7 @@ public class AnonymousController {
 
 
 		
-		H.setInfoModal("!Exito!|La cuenta se ha activado correctamente. Ya puedes hacer login|btn-hover btn-green",s);
+		H.setInfoModal("Info|La cuenta se ha activado correctamente. Ya puedes hacer login|btn-hover btn-black",s);
 		return "redirect:/";
 
 	}

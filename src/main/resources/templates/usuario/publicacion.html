@@ -1,0 +1,102 @@
+<div class="col-lg">
+	<div id="centro" class=" justify-content-center align-items-center">
+		<!-- 			cargar publicaciones -->
+		<div class="d-flex justify-content-center" id="perfiles">
+			<div id="borde-perfil"
+				class="d-flex justify-content-center align-items-center">
+				<div
+					class="card card-feed d-flex justify-content-center align-items-center">
+					<!-- 				img solo desde static -->
+					<div th:if="${publicacion.tipoContenido}=='img'">
+						<img class="card-img feed-img"
+							th:src="@{${publicacion.contenido}}">
+					</div>
+
+					<!-- 		Para video -->
+					<div th:if="${publicacion.tipoContenido}=='video'"
+						class="card-film feed-film">
+						<video width="500px" height="300px" controls>
+							<source th:src="@{${publicacion.contenido}}" type="video/mp4" />
+						</video>
+					</div>
+
+					<div th:if="${publicacion.tipoContenido}=='audio'"
+						class="card-audio feed-audio">
+						<audio th:src="@{${publicacion.contenido}}" controls
+							type="audio/mpeg">
+						</audio>
+					</div>
+
+					<div class="row d-flex justify-content-center align-items-center">
+						<div class="card-body feed-body">
+							<div class="card-tittle feed-tittle p-0 mt-3 mb-1">
+								<img class="foto-post col-5"
+									th:src="@{${publicacion.duenioPublicacion.fotoPerfil}}">
+								<a
+									th:href="@{/user/{loginName}(loginName=${publicacion.duenioPublicacion.loginName})}"><b
+									th:text="${publicacion.duenioPublicacion.loginName}"></b></a> <small
+									class="text-muted float-right mt-3 " id="fecha"
+									th:text="${publicacion.fechaPublicacion.toLocalDate}"></small>
+							</div>
+							<div class="card-text feed-text">
+								<p class="text-break p-4" th:id="${publicacion.id}"
+									th:text="${publicacion.descripcion}"></p>
+							</div>
+							<!-- 								<div class="leer-mas"> -->
+							<!-- 									<a class="leer" onclick="leer(this)">Leer más</a> -->
+							<!-- 								</div> -->
+
+							<div class="card-footer text-right d-flexbox">
+								<div class="icons" th:if="${session.userLogged} != null">
+									<div class="row justify-content-end align-items-center"
+										th:if="${waved != null}">
+										<b th:text=${publicacion.cantidadWaves}
+											class="badge badge-secondary"></b><i
+											th:id="|wave-${publicacion.id}|"
+											style="color: #f90d4e; font-size: 2em;"
+											class="bi bi-soundwave" role="button" onclick="wave(this)"></i>
+									</div>
+									<div class="row justify-content-end align-items-center"
+										th:unless="${waved != null}">
+										<b th:text=${publicacion.cantidadWaves}
+											class="badge badge-secondary"></b><i
+											th:id="|wave-${publicacion.id}|"
+											style="color: black; font-size: 2em;" class="bi bi-soundwave"
+											role="button" onclick="wave(this)"></i>
+									</div>
+								</div>
+								<div class="icons" th:unless="${session.userLogged} != null">
+									<div class="row justify-content-end align-items-center">
+										<b th:text=${publicacion.cantidadWaves}
+											class="badge badge-secondary"></b><i
+											th:id="|wave-${publicacion.id}|"
+											style="color: black; font-size: 2em;" class="bi bi-soundwave"
+											role="button" data-toggle="modal" data-target="#loginModal"></i>
+									</div>
+								</div>
+								<div class="form-group justify-content-end align-items-center">
+									<div class="d-flex justify-content-between pt-4 comentarios">
+										<input type="text" class="form-control col-6"
+											placeholder="Comentar" name="comentario" id="comentario" />
+										<input type="hidden" th:value="${publicacion.id}" /> <input
+											type="button" class=" btn-hover btn-red" value="Comentar"
+											data-toggle="modal" data-target="#loginModal" />
+
+										<div th:id="|coment-${publicacion.id}|"
+											class="cargaComentarios">
+											<input type="hidden" th:value="${publicacion.id}"
+												name="idPublicacionWave" />
+										</div>
+									</div>
+									<div class="comentarioss mt-3 text-center">
+										<span>No hay comentarios en esta publicación</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

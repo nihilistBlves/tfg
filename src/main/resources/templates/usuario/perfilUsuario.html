@@ -1,69 +1,97 @@
 <script th:inline="javascript">
+	var privada = /*[[${usuario.privada}]]*/"";
+	var seguido = /*[[${seguido}]]*/"";
+	var seguidoSolicitado = /*[[${seguidoSolicitado}]]*/"";
+
 	function seguir(boton) {
 
 		var username = /*[[${usuario.loginName}]]*/"";
 
-		if (boton.classList.contains("btn-outline-danger")) {
-			boton.classList.remove("btn-outline-danger");
-			boton.classList.add("btn-danger");
-			boton.innerText = "Dejar de seguir";
-			document.getElementById("seguidores").innerText = parseInt(document
-				.getElementById("seguidores").innerText) + 1;
+		if (privada == true) {
+			if (seguido == null && seguidoSolicitado == null && boton.classList.contains("btn-outline-danger")) {
+				boton.classList.remove("btn-outline-danger");
+				boton.classList.add("btn-danger");
+				boton.innerText = "Seguimiento solicitado";
+				seguidoSolicitado = true;
 
-			$(document).ready(function () {
-				$.ajax({
-					url: '/user/' + username + '/seguir',
-					type: 'post',
+				$(document).ready(function() {
+					$.ajax({
+						url : '/user/' + username + '/seguir',
+						type : 'post',
+					});
 				});
-			});
 
+			} else if (seguido == null && seguidoSolicitado == true && boton.classList.contains("btn-danger")) {
+				boton.classList.remove("btn-danger");
+				boton.classList.add("btn-outline-danger");
+				boton.innerText = "Seguir";
+				seguidoSolicitado = null;
+				
+				$(document).ready(function() {
+					$.ajax({
+						url : '/user/' + username + '/dejarDeSeguir',
+						type : 'post',
+
+					});
+				});
+			} else if (seguido == true && seguidoSolicitado == null && boton.classList.contains("btn-danger")) {
+				boton.classList.remove("btn-danger");
+				boton.classList.add("btn-outline-danger");
+				boton.innerText = "Seguir";
+				seguido = true;
+
+				$(document).ready(function() {
+					$.ajax({
+						url : '/user/' + username + '/dejarDeSeguir',
+						type : 'post',
+
+					});
+				});
+			}
 		} else {
-			boton.classList.remove("btn-danger");
-			boton.classList.add("btn-outline-danger");
-			boton.innerText = "Seguir";
-			document.getElementById("seguidores").innerText = parseInt(document
-				.getElementById("seguidores").innerText) - 1;
+			if (seguido == null) {
+				boton.classList.remove("btn-outline-danger");
+				boton.classList.add("btn-danger");
+				boton.innerText = "Dejar de seguir";
+				document.getElementById("seguidores").innerText = parseInt(document
+						.getElementById("seguidores").innerText) + 1;
 
-			$(document).ready(function () {
-				$.ajax({
-					url: '/user/' + username + '/dejarDeSeguir',
-					type: 'post',
-
+				$(document).ready(function() {
+					$.ajax({
+						url : '/user/' + username + '/seguir',
+						type : 'post',
+					});
 				});
-			});
 
+			} else {
+				boton.classList.remove("btn-danger");
+				boton.classList.add("btn-outline-danger");
+				boton.innerText = "Seguir";
+				document.getElementById("seguidores").innerText = parseInt(document
+						.getElementById("seguidores").innerText) - 1;
+
+				$(document).ready(function() {
+					$.ajax({
+						url : '/user/' + username + '/dejarDeSeguir',
+						type : 'post',
+
+					});
+				});
+
+			}
 		}
 	}
+	
+	function irPublicacion(obj) {
+		var idPublicacion = obj.dataset.id;
+		window.location.replace("/publicacion/"+idPublicacion);
+	}
 
-	window.setTimeout(function () {
+	window.setTimeout(function() {
 		if (document.getElementById("datos")) {
-			$(document).ready(function () {
+			$(document).ready(function() {
 
-				$(".text").on("click", function () {
-
-					var username = /*[[${usuario.loginName}]]*/"";
-
-					var datos = document.getElementById("datos");
-
-					var parametros = {
-
-						tipo: "texto",
-						nombre: username,
-					}
-
-					$.ajax({
-						data: parametros,
-						url: '/tipoArchivo',
-						type: 'post',
-						success: function (publicaciones) {
-							console.log(publicaciones);
-							if (publicaciones != null) {datos.innerHTML = publicaciones;}
-						}
-
-					});
-				});
-
-				$(".image").on("click", function () {
+				$(".text").on("click", function() {
 
 					var username = /*[[${usuario.loginName}]]*/"";
 
@@ -71,23 +99,25 @@
 
 					var parametros = {
 
-						tipo: "img",
-						nombre: username,
+						tipo : "texto",
+						nombre : username,
 					}
 
 					$.ajax({
-						data: parametros,
-						url: '/tipoArchivo',
-						type: 'post',
-						success: function (publicaciones) {
+						data : parametros,
+						url : '/tipoArchivo',
+						type : 'post',
+						success : function(publicaciones) {
 							console.log(publicaciones);
-							if (publicaciones != null) {datos.innerHTML = publicaciones;}
+							if (publicaciones != null) {
+								datos.innerHTML = publicaciones;
+							}
 						}
 
 					});
 				});
 
-				$(".music").on("click", function () {
+				$(".image").on("click", function() {
 
 					var username = /*[[${usuario.loginName}]]*/"";
 
@@ -95,21 +125,25 @@
 
 					var parametros = {
 
-						tipo: "audio",
-						nombre: username,
+						tipo : "img",
+						nombre : username,
 					}
 
 					$.ajax({
-						data: parametros,
-						url: '/tipoArchivo',
-						type: 'post',
-						success: function (publicaciones) {
+						data : parametros,
+						url : '/tipoArchivo',
+						type : 'post',
+						success : function(publicaciones) {
 							console.log(publicaciones);
-							if (publicaciones != null) {datos.innerHTML = publicaciones;}
+							if (publicaciones != null) {
+								datos.innerHTML = publicaciones;
+							}
 						}
+
 					});
 				});
-				$(".video").on("click", function () {
+
+				$(".music").on("click", function() {
 
 					var username = /*[[${usuario.loginName}]]*/"";
 
@@ -117,23 +151,49 @@
 
 					var parametros = {
 
-						tipo: "video",
-						nombre: username,
+						tipo : "audio",
+						nombre : username,
 					}
 
 					$.ajax({
-						data: parametros,
-						url: '/tipoArchivo',
-						type: 'post',
-						success: function (publicaciones) {
+						data : parametros,
+						url : '/tipoArchivo',
+						type : 'post',
+						success : function(publicaciones) {
 							console.log(publicaciones);
-							if (publicaciones != null) {datos.innerHTML = publicaciones;}
+							if (publicaciones != null) {
+								datos.innerHTML = publicaciones;
+							}
+						}
+					});
+				});
+				$(".video").on("click", function() {
+
+					var username = /*[[${usuario.loginName}]]*/"";
+
+					var datos = document.getElementById("datos");
+
+					var parametros = {
+
+						tipo : "video",
+						nombre : username,
+					}
+
+					$.ajax({
+						data : parametros,
+						url : '/tipoArchivo',
+						type : 'post',
+						success : function(publicaciones) {
+							console.log(publicaciones);
+							if (publicaciones != null) {
+								datos.innerHTML = publicaciones;
+							}
 						}
 
 					});
 				});
 
-				$(function () {
+				$(function() {
 
 					var datos = document.getElementById("datos");
 
@@ -143,15 +203,15 @@
 
 					var parametros = {
 
-						tipo: "img",
-						nombre: username,
+						tipo : "img",
+						nombre : username,
 					}
 
 					$.ajax({
-						data: parametros,
-						url: '/tipoArchivo',
-						type: 'post',
-						success: function (publicaciones) {
+						data : parametros,
+						url : '/tipoArchivo',
+						type : 'post',
+						success : function(publicaciones) {
 							console.log(publicaciones);
 							datos.innerHTML = publicaciones;
 
@@ -165,7 +225,7 @@
 		}
 	}, 500);
 
-	$(".image").on("click", function () {
+	$(".image").on("click", function() {
 
 		var username = /*[[${usuario.loginName}]]*/"";
 
@@ -173,22 +233,22 @@
 
 		var parametros = {
 
-			tipo: "img",
-			nombre: username,
+			tipo : "img",
+			nombre : username,
 		}
 
 		$.ajax({
-			data: parametros,
-			url: '/tipoArchivo',
-			type: 'post',
-			success: function (publicaciones) {
+			data : parametros,
+			url : '/tipoArchivo',
+			type : 'post',
+			success : function(publicaciones) {
 				datos.innerHTML = publicaciones;
 			}
 
 		});
 	});
 
-	$(".music").on("click", function () {
+	$(".music").on("click", function() {
 
 		var username = /*[[${usuario.loginName}]]*/"";
 
@@ -196,20 +256,20 @@
 
 		var parametros = {
 
-			tipo: "audio",
-			nombre: username,
+			tipo : "audio",
+			nombre : username,
 		}
 
 		$.ajax({
-			data: parametros,
-			url: '/tipoArchivo',
-			type: 'post',
-			success: function (publicaciones) {
+			data : parametros,
+			url : '/tipoArchivo',
+			type : 'post',
+			success : function(publicaciones) {
 				datos.innerHTML = publicaciones;
 			}
 		});
 	});
-	$(".video").on("click", function () {
+	$(".video").on("click", function() {
 
 		var username = /*[[${usuario.loginName}]]*/"";
 
@@ -217,22 +277,22 @@
 
 		var parametros = {
 
-			tipo: "video",
-			nombre: username,
+			tipo : "video",
+			nombre : username,
 		}
 
 		$.ajax({
-			data: parametros,
-			url: '/tipoArchivo',
-			type: 'post',
-			success: function (publicaciones) {
+			data : parametros,
+			url : '/tipoArchivo',
+			type : 'post',
+			success : function(publicaciones) {
 				datos.innerHTML = publicaciones;
 			}
 
 		});
 	});
 
-	$(function () {
+	$(function() {
 
 		var datos = document.getElementById("datos");
 
@@ -240,23 +300,21 @@
 
 		var parametros = {
 
-			tipo: "img",
-			nombre: username,
+			tipo : "img",
+			nombre : username,
 		}
 
 		$.ajax({
-			data: parametros,
-			url: '/tipoArchivo',
-			type: 'post',
-			success: function (publicaciones) {
+			data : parametros,
+			url : '/tipoArchivo',
+			type : 'post',
+			success : function(publicaciones) {
 				datos.innerHTML = publicaciones;
 			}
 
 		});
 
 	});
-
-
 </script>
 <div class="col">
 	<div class="caja">
@@ -270,32 +328,27 @@
 						<div class="col">
 							<h2 class="name" th:text="${usuario.loginName}"></h2>
 						</div>
-<div class="follow my-2 ml-auto d-flex">
-							<span class="seguimiento mx-auto">
-								<b>Seguidores
-									<span th:if="${seguidores}==0">
-										<span class="badge badge-secondary" id="seguidores" th:text="${seguidores}">
-										</span>
+						<div class="follow my-2 ml-auto d-flex">
+							<span class="seguimiento mx-auto"> <b>Seguidores <span
+									th:if="${seguidores}==0"> <span
+										class="badge badge-secondary" id="seguidores"
+										th:text="${seguidores}"> </span>
+								</span> <span th:unless="${seguidores}==0"> <span
+										class="badge badge-danger" id="seguidores"
+										th:text="${seguidores}"> </span>
+								</span>
+							</b>
+							</span> <span class="seguimiento mx-auto"> <b>Seguidos <span
+									th:if="${seguidos}==0"> <span
+										class="badge badge-secondary" id="seguidos"
+										th:text="${seguidos}"> </span>
+								</span> <span th:unless="${seguidos}==0"> <span
+										class="badge badge-danger" id="seguidos" th:text="${seguidos}">
 									</span>
-									<span th:unless="${seguidores}==0">
-										<span class="badge badge-danger" id="seguidores" th:text="${seguidores}">
-										</span>
-									</span>
-								</b>
+								</span>
+							</b>
 							</span>
-							<span class="seguimiento mx-auto">
-								<b>Seguidos
-									<span th:if="${seguidos}==0">
-										<span class="badge badge-secondary" id="seguidos" th:text="${seguidos}">
-										</span>
-									</span>
-									<span th:unless="${seguidos}==0">
-										<span class="badge badge-danger" id="seguidos" th:text="${seguidos}">
-										</span>
-									</span>
-								</b>
-							</span>
-							</div>
+						</div>
 					</div>
 					<div class="w-100 h-auto  p-3 ">
 						<p class="text-break" th:text="${usuario.descripcionPerfil}"></p>
@@ -303,35 +356,44 @@
 					<h4>Instrumentos</h4>
 					<div class=" my-auto w-auto p-3">
 
-						<label th:each="instrumento: ${usuario.instrumentos}" th:text="${instrumento.nombre}"
-							class="instrumentoLabel"></label>
+						<label th:each="instrumento: ${usuario.instrumentos}"
+							th:text="${instrumento.nombre}" class="instrumentoLabel"></label>
 
 
 					</div>
-					<div th:if="${propietario == null && session.userLogged != null}"
+					<div th:if="${propietario == null} and ${session.userLogged != null}"
 						class="d-flex justify-content-between my-4">
 
 						<div class="col contacto" th:if="${seguido} != null">
-							<button type="button" class="ml-auto  btn-block btn btn-danger" onclick="seguir(this)">Dejar
-								de seguir</button>
+							<button type="button" class="ml-auto  btn-block btn btn-danger"
+								onclick="seguir(this)">Dejar de seguir</button>
 						</div>
-						<div class="col contacto" th:unless="${seguido} != null">
-							<button type="button" class="ml-auto  btn-block btn btn-outline-danger"
+						<div class="col contacto" th:if="${seguido == null} and ${seguidoSolicitado == null}">
+							<button type="button"
+								class="ml-auto  btn-block btn btn-outline-danger"
 								onclick="seguir(this)">Seguir</button>
 						</div>
-						<div class="col contacto">
+						
+						<div class="col contacto" th:if="${seguido == null} and ${seguidoSolicitado == true}">
+							<button type="button"
+								class="ml-auto  btn-block btn btn-danger"
+								onclick="seguir(this)">Seguimiento solicitado</button>
+						</div>
 
+						<div class="col contacto">
 							<form
 								th:action="@{/user/{userLogged}/messages(userLogged=${session.userLogged.loginName})}">
 								<input type="hidden" name="idPerfil" th:value="${usuario.id}">
-								<button type="submit" class="ml-auto btn-block btn btn-outline-danger">Mensaje</button>
+								<button type="submit"
+									class="ml-auto btn-block btn btn-outline-danger">Mensaje</button>
 							</form>
 						</div>
 					</div>
 
 					<div class="d-flex justify-content-between my-4"
-						th:if="${propietario != null && session.userLogged != null}">
-						<form th:action="@{/user/{userLogged}/opciones(userLogged=${session.userLogged.loginName})}"
+						th:if="${propietario != null} and ${session.userLogged != null}">
+						<form
+							th:action="@{/user/{userLogged}/opciones(userLogged=${session.userLogged.loginName})}"
 							method="get">
 							<button type="submit" class="ml-auto btn-block btn btn-danger">Editar
 								perfil</button>
@@ -357,52 +419,48 @@
 
 
 		<div class="cuerpo " onload="carga()">
-			<div th:if="${usuario.tipoCuenta} == true">
-				<div th:if="${mesigue} == false">
-					<div th:if="${aceptar} == false">
-						<div th:if="${logedId} != ${perfilId}">
-							<div class="row d-flex justify-content-center">
-								<div class="col-12 text-center">
-									<i class="bi bi-lock-fill" style="font-size: 200px; color:black;"></i>
-								</div>
-								<div class="col-12 text-center">
-									<h3 class="h3">Este usuario tiene la cuenta privada</h3>
-								</div>
-							</div>
+			<div th:if="${session.userLogged != null}">
+				<div th:if="${session.userLogged.id == usuario.id}">
+					<div class="row d-flex justify-content-around" id="datos"></div>
+				</div>
+				<div th:if="${session.userLogged.id != usuario.id} and ${usuario.privada == false} and ${seguido == null}">
+					<div class="row d-flex justify-content-around" id="datos"></div>
+				</div>
+				<div th:if="${session.userLogged.id != usuario.id} and ${usuario.privada == false} and ${seguido == true}">
+					<div class="row d-flex justify-content-around" id="datos"></div>
+				</div>
+				<div th:if="${session.userLogged.id != usuario.id} and ${usuario.privada == true} and ${seguido == null}">
+					<div class="row d-flex justify-content-center">
+						<div class="col-12 text-center">
+							<i class="bi bi-lock-fill"
+								style="font-size: 200px; color: black;"></i>
+						</div>
+						<div class="col-12 text-center">
+							<h3 class="h3">Este usuario tiene la cuenta privada</h3>
+						</div>
+					</div>
+				</div>
+				<div th:if="${session.userLogged.id != usuario.id} and ${usuario.privada == true} and ${seguido == true}">
+					<div class="row d-flex justify-content-around" id="datos"></div>
+				</div>
+			</div>
+
+			<div th:if="${session.userLogged == null}">
+				<div th:if="${usuario.privada == false}">
+					<div class="row d-flex justify-content-around" id="datos"></div>
+				</div>
+				<div th:if="${usuario.privada == true}">
+					<div class="row d-flex justify-content-center">
+						<div class="col-12 text-center">
+							<i class="bi bi-lock-fill"
+								style="font-size: 200px; color: black;"></i>
+						</div>
+						<div class="col-12 text-center">
+							<h3 class="h3">Este usuario tiene la cuenta privada</h3>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div th:if="${usuario.tipoCuenta} == true">
-				<div th:if="${mesigue} == true">
-					<div th:if="${aceptar} == true">
-						<div class="row d-flex justify-content-around" id="datos"></div>
-					</div>
-				</div>
-			</div>
-			<div th:if="${usuario.tipoCuenta} == false">
-
-				<div class="row d-flex justify-content-around" id="datos"></div>
-
-			</div>
-			<div th:if="${logedId} == ${perfilId} ">
-				<div class="row d-flex justify-content-around" id="datos"></div>
-			</div>
-			<div th:if="${aceptar} == false">
-				<div th:if="${logedId} != ${perfilId}">
-					<div th:if="${mesigue} == true">
-						<div class="row d-flex justify-content-center">
-							<div class="col-12 text-center">
-								<i class="bi bi-lock-fill" style="font-size: 200px; color:black;"></i>
-							</div>
-							<div class="col-12 text-center">
-								<h3 class="h3">Este usuario tiene la cuenta privada</h3>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
 		</div>
 	</div>
 </div>

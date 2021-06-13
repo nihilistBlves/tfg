@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -30,7 +31,6 @@ import org.tfg.domain.Seguimiento;
 import org.tfg.domain.Usuario;
 import org.tfg.exception.DangerException;
 import org.tfg.helper.H;
-import org.tfg.helper.PRG;
 import org.tfg.repositories.CiudadRepository;
 import org.tfg.repositories.ComentarioRepository;
 import org.tfg.repositories.InstrumentoRepository;
@@ -59,10 +59,10 @@ public class UsuarioController {
 
 	@Autowired
 	private ComentarioRepository comentarioRepository;
-	
+
 	@Autowired
 	private CiudadRepository ciudadRepository;
-	
+
 	@GetMapping("/feed")
 	public String getFeed(ModelMap m, HttpSession s) {
 
@@ -95,10 +95,50 @@ public class UsuarioController {
 
 	}
 
+	@GetMapping("/publicacion/{id}")
+	public String getPublicacion(@PathVariable("id") Long idPublicacion, ModelMap m, HttpSession s) {
+		Publicacion publicacion = publicacionRepository.getById(idPublicacion);
+
+		if (s.getAttribute("userLogged") == null) {
+			if (publicacion.getDuenioPublicacion().isPrivada()) {
+				H.setInfoModal(
+						"Error|Debes hacer login y seguir al dueño de la publicación para poder ver su contenido|btn-hover btn-red",
+						s);
+				return "redirect:/user/" + publicacion.getDuenioPublicacion().getLoginName();
+			} else {
+				m.put("publicacion", publicacion);
+				m.put("view", "usuario/publicacion");
+				return "_t/frameFeed";
+			}
+		} else {
+			Usuario userLogged = (Usuario) s.getAttribute("userLogged");
+			Collection<Long> seguidosPorUserLogged = seguimientoRepository.findSeguidosByIdUsuario(userLogged.getId());
+			
+			if (Arrays.asList(waveRepository.idsPublicacionWavedByUser(userLogged.getId())).contains(userLogged.getId())) {
+				m.put("waved", true);
+			}
+
+			if (publicacion.getDuenioPublicacion().isPrivada()) {
+				if (!seguidosPorUserLogged.contains(publicacion.getDuenioPublicacion().getId())) {
+					H.setInfoModal(
+							"Error|Debes seguir al dueño de la publicación para poder ver su contenido|btn-hover btn-red",
+							s);
+					return "redirect:/user/" + publicacion.getDuenioPublicacion().getLoginName();
+				} else {
+					m.put("publicacion", publicacion);
+					m.put("view", "usuario/publicacion");
+					return "_t/frameFeed";
+				}
+			} else {
+				m.put("publicacion", publicacion);
+				m.put("view", "usuario/publicacion");
+				return "_t/frameFeed";
+			}
+		}
+	}
+
 	@PostMapping("/logout")
 	public String postLogout(ModelMap m, HttpSession s) {
-
-		H.setInfoModal("!Exito!|La sesión ha cerrado correctamente|btn-hover btn-green", s);
 
 		s.removeAttribute("userLogged");
 
@@ -125,10 +165,17 @@ public class UsuarioController {
 					.findSeguidoresByIdUsuario(usuarioRepository.getByLoginName(username).getId());
 			Collection<Long> seguidos = seguimientoRepository
 					.findSeguidosByIdUsuario(usuarioRepository.getByLoginName(username).getId());
+			Collection<Long> seguidoresNoAceptados = seguimientoRepository
+					.findSeguidoresNoAceptadosByIdUsuario(usuarioRepository.getByLoginName(username).getId());
 
 			if (s.getAttribute("userLogged") != null) {
+				if (((Usuario) s.getAttribute("userLogged")).getLoginName().equals(usuarioCargado.getLoginName())) {
+					m.put("propietario", true);
+				}
 				if (seguidores.contains(((Usuario) s.getAttribute("userLogged")).getId())) {
 					m.put("seguido", true);
+				} else if (seguidoresNoAceptados.contains(((Usuario) s.getAttribute("userLogged")).getId())) {
+					m.put("seguidoSolicitado", true);
 				}
 			}
 
@@ -137,41 +184,6 @@ public class UsuarioController {
 
 			m.put("seguidores", seguidores.size());
 			m.put("seguidos", seguidos.size());
-
-			boolean sigue = false;
-
-			Usuario usuarioSesion = (Usuario) s.getAttribute("userLogged");
-			for (Long seg : seguidores) {
-
-				if (usuarioSesion.getId() == seg) {
-					sigue = true;
-					break;
-				}
-			}
-			System.out.println(sigue);
-			m.put("mesigue", sigue);
-
-			if (s.getAttribute("userLogged") != null) {
-				if (username.equals(((Usuario) s.getAttribute("userLogged")).getLoginName())) {
-					m.put("propietario", "si");
-				}
-			}
-
-			Usuario logedId = (Usuario) s.getAttribute("userLogged");
-
-			m.put("logedId", logedId.getId());
-			m.put("perfilId", usuarioCargado.getId());
-
-			Usuario usuarioPerfil = usuarioRepository.getByLoginName(username);
-
-			Seguimiento seguimiento = seguimientoRepository.getBySeguidoAndSeguidor(usuarioPerfil,
-					(Usuario) s.getAttribute("userLogged"));
-
-			if (seguimiento != null) {
-				m.put("aceptar", seguimiento.getAceptado());
-			} else {
-				m.put("aceptar", false);
-			}
 
 			m.put("view", "usuario/perfilUsuario");
 
@@ -190,13 +202,13 @@ public class UsuarioController {
 
 		Collection<Publicacion> publicaciones = publicacionRepository.getByDuenioPublicacion(usuario);
 
-		if (tipo.equals("texto") ) {
+		if (tipo.equals("texto")) {
 
 			for (Publicacion p : publicaciones) {
 
 				if (p.getTipoContenido().equals(tipo)) {
 
-					publicacionesTipo += "<div class=' publicacion bg-white ' width='200px' heigth='800px'>"
+					publicacionesTipo += "<div class=' publicacion bg-white ' width='200px' heigth='800px' data-id="+p.getId()+" onclick='irPublicacion(this)' role='button'>"
 							+ "	<p class='text-dark text-center text-uppercase font-weight-bold publicacion-text'>"
 							+ p.getDescripcion() + "</p>" + "</div>";
 				}
@@ -213,8 +225,7 @@ public class UsuarioController {
 
 				if (p.getTipoContenido().equals(tipo)) {
 
-
-					publicacionesTipo += "<div class='' width='200px' heigth='800px'>"
+					publicacionesTipo += "<div class='' width='200px' heigth='800px' data-id="+p.getId()+" onclick='irPublicacion(this)' role='button'>"
 							+ "<img class='publicacion-img' src=" + p.getContenido() + ">" + "</div>";
 				}
 
@@ -228,7 +239,7 @@ public class UsuarioController {
 
 				if (p.getTipoContenido().equals(tipo)) {
 
-					publicacionesTipo += "<div class='publicacion' width='200px' heigth='800px'>" + "<audio src="
+					publicacionesTipo += "<div class='publicacion' width='200px' heigth='800px' data-id="+p.getId()+" onclick='irPublicacion(this)' role='button'>" + "<audio src="
 							+ p.getContenido() + " controls type='audio/mpeg'>" + "</audio>" + "</div>";
 
 				}
@@ -243,7 +254,7 @@ public class UsuarioController {
 
 				if (p.getTipoContenido().equals(tipo)) {
 
-					publicacionesTipo += "<div class='' width='200px' heigth='800px'>"
+					publicacionesTipo += "<div class='' width='200px' heigth='800px' data-id="+p.getId()+" onclick='irPublicacion(this)' role='button'>"
 							+ "<video class='publicacion-video'  controls>" + "<source src=" + p.getContenido()
 							+ " type='video/mp4' />" + "</video>" + "</div>";
 
@@ -264,7 +275,7 @@ public class UsuarioController {
 			Seguimiento nuevoSeguimiento = new Seguimiento();
 			nuevoSeguimiento.setSeguido(usuarioAlQueSeguir);
 			nuevoSeguimiento.setSeguidor((Usuario) s.getAttribute("userLogged"));
-			if (!usuarioAlQueSeguir.isTipoCuenta()) {
+			if (!usuarioAlQueSeguir.isPrivada()) {
 				nuevoSeguimiento.setAceptado(true);
 			} else {
 				nuevoSeguimiento.setAceptado(false);
@@ -282,7 +293,8 @@ public class UsuarioController {
 	public String postDejarDeSeguir(@PathVariable("loginName") String username, ModelMap m, HttpSession s) {
 		Usuario usuarioSeguido = usuarioRepository.getByLoginName(username);
 		Usuario usuarioLogged = (Usuario) s.getAttribute("userLogged");
-		Seguimiento seguimientoParaBorrar = seguimientoRepository.getSeguimientoParaBorrarSeguido(usuarioSeguido.getId(), usuarioLogged.getId());
+		Seguimiento seguimientoParaBorrar = seguimientoRepository
+				.getSeguimientoParaBorrarSeguido(usuarioLogged.getId(), usuarioSeguido.getId());
 		seguimientoRepository.delete(seguimientoParaBorrar);
 		return "redirect:/user/" + username;
 	}
@@ -489,8 +501,10 @@ public class UsuarioController {
 	@PostMapping("/editarPerfil")
 	public String editarPerfil(@RequestParam("file") MultipartFile file, RedirectAttributes attributes,
 			@RequestParam("nombre") String nombre, @RequestParam("apellidos") String apellidos,
-			@RequestParam("edad") String edad,@RequestParam("idCiudad") Long idCiudad, @RequestParam("descripcion") String descripcion,
-			@RequestParam(value="instrumentos",required=false) List<String> instrumentos, HttpSession s) throws IOException {
+			@RequestParam("edad") String edad, @RequestParam("idCiudad") Long idCiudad,
+			@RequestParam("descripcion") String descripcion,
+			@RequestParam(value = "instrumentos", required = false) List<String> instrumentos, HttpSession s)
+			throws IOException {
 
 		Usuario usuario = (Usuario) s.getAttribute("userLogged");
 		String originalFilename = file.getOriginalFilename().toLowerCase();
@@ -509,14 +523,14 @@ public class UsuarioController {
 			LocalDate date = LocalDate.parse(edad);
 			usuario.setFechaNacimiento(date);
 		}
-		
-		if (idCiudad  != null) {
-			
+
+		if (idCiudad != null) {
+
 			Ciudad ciudad = ciudadRepository.getOne(idCiudad);
-			
+
 			usuario.setCiudad(ciudad);
 		}
-		
+
 		if (descripcion != null) {
 			usuario.setDescripcionPerfil(descripcion);
 		}
@@ -579,37 +593,31 @@ public class UsuarioController {
 	@PostMapping("editarPass")
 	public String gestionarPass(@RequestParam("passActual") String pass, @RequestParam("pass") String newPass,
 			@RequestParam("repass") String newRePass, HttpSession s) throws DangerException {
-
 		Usuario usuario = (Usuario) s.getAttribute("userLogged");
-
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 		if (encoder.matches(pass, usuario.getPass())) {
-
 			if (!encoder.matches(newPass, usuario.getPass())) {
-
-				if (newPass.contains(newRePass)) {
-
+				if (newPass.equals(newRePass)) {
 					usuario.setPass(encoder.encode(newPass));
-
 					usuarioRepository.save(usuario);
-
-					// TODO Añadir correo de informacion de cambio de contraseña
+					s.removeAttribute("userLogged");
+					H.setInfoModal(
+							"Info|La contraseña ha sido modificada con éxito. Por favor, vuelva a hacer login|btn-hover btn-black",
+							s);
+					return "redirect:/";
 				} else {
-					PRG.error("La contraseña no coincide", "/editarPass");
+					H.setInfoModal("Error|La nueva contraseña no coincide|btn-hover btn-red", s);
+					return "redirect:/user/" + usuario.getLoginName() + "/opciones";
 				}
-
 			} else {
-
-				PRG.error("La contraseña antigua y la nueva no deben ser iguales", "/editarPass");
+				H.setInfoModal("Error|La nueva contraseña no puede ser igual a la antigua|btn-hover btn-red", s);
+				return "redirect:/user/" + usuario.getLoginName() + "/opciones";
 			}
-
 		} else {
-			PRG.error("La nueva contraseña y la contraseña repetida nueva no coinciden", "/editarPass");
-
+			H.setInfoModal("Error|La contraseña antigua no es correcta|btn-hover btn-red", s);
+			return "redirect:/user/" + usuario.getLoginName() + "/opciones";
 		}
-
-		return "redirect:/menuOpciones";
 	}
 
 	@GetMapping("editarCorreo")
@@ -631,42 +639,46 @@ public class UsuarioController {
 	}
 
 	@GetMapping("seguidoresSeguidos")
-	public String seguidoresSeguidos(ModelMap m,HttpSession s) {
-		
-		m.put("seguidores",usuarioRepository.findAllById(seguimientoRepository.findSeguidoresByIdUsuario(((Usuario) s.getAttribute("userLogged")).getId())));
-		m.put("seguidos", usuarioRepository.findAllById(seguimientoRepository.findSeguidosByIdUsuario(((Usuario) s.getAttribute("userLogged")).getId())));
+	public String seguidoresSeguidos(ModelMap m, HttpSession s) {
+
+		m.put("seguidores", usuarioRepository.findAllById(
+				seguimientoRepository.findSeguidoresByIdUsuario(((Usuario) s.getAttribute("userLogged")).getId())));
+		m.put("seguidos", usuarioRepository.findAllById(
+				seguimientoRepository.findSeguidosByIdUsuario(((Usuario) s.getAttribute("userLogged")).getId())));
 
 		return "perfil/opciones/seguidoresSeguidos";
 	}
+
 	@PostMapping("eliminarSeguido")
 	public String eliminarSeguido(@RequestParam("idSeguido") Long id, HttpSession s) {
 		Usuario usuarioLogged = (Usuario) s.getAttribute("userLogged");
-		Seguimiento seguimientoEliminar = seguimientoRepository.getSeguimientoParaBorrarSeguido(usuarioLogged.getId(),id);
-		
+		Seguimiento seguimientoEliminar = seguimientoRepository.getSeguimientoParaBorrarSeguido(usuarioLogged.getId(),
+				id);
+
 		System.out.println(seguimientoEliminar);
 		seguimientoRepository.delete(seguimientoEliminar);
-		
+
 //		H.setInfoModal("Info|Seguidor eleminado correctamente|btn-hover btn-black", s);
-		
+
 		return "redirect:/editarPerfil";
-		
+
 	}
-	
+
 	@PostMapping("eliminarSeguidor")
-	public String eliminarSeguidor(@RequestParam("idSeguidor") Long id,HttpSession s) {
+	public String eliminarSeguidor(@RequestParam("idSeguidor") Long id, HttpSession s) {
 
 		Usuario usuarioLogged = (Usuario) s.getAttribute("userLogged");
-		Seguimiento seguimientoEliminar = seguimientoRepository.getSeguimientoParaBorrarSeguidor(usuarioLogged.getId(), id);
-		
+		Seguimiento seguimientoEliminar = seguimientoRepository.getSeguimientoParaBorrarSeguidor(usuarioLogged.getId(),
+				id);
+
 		System.out.println(seguimientoEliminar);
 		seguimientoRepository.delete(seguimientoEliminar);
-		
+
 //		H.setInfoModal("Info|Seguidor eleminado correctamente|btn-hover btn-black", s);
-		
-		return "redirect:/editarPerfil";
-		
+
+		return "redirect:/opciones";
+
 	}
-	
 
 	@GetMapping("tasaWaves")
 	public String tasaWaves() {
@@ -686,8 +698,8 @@ public class UsuarioController {
 	@GetMapping("editarCuenta")
 	public String seleccionTipoCuenta(ModelMap m, HttpSession s) {
 		Usuario usuario = (Usuario) s.getAttribute("userLogged");
-		System.out.println(usuario.isTipoCuenta());
-		m.put("tipo", usuario.isTipoCuenta());
+		System.out.println(usuario.isPrivada());
+		m.put("tipo", usuario.isPrivada());
 		return "perfil/opciones/cuenta";
 	}
 
@@ -696,7 +708,7 @@ public class UsuarioController {
 	@ResponseBody
 	public String cambioPublica(HttpSession s) {
 		Usuario usuario = (Usuario) s.getAttribute("userLogged");
-		usuario.setTipoCuenta(false);
+		usuario.setPrivada(false);
 		usuarioRepository.save(usuario);
 
 		Collection<Long> seguidoresId = seguimientoRepository.findSeguidoresByIdUsuario(usuario.getId());
@@ -708,7 +720,7 @@ public class UsuarioController {
 				Seguimiento cambiarAceptado = seguimientoRepository.getBySeguidoAndSeguidor(usuario, seguidor);
 				cambiarAceptado.setAceptado(true);
 				seguimientoRepository.save(cambiarAceptado);
-			
+
 			}
 		}
 
@@ -720,7 +732,7 @@ public class UsuarioController {
 	@ResponseBody
 	public String cambioPrivada(HttpSession s) {
 		Usuario usuario = (Usuario) s.getAttribute("userLogged");
-		usuario.setTipoCuenta(true);
+		usuario.setPrivada(true);
 		usuarioRepository.save(usuario);
 
 		return "redirect: user/" + usuario.getLoginName() + "/opciones";
@@ -743,25 +755,9 @@ public class UsuarioController {
 
 		Usuario usuario = (Usuario) s.getAttribute("userLogged");
 
-		Collection<Long> idSeguidores = seguimientoRepository.findSeguidoresByIdUsuario(usuario.getId());
+		Collection<Long> idSeguidores = seguimientoRepository.findSeguidoresNoAceptadosByIdUsuario(usuario.getId());
 
-		Collection<Usuario> usuariosSeguidores = new ArrayList<Usuario>();
-
-		if (!idSeguidores.isEmpty()) {
-			for (Long isS : idSeguidores) {
-
-				System.out.println(isS);
-				Usuario seguidor = usuarioRepository.getOne(isS);
-				if (seguidor.isTipoCuenta()) {
-					Seguimiento thisSeguimiento = seguimientoRepository.getBySeguidoAndSeguidor(usuario, seguidor);
-					if (thisSeguimiento != null) {
-						if (thisSeguimiento.getAceptado() == false) {
-							usuariosSeguidores.add(seguidor);
-						}
-					}
-				}
-			}
-		}
+		Collection<Usuario> usuariosSeguidores = usuarioRepository.findAllById(idSeguidores);
 
 		if (!usuariosSeguidores.isEmpty()) {
 			m.put("seguidores", usuariosSeguidores);
@@ -820,10 +816,11 @@ public class UsuarioController {
 		coment.setComentador(usuario);
 		comentarioRepository.save(coment);
 
-		ArrayList<Comentario> comentarios = (ArrayList<Comentario>)comentarioRepository.getByPublicacionComentada(publicacion);
+		ArrayList<Comentario> comentarios = (ArrayList<Comentario>) comentarioRepository
+				.getByPublicacionComentada(publicacion);
 
-		Collections.sort(comentarios,Collections.reverseOrder());
-		
+		Collections.sort(comentarios, Collections.reverseOrder());
+
 		String allComentarios = "";
 		for (Comentario c : comentarios) {
 

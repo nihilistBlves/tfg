@@ -1,0 +1,22 @@
+<div class="col-lg">
+	<table class="table table-striped">
+	  <thead>
+	  	<tr>
+	      <th scope="col">ID</th>
+	      <th scope="col">Fecha y hora</th>
+	      <th scope="col">Denunciante</th>
+	      <th scope="col">Mensaje</th>
+	      <th scope="col">Publicación</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr th:each="reporte: ${reportes}">
+	      <th scope="row" th:text="${reporte.id}"></th>
+	      <td th:text="${reporte.fechaReporte}"></td>
+	      <td><a th:href="@{/user/{loginName}(loginName=${reporte.denunciante.loginName})}" th:text="${reporte.denunciante.loginName}"></a></td>
+	      <td th:text="${reporte.texto}"></td>
+	      <td><a></a></td>
+	    </tr>
+	  </tbody>
+	</table>
+</div>

@@ -21,12 +21,12 @@ public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(unique = true)
 	private String loginName;
 	@Column(unique = true)
 	private String email;
-	
+
 	private String pass;
 	private String nombre;
 	private String apellidos;
@@ -34,23 +34,23 @@ public class Usuario {
 	private LocalDateTime fechaCreacion;
 	private boolean enabled;
 
-	private boolean tipoCuenta;
+	private boolean privada;
 
 	private String descripcionPerfil;
 	private String fotoPerfil;
 
 	@ManyToOne
 	private Rol rol;
-	
+
 	@ManyToOne
 	private Ciudad ciudad;
-	
+
 	@ManyToMany(cascade = CascadeType.ALL)
 	private Collection<Instrumento> instrumentos;
 
 	public Usuario(String loginName, String email, String pass, String nombre, String apellidos,
-			LocalDate fechaNacimiento,boolean enabled,boolean tipoCuenta, LocalDate fechaCreacion, String descripcionPerfil, String fotoPerfil,
-			Collection<Instrumento> instrumentos,Ciudad ciudad, Rol rol) {
+			LocalDate fechaNacimiento, boolean enabled, boolean privada, LocalDate fechaCreacion,
+			String descripcionPerfil, String fotoPerfil, Collection<Instrumento> instrumentos, Ciudad ciudad, Rol rol) {
 		super();
 		this.loginName = loginName;
 		this.email = email;
@@ -61,7 +61,7 @@ public class Usuario {
 
 		this.fechaCreacion = LocalDateTime.now();
 		this.enabled = false;
-		this.tipoCuenta= true;
+		this.privada = false;
 		this.descripcionPerfil = descripcionPerfil;
 		this.fotoPerfil = fotoPerfil;
 
@@ -70,17 +70,18 @@ public class Usuario {
 		this.rol = rol;
 	}
 
-	public boolean isTipoCuenta() {
-		return tipoCuenta;
+	public boolean isPrivada() {
+		return privada;
 	}
 
-	public void setTipoCuenta(boolean tipoCuenta) {
-		this.tipoCuenta = tipoCuenta;
+	public void setPrivada(boolean privada) {
+		this.privada = privada;
 	}
 
 	public Usuario() {
 		super();
 		this.enabled = false;
+		this.privada = false;
 		this.fechaCreacion = LocalDateTime.now();
 	}
 
@@ -138,7 +139,7 @@ public class Usuario {
 
 	public void setFechaCreacion(LocalDateTime fechaCreacion) {
 		this.fechaCreacion = fechaCreacion;
-	}	
+	}
 
 	public boolean isEnabled() {
 		return enabled;
@@ -163,7 +164,7 @@ public class Usuario {
 	public void setRol(Rol rol) {
 		this.rol = rol;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -173,7 +174,7 @@ public class Usuario {
 	}
 
 	public boolean isAdmin() {
-		return (this.getRol()!= null && this.getRol().getTipo().equals("admin"));
+		return (this.getRol() != null && this.getRol().getTipo().equals("admin"));
 	}
 
 	public String getDescripcionPerfil() {
@@ -191,7 +192,7 @@ public class Usuario {
 	public void setFotoPerfil(String fotoPerfil) {
 		this.fotoPerfil = fotoPerfil;
 	}
-	
+
 	public Ciudad getCiudad() {
 		return ciudad;
 	}

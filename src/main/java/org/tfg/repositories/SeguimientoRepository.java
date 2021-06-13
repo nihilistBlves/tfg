@@ -14,11 +14,17 @@ import org.tfg.domain.Usuario;
 @Repository
 public interface SeguimientoRepository extends JpaRepository<Seguimiento, Long> {
 	
-	@Query(value = "SELECT seguidor_id FROM seguimiento WHERE seguido_id = :id", nativeQuery = true)
+	@Query(value = "SELECT seguidor_id FROM seguimiento WHERE seguido_id = :id AND aceptado = 1", nativeQuery = true)
 	public Collection<Long> findSeguidoresByIdUsuario(@Param("id") Long id);
 	
-	@Query(value = "SELECT seguido_id FROM seguimiento WHERE seguidor_id = :id", nativeQuery = true)
+	@Query(value = "SELECT seguido_id FROM seguimiento WHERE seguidor_id = :id AND aceptado = 1", nativeQuery = true)
 	public Collection<Long> findSeguidosByIdUsuario(@Param("id") Long id);
+	
+	@Query(value = "SELECT seguidor_id FROM seguimiento WHERE seguido_id = :id AND aceptado = 0", nativeQuery = true)
+	public Collection<Long> findSeguidoresNoAceptadosByIdUsuario(@Param("id") Long id);
+	
+	@Query(value = "SELECT seguido_id FROM seguimiento WHERE seguidor_id = :id AND aceptado = 0", nativeQuery = true)
+	public Collection<Long> findSeguidosNoAceptadosByIdUsuario(@Param("id") Long id);
 	
 	@Query(value = "SELECT * FROM seguimiento WHERE seguidor_id = :idSeguidor AND seguido_id = :idSeguido", nativeQuery = true)
 	public Seguimiento getSeguimientoParaBorrarSeguido(@Param("idSeguidor")Long idUserLogged, @Param("idSeguido")Long idSeguido);
