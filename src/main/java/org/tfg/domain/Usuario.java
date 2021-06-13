@@ -39,13 +39,13 @@ public class Usuario {
 	private String descripcionPerfil;
 	private String fotoPerfil;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	private Rol rol;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	private Ciudad ciudad;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.REFRESH)
 	private Collection<Instrumento> instrumentos;
 
 	public Usuario(String loginName, String email, String pass, String nombre, String apellidos,

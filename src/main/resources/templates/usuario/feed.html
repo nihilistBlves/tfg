@@ -190,7 +190,6 @@ var opcion=0;
 					<div
 						class="card card-feed d-flex justify-content-center align-items-center">
 
-
 						<!-- 				img solo desde static -->
 						<div th:if="${publicacion.tipoContenido}=='img'">
 							<img class="card-img feed-img"
@@ -222,8 +221,13 @@ var opcion=0;
 										th:src="@{${publicacion.duenioPublicacion.fotoPerfil}}">
 									<a
 										th:href="@{/user/{loginName}(loginName=${publicacion.duenioPublicacion.loginName})}"><b
-										th:text="${publicacion.duenioPublicacion.loginName}"></b></a> <small
-										class="text-muted float-right mt-3 " id="fecha"
+										th:text="${publicacion.duenioPublicacion.loginName}"></b></a>
+									<form th:action="@{/publicacion/{id}/reportar(id=${publicacion.id})}" method="get">
+										<button class="btn btn-outline-danger float-right m-2">
+											<i class="bi bi-exclamation-triangle"></i>
+										</button>
+									</form>
+									<small class="text-muted float-right mt-3 " id="fecha"
 										th:text="${publicacion.fechaPublicacion.toLocalDate}"></small>
 								</div>
 								<div class="card-text feed-text">

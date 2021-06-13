@@ -1,5 +1,5 @@
 <div class="col-lg">
-	<table class="table table-striped">
+	<table class="table table-striped" style="background-color: white">
 	  <thead>
 	  	<tr>
 	      <th scope="col">ID</th>
@@ -12,10 +12,10 @@
 	  <tbody>
 	    <tr th:each="reporte: ${reportes}">
 	      <th scope="row" th:text="${reporte.id}"></th>
-	      <td th:text="${reporte.fechaReporte}"></td>
+	      <td th:text="|${reporte.fechaReporte.toLocalDate} - ${reporte.fechaReporte.toLocalTime}|"></td>
 	      <td><a th:href="@{/user/{loginName}(loginName=${reporte.denunciante.loginName})}" th:text="${reporte.denunciante.loginName}"></a></td>
-	      <td th:text="${reporte.texto}"></td>
-	      <td><a></a></td>
+	      <td th:text="${reporte.motivo}"></td>
+	      <td><a th:href="@{/publicacion/{id}(id=${reporte.publicacionReportada.id})}" th:text="${reporte.publicacionReportada.id}"></a></td>
 	    </tr>
 	  </tbody>
 	</table>

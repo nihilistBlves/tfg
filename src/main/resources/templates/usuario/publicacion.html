@@ -7,6 +7,10 @@
 				<div
 					class="card card-feed d-flex justify-content-center align-items-center">
 					<!-- 				img solo desde static -->
+					<form th:if="${session.userLogged.rol.id == 2}" th:action="@{/eliminarPublicacion}" method="post">
+						<input type="hidden" name="idPublicacionEliminar" th:value="${publicacion.id}">
+						<button class="btn btn-outline-danger">Eliminar</button>
+					</form>
 					<div th:if="${publicacion.tipoContenido}=='img'">
 						<img class="card-img feed-img"
 							th:src="@{${publicacion.contenido}}">

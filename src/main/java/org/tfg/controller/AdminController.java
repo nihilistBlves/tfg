@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.tfg.domain.Publicacion;
 import org.tfg.domain.Usuario;
 import org.tfg.helper.H;
 import org.tfg.repositories.PublicacionRepository;
@@ -34,6 +37,13 @@ public class AdminController {
 			H.setInfoModal("Error|La página a la que intenta acceder no existe o no tiene permisos para acceder a ella|btn-hover btn-red", s);
 			return "redirect:/";
 		}
+	}
+	
+	@PostMapping("/eliminarPublicacion")
+	public String postEliminarPublicacion(@RequestParam("idPublicacionEliminar") Long id, HttpSession s) {
+		Publicacion publicacionEliminar = publicacionRepository.getById(id);
+		publicacionRepository.delete(publicacionEliminar);
+		return "redirect:/admin";
 	}
 	
 }

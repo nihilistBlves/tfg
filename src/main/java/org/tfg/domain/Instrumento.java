@@ -18,7 +18,7 @@ public class Instrumento {
 	
 	private String nombre;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.REFRESH)
 	private Collection<Usuario> usuariosUsando;
 
 	public Instrumento() {

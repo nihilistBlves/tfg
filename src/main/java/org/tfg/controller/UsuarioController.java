@@ -27,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.tfg.domain.Ciudad;
 import org.tfg.domain.Comentario;
 import org.tfg.domain.Publicacion;
+import org.tfg.domain.Reporte;
 import org.tfg.domain.Seguimiento;
 import org.tfg.domain.Usuario;
 import org.tfg.exception.DangerException;
@@ -35,6 +36,7 @@ import org.tfg.repositories.CiudadRepository;
 import org.tfg.repositories.ComentarioRepository;
 import org.tfg.repositories.InstrumentoRepository;
 import org.tfg.repositories.PublicacionRepository;
+import org.tfg.repositories.ReporteRepository;
 import org.tfg.repositories.SeguimientoRepository;
 import org.tfg.repositories.UsuarioRepository;
 import org.tfg.repositories.WaveRepository;
@@ -62,6 +64,9 @@ public class UsuarioController {
 
 	@Autowired
 	private CiudadRepository ciudadRepository;
+	
+	@Autowired
+	private ReporteRepository reporteRepository;
 
 	@GetMapping("/feed")
 	public String getFeed(ModelMap m, HttpSession s) {
@@ -852,5 +857,30 @@ public class UsuarioController {
 		}
 		return allComentarios;
 	}
+	
+	@GetMapping("/publicacion/{id}/reportar")
+	public String getReportar(@PathVariable("id") Long idPublicacion, ModelMap m, HttpSession s) {
+		Publicacion publicacion = publicacionRepository.getById(idPublicacion);
+		m.put("publicacion", publicacion);
+		m.put("view", "usuario/reportar");
+		return "_t/frameFeed";
+	}
+	
+	@PostMapping("/reportar")
+	public String postReportar(@RequestParam("idPublicacion") Long idPublicacion, @RequestParam("motivo") String motivo, HttpSession s) {
+		Usuario userLogged = (Usuario) s.getAttribute("userLogged");
+		Publicacion publicacion = publicacionRepository.getById(idPublicacion);
+		Reporte reporte = new Reporte();
+		reporte.setDenunciante(userLogged);
+		reporte.setMotivo(motivo);
+		reporte.setPublicacionReportada(publicacion);
+		reporteRepository.save(reporte);
+		
+		return "redirect:/";
+	}
 
+	
+	
+	
+	
 }

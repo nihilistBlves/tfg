@@ -16,7 +16,7 @@ public class Reporte {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String texto;
+	private String motivo;
 	
 	private LocalDateTime fechaReporte;
 	
@@ -31,9 +31,9 @@ public class Reporte {
 		this.fechaReporte = LocalDateTime.now();
 	}
 
-	public Reporte(String texto, Usuario denunciante, Publicacion publicacionReportada) {
+	public Reporte(String motivo, Usuario denunciante, Publicacion publicacionReportada) {
 		super();
-		this.texto = texto;
+		this.motivo = motivo;
 		this.denunciante = denunciante;
 		this.publicacionReportada = publicacionReportada;
 		this.fechaReporte = LocalDateTime.now();
@@ -47,12 +47,12 @@ public class Reporte {
 		this.id = id;
 	}
 
-	public String getTexto() {
-		return texto;
+	public String getMotivo() {
+		return motivo;
 	}
 
-	public void setTexto(String texto) {
-		this.texto = texto;
+	public void setMotivo(String motivo) {
+		this.motivo = motivo;
 	}
 
 	public LocalDateTime getFechaReporte() {
