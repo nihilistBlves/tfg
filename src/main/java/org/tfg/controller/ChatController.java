@@ -41,7 +41,7 @@ public class ChatController {
 			}
 			m.put("usuariosConChatAbierto",usuarioRepository.findUsuariosByChatOpened(((Usuario) s.getAttribute("userLogged")).getId()));
 			m.put("view", "usuario/mensajes");
-			return "_t/frameFeed";
+			return "t/frameFeed";
 		}		
 	}
 	

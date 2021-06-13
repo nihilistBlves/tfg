@@ -32,7 +32,7 @@ public class AdminController {
 		if ((s.getAttribute("userLogged") != null) && (((Usuario) s.getAttribute("userLogged")).getRol().getId() == 2)) {
 			m.put("reportes", reporteRepository.findAll());
 			m.put("view", "admin/panel");
-			return "_t/frameFeed";
+			return "t/frameFeed";
 		} else {
 			H.setInfoModal("Error|La página a la que intenta acceder no existe o no tiene permisos para acceder a ella|btn-hover btn-red", s);
 			return "redirect:/";

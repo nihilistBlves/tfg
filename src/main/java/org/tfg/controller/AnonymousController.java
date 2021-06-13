@@ -61,7 +61,7 @@ public class AnonymousController {
 
 	@GetMapping("/login")
 	public String loginGet() {
-		return "/home/login";
+		return "home/login";
 	}
 
 	@PostMapping("/login")

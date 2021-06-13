@@ -89,7 +89,7 @@ public class UsuarioController {
 			m.put("publicacionesWaved", publicacionesWavedByUserLogged);
 			m.put("publicaciones", publicacionesSeguidos);
 			m.put("view", "usuario/feed");
-			return "_t/frameFeed";
+			return "t/frameFeed";
 
 		} else {
 
@@ -113,7 +113,7 @@ public class UsuarioController {
 			} else {
 				m.put("publicacion", publicacion);
 				m.put("view", "usuario/publicacion");
-				return "_t/frameFeed";
+				return "t/frameFeed";
 			}
 		} else {
 			Usuario userLogged = (Usuario) s.getAttribute("userLogged");
@@ -132,12 +132,12 @@ public class UsuarioController {
 				} else {
 					m.put("publicacion", publicacion);
 					m.put("view", "usuario/publicacion");
-					return "_t/frameFeed";
+					return "t/frameFeed";
 				}
 			} else {
 				m.put("publicacion", publicacion);
 				m.put("view", "usuario/publicacion");
-				return "_t/frameFeed";
+				return "t/frameFeed";
 			}
 		}
 	}
@@ -192,7 +192,7 @@ public class UsuarioController {
 
 			m.put("view", "usuario/perfilUsuario");
 
-			return "_t/frameFeed";
+			return "t/frameFeed";
 		}
 	}
 
@@ -314,7 +314,7 @@ public class UsuarioController {
 				H.mPut(m, s);
 			}
 			m.put("view", "usuario/publicar");
-			return "_t/frameFeed";
+			return "t/frameFeed";
 		} else {
 			H.setInfoModal("Error|Para acceder a este apartado debe estar logueado|btn-hover btn-red", s);
 			return "redirect:/";
@@ -489,7 +489,7 @@ public class UsuarioController {
 				}
 
 				m.put("view", "perfil/opcionesPerfil");
-				return "/_t/frameFeed";
+				return "t/frameFeed";
 			}
 		}
 		return "redirect:/user/" + username;
@@ -863,7 +863,7 @@ public class UsuarioController {
 		Publicacion publicacion = publicacionRepository.getById(idPublicacion);
 		m.put("publicacion", publicacion);
 		m.put("view", "usuario/reportar");
-		return "_t/frameFeed";
+		return "t/frameFeed";
 	}
 	
 	@PostMapping("/reportar")
