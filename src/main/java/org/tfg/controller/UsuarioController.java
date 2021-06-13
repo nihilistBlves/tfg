@@ -84,7 +84,7 @@ public class UsuarioController {
 			m.put("publicacionesWaved", publicacionesWavedByUserLogged);
 			m.put("publicaciones", publicacionesSeguidos);
 			m.put("view", "usuario/feed");
-			return "_t/frameFeed";
+			return "t/frameFeed";
 
 		} else {
 
@@ -175,7 +175,7 @@ public class UsuarioController {
 
 			m.put("view", "usuario/perfilUsuario");
 
-			return "_t/frameFeed";
+			return "t/frameFeed";
 		}
 	}
 
