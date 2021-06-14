@@ -6,12 +6,10 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.tfg.domain.Usuario;
 import org.tfg.domain.VerificationToken;
-import org.tfg.events.EventoVerificacion;
 import org.tfg.repositories.VerificationTokenRepository;
 
 import com.sendgrid.Method;
@@ -25,72 +23,35 @@ import com.sendgrid.helpers.mail.objects.Personalization;
 
 @Service
 @Component
-public class EmailService implements ApplicationListener<EventoVerificacion>{
-	
-	@Autowired
-	private VerificationTokenRepository verificationTokenRepository;
-	
+public class EmailService {
+
 	@Value("${app.sendgrid.templateId}")
 	private String templateId;
 	@Autowired
-	SendGrid sendGrid;
-	
-	@Override
-	public void onApplicationEvent(EventoVerificacion event) {
-		this.sendEmail(event);
-	}
-	
+	private SendGrid sendGrid;
+	@Autowired
+	private VerificationTokenRepository verificationTokenRepository;
 
-//	private void confirmarRegistro(EventoVerificacion event) {
-//		Usuario usuario = event.getUsuario();
-//		String token = UUID.randomUUID().toString();
-//		VerificationToken nuevoToken = new VerificationToken(token, usuario);
-//		verificationTokenRepository.save(nuevoToken);
-//
-//		String recipientAddress = usuario.getEmail();
-//		String subject = "Registration Confirmation";
-//		String confirmationUrl = event.getAppUrl() + "/registroConfirmado?token=" + token;
-//		String message = "¡Registro completado! Por favor, finaliza la verificación accediendo al siguiente enlace:\n";
-//
-//		SimpleMailMessage email = new SimpleMailMessage();
-//		email.setTo(recipientAddress);
-//		email.setSubject(subject);
-//		email.setText(message + "\r\n" + "http://localhost:8080" + confirmationUrl);
-//		mailSender.send(email);
-//	}
-
-
-
-	public String sendEmail(EventoVerificacion event) {
+	public String sendEmail(Usuario usuario,String appUrl) {
 		
-		
-		Usuario usuario = event.getUsuario();
 		String token = UUID.randomUUID().toString();
 		VerificationToken nuevoToken = new VerificationToken(token, usuario);
 		verificationTokenRepository.save(nuevoToken);
-		
 
-		String recipientAddress = usuario.getEmail();
-		String subject = "Registration Confirmation";
-		String confirmationUrl = event.getAppUrl() + "/registroConfirmado?token=" + token;
-		String message = "¡Registro completado! Por favor, finaliza la verificación accediendo al siguiente enlace:\n";
-		
-		
-		
 		Email from = new Email();
 		from.setEmail("waveit.notification@gmail.com");
-		Email to = new Email(recipientAddress);
+		String subject = "Hello World!";
+		Email to = new Email(usuario.getEmail());
 
-		Content content = new Content("text/html", "I'm replacing the <strong>body tag</strong><p style='color:red'></p>" + message+"<a href='"+confirmationUrl+"'>pulsa aqui </a");
+		Content content = new Content("text/html",
+				"<a href="+appUrl+"/registroConfirmado?token="+token);
 
 		Mail mail = new Mail(from, subject, to, content);
 
 		mail.setReplyTo(new Email("waveit.notification@gmail.com"));
 
-
 		try {
-			//Mail mail = prepareMail(email);
-			
+			// Mail mail = prepareMail(email);
 
 			Request request = new Request();
 
@@ -117,7 +78,7 @@ public class EmailService implements ApplicationListener<EventoVerificacion>{
 
 	}
 
-	//public Mail prepareMail(String email) {
+	// public Mail prepareMail(String email) {
 
 //		Mail mail = new Mail();
 //		
@@ -135,9 +96,9 @@ public class EmailService implements ApplicationListener<EventoVerificacion>{
 //		mail.addPersonalization(personalization);
 //		
 //		mail.setTemplateId(templateId);
-		
-		// mail.personalization.get(0).addSubstitution("-username-", "Some blog user");
-		// mail.setTemplateId(templateId);
+
+	// mail.personalization.get(0).addSubstitution("-username-", "Some blog user");
+	// mail.setTemplateId(templateId);
 
 //		Email from = new Email();
 //		from.setEmail("waveit.notification@gmail.com");

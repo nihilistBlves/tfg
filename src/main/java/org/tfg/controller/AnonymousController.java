@@ -47,7 +47,7 @@ public class AnonymousController {
 	private VerificationTokenRepository verificationTokenRepository;
 	
 	@Autowired
-	EmailService emailService;
+	private EmailService emailService;
 	
 	
 	@GetMapping("/")
@@ -158,8 +158,8 @@ public class AnonymousController {
 
 			String appUrl = request.getContextPath();
 
-			//eventPublisher.publishEvent(new EventoVerificacion(usuario, request.getLocale(), appUrl));
-			emailService.sendEmail(new EventoVerificacion(usuario, request.getLocale(), appUrl));
+			emailService.sendEmail(usuario, appUrl);
+			
 			
 			H.setInfoModal("Info|Te has registrado correctamente! Revisa tu bandeja de entrada para activar la cuenta antes de logear por primera vez|btn-hover btn-black", s);
 		} catch (Exception e) {
