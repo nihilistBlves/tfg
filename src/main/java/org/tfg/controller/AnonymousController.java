@@ -162,6 +162,7 @@ public class AnonymousController {
 			
 			H.setInfoModal("Info|Te has registrado correctamente! Revisa tu bandeja de entrada para activar la cuenta antes de logear por primera vez|btn-hover btn-black", s);
 		} catch (Exception e) {
+			e.printStackTrace();
 			H.setInfoModal("Error|Ha ocurrido un error en el registro. Por favor vuelva a intentarlo.|btn-hover btn-red", s);
 		}
 
