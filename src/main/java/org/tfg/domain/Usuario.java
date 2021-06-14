@@ -1,19 +1,19 @@
 package org.tfg.domain;
 
 import java.time.LocalDate;
-
 import java.time.LocalDateTime;
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Usuario {
@@ -21,46 +21,48 @@ public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
+	
 	@Column(unique = true)
 	private String loginName;
 	@Column(unique = true)
 	private String email;
-
+	
 	private String pass;
+	private String nombre;
+	private String apellidos;
 	private LocalDate fechaNacimiento;
 	private LocalDateTime fechaCreacion;
 	private boolean enabled;
 
-	private boolean privada;
+	
+	private boolean tipoCuenta;
 
 	private String descripcionPerfil;
 	private String fotoPerfil;
 
-	@OnDelete(action = OnDeleteAction.CASCADE)
 	@ManyToOne
 	private Rol rol;
-
-	@OnDelete(action = OnDeleteAction.CASCADE)
+	
 	@ManyToOne
 	private Ciudad ciudad;
-
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	@ManyToMany
+	
+	@ManyToMany(cascade = CascadeType.ALL)
 	private Collection<Instrumento> instrumentos;
 
-	public Usuario(String loginName, String email, String pass, LocalDate fechaNacimiento, boolean enabled,
-			boolean privada, LocalDate fechaCreacion, String descripcionPerfil, String fotoPerfil,
-			Collection<Instrumento> instrumentos, Ciudad ciudad, Rol rol) {
+	public Usuario(String loginName, String email, String pass, String nombre, String apellidos,
+			LocalDate fechaNacimiento,boolean enabled,boolean tipoCuenta, LocalDate fechaCreacion, String descripcionPerfil, String fotoPerfil,
+			Collection<Instrumento> instrumentos,Ciudad ciudad, Rol rol) {
 		super();
 		this.loginName = loginName;
 		this.email = email;
 		this.pass = pass;
+		this.nombre = nombre;
+		this.apellidos = apellidos;
 		this.fechaNacimiento = fechaNacimiento;
 
 		this.fechaCreacion = LocalDateTime.now();
 		this.enabled = false;
-		this.privada = false;
+		this.tipoCuenta= true;
 		this.descripcionPerfil = descripcionPerfil;
 		this.fotoPerfil = fotoPerfil;
 
@@ -69,18 +71,17 @@ public class Usuario {
 		this.rol = rol;
 	}
 
-	public boolean isPrivada() {
-		return privada;
+	public boolean isTipoCuenta() {
+		return tipoCuenta;
 	}
 
-	public void setPrivada(boolean privada) {
-		this.privada = privada;
+	public void setTipoCuenta(boolean tipoCuenta) {
+		this.tipoCuenta = tipoCuenta;
 	}
 
 	public Usuario() {
 		super();
 		this.enabled = false;
-		this.privada = false;
 		this.fechaCreacion = LocalDateTime.now();
 	}
 
@@ -108,6 +109,22 @@ public class Usuario {
 		this.pass = pass;
 	}
 
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getApellidos() {
+		return apellidos;
+	}
+
+	public void setApellidos(String apellidos) {
+		this.apellidos = apellidos;
+	}
+
 	public LocalDate getFechaNacimiento() {
 		return fechaNacimiento;
 	}
@@ -122,7 +139,7 @@ public class Usuario {
 
 	public void setFechaCreacion(LocalDateTime fechaCreacion) {
 		this.fechaCreacion = fechaCreacion;
-	}
+	}	
 
 	public boolean isEnabled() {
 		return enabled;
@@ -147,7 +164,7 @@ public class Usuario {
 	public void setRol(Rol rol) {
 		this.rol = rol;
 	}
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -157,7 +174,7 @@ public class Usuario {
 	}
 
 	public boolean isAdmin() {
-		return (this.getRol() != null && this.getRol().getTipo().equals("admin"));
+		return (this.getRol()!= null && this.getRol().getTipo().equals("admin"));
 	}
 
 	public String getDescripcionPerfil() {
@@ -175,7 +192,7 @@ public class Usuario {
 	public void setFotoPerfil(String fotoPerfil) {
 		this.fotoPerfil = fotoPerfil;
 	}
-
+	
 	public Ciudad getCiudad() {
 		return ciudad;
 	}
