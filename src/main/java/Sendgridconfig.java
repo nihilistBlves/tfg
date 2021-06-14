@@ -1,4 +1,4 @@
-package org.tfg.config;
+
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +9,7 @@ import com.sendgrid.SendGrid;
 @Configuration
 public class Sendgridconfig {
 
-	@Value("${app.sendgrid.key}")
+	@Value("${sendgrid.key}")
 	private String appKey;
 	@Bean
 	public SendGrid getSendGrid() {

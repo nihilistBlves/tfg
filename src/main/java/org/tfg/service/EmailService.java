@@ -3,6 +3,7 @@ package org.tfg.service;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.sendgrid.Method;
@@ -10,42 +11,69 @@ import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
-import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
+import com.sendgrid.helpers.mail.objects.Personalization;
 
 @Service
 public class EmailService {
 
+	@Value("${app.sendgrid.templateId}")
+	private String templateId;
 	@Autowired
 	SendGrid sendGrid;
-	
-	public Response sendemail(EmailRequest emailrequest) 
-	{
+	public String sendEmail(String email)  {
 		
-		Mail mail = new Mail(new Email("chbharath517@gmail.com"), emailrequest.getSubject(), new Email(emailrequest.getTo()),new Content("text/plain", emailrequest.getBody()));
-		mail.setReplyTo(new Email("abc@gmail.com"));
-		Request request = new Request();
-
-		Response response = null;
-
 		try {
-
-			request.setMethod(Method.POST);
-
-			request.setEndpoint("mail/send");
-
+		Mail mail = prepareMail(email);
+		
+		Request request = new Request();
+		
+		request.setMethod(Method.POST);
+		request.setEndpoint("mail/send");
+		
 			request.setBody(mail.build());
-
-			response=this.sendGrid.api(request);
-
-		} catch (IOException ex) {
-
-			System.out.println(ex.getMessage());
-
+		
+		
+		Response response = sendGrid.api(request);
+		
+		if(response!=null) {
+			
+			System.out.println("response code from sendgrid"+response.getHeaders());
+			
 		}
-
-		return response;
+		
+} catch (IOException e) {
+			
+			
+			e.printStackTrace();
+			return "error in sent mail!";
+		}
+		
+		return "mail has been sent check your inbox!";
+		
+	}
+	
+	public Mail prepareMail(String email) {
+		
+		Mail mail = new Mail();
+		
+		Email fromEmail = new Email();
+		
+		fromEmail.setEmail("waveit.notification@gmail.com");
+		
+		mail.setFrom(fromEmail);
+		Email to = new Email();
+		to.setEmail(email);
 		
 		
+		Personalization personalization = new Personalization();
+		
+		personalization.addTo(to);
+		mail.addPersonalization(personalization);
+		
+		mail.setTemplateId(templateId);
+		
+		
+		return mail;
 	}
 }

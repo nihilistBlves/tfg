@@ -1,32 +1,24 @@
 package org.tfg.controller;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.tfg.service.EmailRequest;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 import org.tfg.service.EmailService;
 
-import com.sendgrid.Response;
 
-@Controller
+
+
+@RestController
 public class EmailController {
-	
-	
-	@Autowired
-	private EmailService emailservice;
-	
-	@PostMapping("/sendemail")
-	public ResponseEntity<String> sendemail(@RequestBody EmailRequest emailrequest)
-	{
-		
-		Response response=emailservice.sendemail(emailrequest);
-		if(response.getStatusCode()==200||response.getStatusCode()==202)
-			return new ResponseEntity<>("send successfully",HttpStatus.OK);
-		return new ResponseEntity<>("failed to sent",HttpStatus.NOT_FOUND);
-			    
-	}
 
+	@Autowired
+	EmailService emailService;
+
+	@GetMapping("/sendMail/{email}")
+	public String sendEmail(@PathVariable(value = "email", required = true) String email)
+	{
+
+	return	emailService.sendEmail(email);
+	
+	}
 }
