@@ -22,7 +22,6 @@ import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.Personalization;
 
 @Service
-@Component
 public class EmailService {
 
 	@Value("${app.sendgrid.templateId}")
@@ -32,7 +31,7 @@ public class EmailService {
 	@Autowired
 	private VerificationTokenRepository verificationTokenRepository;
 
-	public String sendEmail(Usuario usuario,String appUrl) {
+	public void sendEmail(Usuario usuario,String appUrl) {
 		
 		String token = UUID.randomUUID().toString();
 		VerificationToken nuevoToken = new VerificationToken(token, usuario);
@@ -71,10 +70,10 @@ public class EmailService {
 		} catch (IOException e) {
 
 			e.printStackTrace();
-			return "error in sent mail!";
+			//return "error in sent mail!";
 		}
 
-		return "mail has been sent check your inbox!";
+//		return "mail has been sent check your inbox!";
 
 	}
 
