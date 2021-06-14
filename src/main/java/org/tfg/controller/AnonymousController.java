@@ -65,7 +65,7 @@ public class AnonymousController {
 
 	@GetMapping("/login")
 	public String loginGet() {
-		return "/home/login";
+		return "home/login";
 	}
 
 	@PostMapping("/login")
@@ -159,7 +159,6 @@ public class AnonymousController {
 			String appUrl = request.getContextPath();
 
 			emailService.sendEmail(usuario, appUrl);
-			
 			
 			H.setInfoModal("Info|Te has registrado correctamente! Revisa tu bandeja de entrada para activar la cuenta antes de logear por primera vez|btn-hover btn-black", s);
 		} catch (Exception e) {
