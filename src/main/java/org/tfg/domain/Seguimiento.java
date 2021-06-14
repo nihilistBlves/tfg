@@ -7,6 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 public class Seguimiento {
 	
@@ -15,11 +18,13 @@ public class Seguimiento {
 	private Long id;
 	
 	private boolean aceptado;
-	
-	@ManyToOne(cascade = CascadeType.REFRESH)
+
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@ManyToOne
 	private Usuario seguidor;
-	
-	@ManyToOne(cascade = CascadeType.REFRESH)
+
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@ManyToOne
 	private Usuario seguido;
 
 	public Seguimiento(boolean aceptado, Usuario seguidor, Usuario seguido) {

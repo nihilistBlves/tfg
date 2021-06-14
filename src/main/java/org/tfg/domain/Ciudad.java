@@ -9,48 +9,36 @@ import javax.persistence.Id;
 @Entity
 public class Ciudad {
 
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	
+
 	@Column(unique = true)
 	private String ciudadName;
-	
-
-
-
 
 	public Ciudad(String ciudadName) {
 		super();
 		this.ciudadName = ciudadName;
 	}
 
-
 	public Ciudad() {
 		super();
 	}
-
 
 	public String getCiudadName() {
 		return ciudadName;
 	}
 
-
 	public void setCiudadName(String ciudadName) {
 		this.ciudadName = ciudadName;
 	}
-
 
 	public Long getId() {
 		return id;
 	}
 
-
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	
+
 }

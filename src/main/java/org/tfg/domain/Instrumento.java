@@ -9,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 public class Instrumento {
 
@@ -17,8 +20,9 @@ public class Instrumento {
 	private Long id;
 	
 	private String nombre;
-	
-	@ManyToMany(cascade = CascadeType.REFRESH)
+
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@ManyToMany(cascade = CascadeType.ALL)
 	private Collection<Usuario> usuariosUsando;
 
 	public Instrumento() {

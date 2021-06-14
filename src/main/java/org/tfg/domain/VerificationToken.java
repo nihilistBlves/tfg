@@ -13,6 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 public class VerificationToken {
 
@@ -24,7 +27,8 @@ public class VerificationToken {
 
 	private String token;
 
-	@OneToOne(targetEntity = Usuario.class, fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@OneToOne
 	@JoinColumn(nullable = false, name = "usuario_id")
 	private Usuario usuario;
 

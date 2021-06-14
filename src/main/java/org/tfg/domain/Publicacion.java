@@ -1,6 +1,8 @@
 package org.tfg.domain;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,9 +10,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
-
-//import org.springframework.web.multipart.MultipartFile;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 public class Publicacion implements Comparable<Publicacion> {
@@ -30,11 +33,10 @@ public class Publicacion implements Comparable<Publicacion> {
 	private LocalDateTime fechaPublicacion;
 
 	private String tipoContenido;
-
-	@ManyToOne(cascade = CascadeType.REFRESH)
-	private Usuario duenioPublicacion;
-
 	
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@ManyToOne
+	private Usuario duenioPublicacion;
 
 	public Publicacion(Long id, String contenido, String descripcion, String tipoContenido, Usuario duenioPublicacion) {
 		super();

@@ -1,19 +1,19 @@
 package org.tfg.domain;
 
 import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.Collection;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 public class Usuario {
@@ -28,8 +28,6 @@ public class Usuario {
 	private String email;
 
 	private String pass;
-	private String nombre;
-	private String apellidos;
 	private LocalDate fechaNacimiento;
 	private LocalDateTime fechaCreacion;
 	private boolean enabled;
@@ -39,24 +37,25 @@ public class Usuario {
 	private String descripcionPerfil;
 	private String fotoPerfil;
 
-	@ManyToOne(cascade = CascadeType.REFRESH)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@ManyToOne
 	private Rol rol;
 
-	@ManyToOne(cascade = CascadeType.REFRESH)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@ManyToOne
 	private Ciudad ciudad;
 
-	@ManyToMany(cascade = CascadeType.REFRESH)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@ManyToMany
 	private Collection<Instrumento> instrumentos;
 
-	public Usuario(String loginName, String email, String pass, String nombre, String apellidos,
-			LocalDate fechaNacimiento, boolean enabled, boolean privada, LocalDate fechaCreacion,
-			String descripcionPerfil, String fotoPerfil, Collection<Instrumento> instrumentos, Ciudad ciudad, Rol rol) {
+	public Usuario(String loginName, String email, String pass, LocalDate fechaNacimiento, boolean enabled,
+			boolean privada, LocalDate fechaCreacion, String descripcionPerfil, String fotoPerfil,
+			Collection<Instrumento> instrumentos, Ciudad ciudad, Rol rol) {
 		super();
 		this.loginName = loginName;
 		this.email = email;
 		this.pass = pass;
-		this.nombre = nombre;
-		this.apellidos = apellidos;
 		this.fechaNacimiento = fechaNacimiento;
 
 		this.fechaCreacion = LocalDateTime.now();
@@ -107,22 +106,6 @@ public class Usuario {
 
 	public void setPass(String pass) {
 		this.pass = pass;
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public String getApellidos() {
-		return apellidos;
-	}
-
-	public void setApellidos(String apellidos) {
-		this.apellidos = apellidos;
 	}
 
 	public LocalDate getFechaNacimiento() {

@@ -505,8 +505,7 @@ public class UsuarioController {
 
 	@PostMapping("/editarPerfil")
 	public String editarPerfil(@RequestParam("file") MultipartFile file, RedirectAttributes attributes,
-			@RequestParam("nombre") String nombre, @RequestParam("apellidos") String apellidos,
-			@RequestParam("edad") String edad, @RequestParam("idCiudad") Long idCiudad,
+			@RequestParam("nombreUsuario") String nombreUsuario, @RequestParam("idCiudad") Long idCiudad,
 			@RequestParam("descripcion") String descripcion,
 			@RequestParam(value = "instrumentos", required = false) List<String> instrumentos, HttpSession s)
 			throws IOException {
@@ -516,17 +515,15 @@ public class UsuarioController {
 		String nuevoNombreRandom = UUID.randomUUID().toString();
 		String extensionArchivo = "";
 		String nuevoNombreArchivo = "";
-
-		if (nombre != null) {
-			usuario.setNombre(nombre);
-		}
-		if (apellidos != null) {
-			usuario.setApellidos(apellidos);
-		}
-
-		if (!edad.equals("")) {
-			LocalDate date = LocalDate.parse(edad);
-			usuario.setFechaNacimiento(date);
+		
+		if (nombreUsuario != null) {
+			Usuario chequearNombre = usuarioRepository.getByLoginName(nombreUsuario);
+			if (chequearNombre != null) {
+				H.setInfoModal("Error|El nombre de usuario ya existe|btn-hover btn-red", s);
+				return "redirect:/user/" + usuario.getLoginName() + "/opciones";
+			} else {
+				usuario.setLoginName(nombreUsuario);
+			}
 		}
 
 		if (idCiudad != null) {
@@ -575,7 +572,7 @@ public class UsuarioController {
 
 				H.setInfoModal("Error|La imagen excede el tamaño permitido (2 MB)|btn-hover btn-red", s);
 
-				return "redirect:/publicar";
+				return "redirect:/user/" + usuario.getLoginName() + "/opciones";
 
 			}
 

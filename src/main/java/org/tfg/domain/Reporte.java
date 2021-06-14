@@ -9,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 public class Reporte {
 	
@@ -19,11 +22,13 @@ public class Reporte {
 	private String motivo;
 	
 	private LocalDateTime fechaReporte;
-	
-	@ManyToOne(cascade = CascadeType.REFRESH)
+
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@ManyToOne
 	private Usuario denunciante;
-	
-	@ManyToOne(cascade = CascadeType.REFRESH)
+
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@ManyToOne
 	private Publicacion publicacionReportada;
 
 	public Reporte() {

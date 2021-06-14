@@ -9,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 public class Mensaje implements Comparable<Mensaje>{
 	
@@ -17,11 +20,13 @@ public class Mensaje implements Comparable<Mensaje>{
 	private Long id;
 	
 	private String texto;
-	
-	@ManyToOne(cascade = CascadeType.REFRESH)
+
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@ManyToOne
 	private Usuario remitente;
-	
-	@ManyToOne(cascade = CascadeType.REFRESH)
+
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@ManyToOne
 	private Usuario destinatario;
 	
 	private LocalDateTime fechaEnvio;

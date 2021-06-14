@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 public class Comentario implements Comparable<Comentario>{
 
@@ -20,11 +23,13 @@ public class Comentario implements Comparable<Comentario>{
 	private String texto;
 	
 	private LocalDateTime fechaPublicacion;
-	
-	@ManyToOne(cascade = CascadeType.REFRESH)
+
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@ManyToOne
 	private Usuario comentador;
-	
-	@ManyToOne(cascade = CascadeType.REFRESH)
+
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@ManyToOne
 	private Publicacion publicacionComentada;
 
 	public Comentario() {
