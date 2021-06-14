@@ -11,6 +11,7 @@ import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
+import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.Personalization;
 
@@ -31,9 +32,8 @@ public class EmailService {
 		request.setMethod(Method.POST);
 		request.setEndpoint("mail/send");
 		
-			request.setBody(mail.build());
-		
-		
+		request.setBody(mail.build());
+	
 		Response response = sendGrid.api(request);
 		
 		if(response!=null) {
@@ -55,25 +55,56 @@ public class EmailService {
 	
 	public Mail prepareMail(String email) {
 		
-		Mail mail = new Mail();
+//		Mail mail = new Mail();
+//		
+//		Email fromEmail = new Email();
+//		
+//		fromEmail.setEmail("waveit.notification@gmail.com");
+//		
+//		mail.setFrom(fromEmail);
+//		Email to = new Email();
+//		to.setEmail(email);
+//		
+//		Personalization personalization = new Personalization();
+//		
+//		personalization.addTo(to);
+//		mail.addPersonalization(personalization);
+//		
+//		mail.setTemplateId(templateId);
 		
-		Email fromEmail = new Email();
+		Email from = new Email("yourname@yourhostname.de");
+        String subject = "Hello World!";
+        Email to = new Email("yourname@yourhostname.de");
+        String message="jajajajaj";
+        
+        Content content = new Content("text/html", "I'm replacing the <strong>body tag</strong>" + message);
+ 
+        Mail mail = new Mail(from, subject, to, content);
+ 
+        mail.setReplyTo(new Email("waveit.notification@gmail.com"));
+        mail.personalization.get(0).addSubstitution("-username-", "Some blog user");
+        mail.setTemplateId(templateId);
+ 
+        Request request = new Request();
+        Response response = null;
+ 
+ 
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+ 
+            response = sendGrid.api(request);
+ 
+            System.out.println(response.getStatusCode());
+            System.out.println(response.getBody());
+            System.out.println(response.getHeaders());
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+ 
+        return mail;
+    }
 		
-		fromEmail.setEmail("waveit.notification@gmail.com");
-		
-		mail.setFrom(fromEmail);
-		Email to = new Email();
-		to.setEmail(email);
-		
-		
-		Personalization personalization = new Personalization();
-		
-		personalization.addTo(to);
-		mail.addPersonalization(personalization);
-		
-		mail.setTemplateId(templateId);
-		
-		
-		return mail;
-	}
+	
 }
