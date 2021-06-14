@@ -1,10 +1,18 @@
 package org.tfg.service;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationListener;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.tfg.domain.Usuario;
+import org.tfg.domain.VerificationToken;
+import org.tfg.events.EventoVerificacion;
+import org.tfg.repositories.VerificationTokenRepository;
 
 import com.sendgrid.Method;
 import com.sendgrid.Request;
@@ -16,22 +24,64 @@ import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.Personalization;
 
 @Service
-public class EmailService {
-
+@Component
+public class EmailService implements ApplicationListener<EventoVerificacion>{
+	
+	@Autowired
+	private VerificationTokenRepository verificationTokenRepository;
+	
 	@Value("${app.sendgrid.templateId}")
 	private String templateId;
 	@Autowired
 	SendGrid sendGrid;
+	
+	@Override
+	public void onApplicationEvent(EventoVerificacion event) {
+		this.sendEmail(event);
+	}
+	
 
-	public String sendEmail(String email) {
+//	private void confirmarRegistro(EventoVerificacion event) {
+//		Usuario usuario = event.getUsuario();
+//		String token = UUID.randomUUID().toString();
+//		VerificationToken nuevoToken = new VerificationToken(token, usuario);
+//		verificationTokenRepository.save(nuevoToken);
+//
+//		String recipientAddress = usuario.getEmail();
+//		String subject = "Registration Confirmation";
+//		String confirmationUrl = event.getAppUrl() + "/registroConfirmado?token=" + token;
+//		String message = "¡Registro completado! Por favor, finaliza la verificación accediendo al siguiente enlace:\n";
+//
+//		SimpleMailMessage email = new SimpleMailMessage();
+//		email.setTo(recipientAddress);
+//		email.setSubject(subject);
+//		email.setText(message + "\r\n" + "http://localhost:8080" + confirmationUrl);
+//		mailSender.send(email);
+//	}
+
+
+
+	public String sendEmail(EventoVerificacion event) {
+		
+		
+		Usuario usuario = event.getUsuario();
+		String token = UUID.randomUUID().toString();
+		VerificationToken nuevoToken = new VerificationToken(token, usuario);
+		verificationTokenRepository.save(nuevoToken);
+		
+
+		String recipientAddress = usuario.getEmail();
+		String subject = "Registration Confirmation";
+		String confirmationUrl = event.getAppUrl() + "/registroConfirmado?token=" + token;
+		String message = "¡Registro completado! Por favor, finaliza la verificación accediendo al siguiente enlace:\n";
+		
+		
 		
 		Email from = new Email();
 		from.setEmail("waveit.notification@gmail.com");
-		String subject = "Hello World!";
-		Email to = new Email("waveit.notification@gmail.com");
-		String message = "jajajajaj";
+		Email to = new Email(recipientAddress);
 
-		Content content = new Content("text/html", "I'm replacing the <strong>body tag</strong><p style='color:red'></p>" + message);
+		Content content = new Content("text/html", "I'm replacing the <strong>body tag</strong><p style='color:red'></p>" + message+"<a href='"+confirmationUrl+"'>pulsa aqui </a");
 
 		Mail mail = new Mail(from, subject, to, content);
 
