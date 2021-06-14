@@ -78,7 +78,7 @@ public class EmailService {
 		Email to = new Email("waveit.notification@gmail.com");
 		String message = "jajajajaj";
 
-		Content content = new Content("text/html", "I'm replacing the <strong>body tag</strong>" + message);
+		Content content = new Content("text/html", "I'm replacing the <strong>body tag</strong><p style='color:red'></p>" + message);
 
 		Mail mail = new Mail(from, subject, to, content);
 
