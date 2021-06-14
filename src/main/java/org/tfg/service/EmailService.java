@@ -84,7 +84,7 @@ public class EmailService {
 
 		mail.setReplyTo(new Email("waveit.notification@gmail.com"));
 		// mail.personalization.get(0).addSubstitution("-username-", "Some blog user");
-		// mail.setTemplateId(templateId);
+		 mail.setTemplateId(templateId);
 
 		return mail;
 	}
