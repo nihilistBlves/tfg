@@ -85,24 +85,24 @@ public class EmailService {
         mail.personalization.get(0).addSubstitution("-username-", "Some blog user");
         mail.setTemplateId(templateId);
  
-        Request request = new Request();
-        Response response = null;
- 
- 
-        try {
-            request.setMethod(Method.POST);
-            request.setEndpoint("mail/send");
-            request.setBody(mail.build());
- 
-            response = sendGrid.api(request);
- 
-            System.out.println(response.getStatusCode());
-            System.out.println(response.getBody());
-            System.out.println(response.getHeaders());
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
- 
+//        Request request = new Request();
+//        Response response = null;
+// 
+// 
+//        try {
+//            request.setMethod(Method.POST);
+//            request.setEndpoint("mail/send");
+//            request.setBody(mail.build());
+// 
+//            response = sendGrid.api(request);
+// 
+//            System.out.println(response.getStatusCode());
+//            System.out.println(response.getBody());
+//            System.out.println(response.getHeaders());
+//        } catch (IOException ex) {
+//            System.out.println(ex.getMessage());
+//        }
+// 
         return mail;
     }
 		
