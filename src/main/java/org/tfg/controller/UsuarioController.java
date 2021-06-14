@@ -842,6 +842,7 @@ public class UsuarioController {
 	}
 
 	@GetMapping("verComentarios")
+	@Transactional
 	@ResponseBody
 	public String verComentarios(@RequestParam("idPublicacion") Long idPublicacion) {
 

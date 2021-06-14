@@ -1,21 +1,4 @@
 <script>
-	//falta que cuando se comente se carguen los comentarios
-// 	function leer(objeto) {
-
-// 		objeto.parentNode.parentNode.children[1].style.height = "auto";
-
-// 		objeto.text = "Leer menos";
-
-// 		objeto.onclick = function() {
-// 			objeto.parentNode.parentNode.children[1].style.height = "200px";
-// 			objeto.text = "Leer m�s";
-// 			objeto.onclick = function() {
-// 				leer(objeto);
-// 			};
-
-// 		};
-// 	}
-
 
 	function wave(w) {
 		
@@ -64,62 +47,33 @@
 		}
 
 	}
-	//Comentarios
-	
-	
-// 	https://unipython.com/ajax-dentro-del-ciclo-for-en-java-script/
-	
-		var divs = document.getElementsByClassName("comentarioss");
-		var idPublicacion=[];
-var opcion=0;
-		
-	function verComentarios(indice) {
 
-	
-		if(opcion ==0){
-			for ( var i = divs.length-1; i >= 0; i--) {
-				
-
-			idPublicacion += divs[i].parentNode.children[0].children[2].value;
-			}
-			
-			console.log(idPublicacion);
-	}else{
-		if(indice < divs.length){
-			$.ajax({
-				data : {idPublicacion : idPublicacion[indice]},
-				url : "/verComentarios",
-				type : "GET",
-			}).done(function(comentarios){
-					divs[i].value="";
-					divs[i].style.height="200px";
-					divs[i].style.overflowY="auto";
-					divs[i].innerHTML = comentarios;
-					console.log(comentarios);
-					verComentarios(indice + 1)
-				
-					console.log(idPublicacion[indice]+"asdas");
-			
-			});
-			}
-	}
+	function llamada(divsComentarios, idPublicacion, contador) {
+		var parametros = {
+				"idPublicacion": idPublicacion,
 		}
+		$(document).ready(function() {
+			$.ajax({
+				async: "true",
+				data : parametros,
+				url : "/verComentarios",
+				type : "get",
+				success : function(comentarios) {
+					divsComentarios[contador].innerHTML = comentarios;
+				}
 
-    window.onload = verComentarios;	
-// 			 $.ajax({
-// 				 type : 'GET',
-// 				 url : '/verComentarios',
-// 				 data : parametros,
-// 				 success : function (comentarios) {
-// 					 div.value="";
-// 					 div.style.height="200px";
-// 					 div.style.overflowY="auto";
-// 					 div.innerHTML = comentarios;
-// 					 console.log(div);
-// 				 }
-// 				 });
+			});
+		});
+	}
 
-		//}
+    window.onload = function() {
+    	var divsComentarios = document.getElementsByClassName("comentarioss");
+    	for (var i = 0; i < divsComentarios.length; i++) {
+    		var idPublicacion = divsComentarios[i].parentNode.children[0].children[2].value;
+    		llamada(divsComentarios, idPublicacion, i);
+    	}
+    }		
+		
 		
 	
 	function comentar(btn) {
@@ -153,30 +107,6 @@ var opcion=0;
 		});
 
 	}
-	
-  
-	
-		
-	
-// 	$(document).ready(function() {
-
-// 		var idPublicacion = document.getElementsByClassName("comentarioss")[0];
-		
-// 		$.ajax({
-// 			data : {
-// 				"idPublicacion" : idPublicacion,
-// 			},
-// 			url : "/verComentarios",
-// 			type : "get",
-// 			success : function(comentarios) {
-// 				console.log(comentarios);
-// 				divReal.innerHTML = comentarios;
-
-// 			}
-
-// 		});
-
-// 	});
 
 </script>
 <div class="col-lg">
@@ -222,7 +152,9 @@ var opcion=0;
 									<a
 										th:href="@{/user/{loginName}(loginName=${publicacion.duenioPublicacion.loginName})}"><b
 										th:text="${publicacion.duenioPublicacion.loginName}"></b></a>
-									<form th:action="@{/publicacion/{id}/reportar(id=${publicacion.id})}" method="get">
+									<form
+										th:action="@{/publicacion/{id}/reportar(id=${publicacion.id})}"
+										method="get">
 										<button class="btn btn-outline-danger float-right m-2">
 											<i class="bi bi-exclamation-triangle"></i>
 										</button>
