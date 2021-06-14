@@ -194,6 +194,7 @@ public class AnonymousController {
 		}
 
 		usuario.setEnabled(true);
+		usuario.setFotoPerfil("/img/default_picture.jpeg");
 		usuarioRepository.save(usuario);
 
 		File directorio = new File("src//main//resources/static/users/" + usuario.getLoginName());
@@ -215,6 +216,8 @@ public class AnonymousController {
 		} else {
 			System.out.println("Error al crear directorio");
 		}
+
+		
 
 
 		

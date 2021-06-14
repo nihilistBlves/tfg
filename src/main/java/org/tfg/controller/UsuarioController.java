@@ -504,8 +504,8 @@ public class UsuarioController {
 	}
 
 	@PostMapping("/editarPerfil")
-	public String editarPerfil(@RequestParam("file") MultipartFile file, RedirectAttributes attributes,
-			@RequestParam("nombreUsuario") String nombreUsuario, @RequestParam("idCiudad") Long idCiudad,
+	public String editarPerfil(@RequestParam("file") MultipartFile file, RedirectAttributes attributes
+			, @RequestParam("idCiudad") Long idCiudad,
 			@RequestParam("descripcion") String descripcion,
 			@RequestParam(value = "instrumentos", required = false) List<String> instrumentos, HttpSession s)
 			throws IOException {
@@ -516,15 +516,6 @@ public class UsuarioController {
 		String extensionArchivo = "";
 		String nuevoNombreArchivo = "";
 		
-		if (nombreUsuario != null) {
-			Usuario chequearNombre = usuarioRepository.getByLoginName(nombreUsuario);
-			if (chequearNombre != null) {
-				H.setInfoModal("Error|El nombre de usuario ya existe|btn-hover btn-red", s);
-				return "redirect:/user/" + usuario.getLoginName() + "/opciones";
-			} else {
-				usuario.setLoginName(nombreUsuario);
-			}
-		}
 
 		if (idCiudad != null) {
 
@@ -586,14 +577,14 @@ public class UsuarioController {
 
 	}
 
-	@GetMapping("editarPass")
+	@GetMapping("/editarPass")
 	public String gestionarPass() {
 
 		return "perfil/opciones/pass";
 	}
 
-	@PostMapping("editarPass")
-	public String gestionarPass(@RequestParam("passActual") String pass, @RequestParam("pass") String newPass,
+	@PostMapping("/editarPass")
+	public String gestionarPassword(@RequestParam("passActual") String pass, @RequestParam("pass") String newPass,
 			@RequestParam("repass") String newRePass, HttpSession s) throws DangerException {
 		Usuario usuario = (Usuario) s.getAttribute("userLogged");
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -622,13 +613,13 @@ public class UsuarioController {
 		}
 	}
 
-	@GetMapping("editarCorreo")
+	@GetMapping("/editarCorreo")
 	public String gestionarCorreo() {
 
 		return "perfil/opciones/correo";
 	}
 
-	@PostMapping("editarCorreo")
+	@PostMapping("/editarCorreo")
 	public String gestionarCorreo(@RequestParam("email") String email, HttpSession s) {
 
 		Usuario usuario = (Usuario) s.getAttribute("userLogged");
@@ -637,7 +628,7 @@ public class UsuarioController {
 
 		usuarioRepository.save(usuario);
 
-		return "redirect:/menuOpciones";
+		return "redirect:/user/" + usuario.getLoginName() + "/opciones";
 	}
 
 	@GetMapping("seguidoresSeguidos")
