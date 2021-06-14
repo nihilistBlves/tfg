@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.tfg.domain.Ciudad;
+import org.tfg.domain.Instrumento;
 import org.tfg.domain.Usuario;
 import org.tfg.repositories.CiudadRepository;
 import org.tfg.repositories.InstrumentoRepository;
@@ -52,13 +53,19 @@ public class BusquedaController {
 					usuariosEncontrados += "<div class='d-block mx-auto card m-3 ' style='max-width: 540px;'>"
 							+ " <div class='row no-gutters'>" + "<div class='col-md-4'>" + " <img src="
 							+ usuario.getFotoPerfil() + " class='img-fluid buscar-img' alt='...'>" + " </div>"
-							+ " <div class='col-md-8'>" + " <div class='card-body'>" + " <h5 class='card-title'>"+"<a href='/user/"+usuario.getLoginName()+"'>"
+							+ " <div class='col-md-8'>" + " <div class='card-body'>" + " <h5 class='card-title'>"
+							+"<a href='/user/"+usuario.getLoginName()+"'>"
 							+ usuario.getLoginName() +"</a>"+ "</h5>"  + "  <p class='card-text'>"
 							+ usuario.getDescripcionPerfil() + "</p>"
-							+ "  <p class='card-text'><small class='text-muted'>" + "trompeta"
-							+ usuario.getInstrumentos() + "</small></p>" + "  </div>" + " </div>" + "  </div>"
-							+ "</div>";
+							+ "  <p class='card-text'><small class='text-muted'>";
+					
+					for (Instrumento instrumento: usuario.getInstrumentos()) {
+						usuariosEncontrados += "<label class=instrumentoLabel>"+instrumento.getNombre()+"</label>";
 
+					}
+					
+					usuariosEncontrados += "</small></p>" + "  </div>" + " </div>" + "  </div>"
+							+ "</div>";
 						}
 					return usuariosEncontrados;
 				}
@@ -78,8 +85,14 @@ public class BusquedaController {
 								+"<a href='/user/"+usuario.getLoginName()+"'>"
 								+ usuario.getLoginName() +"</a>"+ "</h5>"  + "  <p class='card-text'>"
 								+ usuario.getDescripcionPerfil() + "</p>"
-								+ "  <p class='card-text'><small class='text-muted'>" + "trompeta"
-								+ usuario.getInstrumentos() + "</small></p>" + "  </div>" + " </div>" + "  </div>"
+								+ "  <p class='card-text'><small class='text-muted'>";
+						
+						for (Instrumento instrumento: usuario.getInstrumentos()) {
+							usuariosEncontrados += "<label class=instrumentoLabel>"+instrumento.getNombre()+"</label>";
+
+						}
+						
+						usuariosEncontrados += "</small></p>" + "  </div>" + " </div>" + "  </div>"
 								+ "</div>";
 					}
 					
@@ -99,10 +112,16 @@ public class BusquedaController {
 								+ usuario.getFotoPerfil() + " class='img-fluid buscar-img' alt='...'>" + " </div>"
 								+ " <div class='col-md-8'>" + " <div class='card-body'>" + " <h5 class='card-title'>"
 								+"<a href='/user/"+usuario.getLoginName()+"'>"
-								+ usuario.getLoginName() +"</a>"+ "</h5>" + "  <p class='card-text'>"
+								+ usuario.getLoginName() +"</a>"+ "</h5>"  + "  <p class='card-text'>"
 								+ usuario.getDescripcionPerfil() + "</p>"
-								+ "  <p class='card-text'><small class='text-muted'>" + "trompeta"
-								+ usuario.getInstrumentos() + "</small></p>" + "  </div>" + " </div>" + "  </div>"
+								+ "  <p class='card-text'><small class='text-muted'>";
+						
+						for (Instrumento instrumento: usuario.getInstrumentos()) {
+							usuariosEncontrados += "<label class=instrumentoLabel>"+instrumento.getNombre()+"</label>";
+
+						}
+						
+						usuariosEncontrados += "</small></p>" + "  </div>" + " </div>" + "  </div>"
 								+ "</div>";
 						}
 									}

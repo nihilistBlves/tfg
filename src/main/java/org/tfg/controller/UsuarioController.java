@@ -64,7 +64,7 @@ public class UsuarioController {
 
 	@Autowired
 	private CiudadRepository ciudadRepository;
-	
+
 	@Autowired
 	private ReporteRepository reporteRepository;
 
@@ -118,8 +118,9 @@ public class UsuarioController {
 		} else {
 			Usuario userLogged = (Usuario) s.getAttribute("userLogged");
 			Collection<Long> seguidosPorUserLogged = seguimientoRepository.findSeguidosByIdUsuario(userLogged.getId());
-			
-			if (Arrays.asList(waveRepository.idsPublicacionWavedByUser(userLogged.getId())).contains(userLogged.getId())) {
+
+			if (Arrays.asList(waveRepository.idsPublicacionWavedByUser(userLogged.getId()))
+					.contains(userLogged.getId())) {
 				m.put("waved", true);
 			}
 
@@ -213,7 +214,8 @@ public class UsuarioController {
 
 				if (p.getTipoContenido().equals(tipo)) {
 
-					publicacionesTipo += "<div class=' publicacion bg-white ' width='200px' heigth='800px' data-id="+p.getId()+" onclick='irPublicacion(this)' role='button'>"
+					publicacionesTipo += "<div class=' publicacion bg-white ' width='200px' heigth='800px' data-id="
+							+ p.getId() + " onclick='irPublicacion(this)' role='button'>"
 							+ "	<p class='text-dark text-center text-uppercase font-weight-bold publicacion-text'>"
 							+ p.getDescripcion() + "</p>" + "</div>";
 				}
@@ -230,8 +232,9 @@ public class UsuarioController {
 
 				if (p.getTipoContenido().equals(tipo)) {
 
-					publicacionesTipo += "<div class='' width='200px' heigth='800px' data-id="+p.getId()+" onclick='irPublicacion(this)' role='button'>"
-							+ "<img class='publicacion-img' src=" + p.getContenido() + ">" + "</div>";
+					publicacionesTipo += "<div class='' width='200px' heigth='800px' data-id=" + p.getId()
+							+ " onclick='irPublicacion(this)' role='button'>" + "<img class='publicacion-img' src="
+							+ p.getContenido() + ">" + "</div>";
 				}
 
 			}
@@ -244,8 +247,9 @@ public class UsuarioController {
 
 				if (p.getTipoContenido().equals(tipo)) {
 
-					publicacionesTipo += "<div class='publicacion' width='200px' heigth='800px' data-id="+p.getId()+" onclick='irPublicacion(this)' role='button'>" + "<audio src="
-							+ p.getContenido() + " controls type='audio/mpeg'>" + "</audio>" + "</div>";
+					publicacionesTipo += "<div class='publicacion' width='200px' heigth='800px' data-id=" + p.getId()
+							+ " onclick='irPublicacion(this)' role='button'>" + "<audio src=" + p.getContenido()
+							+ " controls type='audio/mpeg'>" + "</audio>" + "</div>";
 
 				}
 
@@ -259,7 +263,8 @@ public class UsuarioController {
 
 				if (p.getTipoContenido().equals(tipo)) {
 
-					publicacionesTipo += "<div class='' width='200px' heigth='800px' data-id="+p.getId()+" onclick='irPublicacion(this)' role='button'>"
+					publicacionesTipo += "<div class='' width='200px' heigth='800px' data-id=" + p.getId()
+							+ " onclick='irPublicacion(this)' role='button'>"
 							+ "<video class='publicacion-video'  controls>" + "<source src=" + p.getContenido()
 							+ " type='video/mp4' />" + "</video>" + "</div>";
 
@@ -298,8 +303,8 @@ public class UsuarioController {
 	public String postDejarDeSeguir(@PathVariable("loginName") String username, ModelMap m, HttpSession s) {
 		Usuario usuarioSeguido = usuarioRepository.getByLoginName(username);
 		Usuario usuarioLogged = (Usuario) s.getAttribute("userLogged");
-		Seguimiento seguimientoParaBorrar = seguimientoRepository
-				.getSeguimientoParaBorrarSeguido(usuarioLogged.getId(), usuarioSeguido.getId());
+		Seguimiento seguimientoParaBorrar = seguimientoRepository.getSeguimientoParaBorrarSeguido(usuarioLogged.getId(),
+				usuarioSeguido.getId());
 		seguimientoRepository.delete(seguimientoParaBorrar);
 		return "redirect:/user/" + username;
 	}
@@ -505,8 +510,7 @@ public class UsuarioController {
 
 	@PostMapping("/editarPerfil")
 	public String editarPerfil(@RequestParam("file") MultipartFile file, RedirectAttributes attributes,
-			@RequestParam("nombreUsuario") String nombreUsuario, @RequestParam("idCiudad") Long idCiudad,
-			@RequestParam("descripcion") String descripcion,
+			@RequestParam("idCiudad") Long idCiudad, @RequestParam("descripcion") String descripcion,
 			@RequestParam(value = "instrumentos", required = false) List<String> instrumentos, HttpSession s)
 			throws IOException {
 
@@ -515,16 +519,6 @@ public class UsuarioController {
 		String nuevoNombreRandom = UUID.randomUUID().toString();
 		String extensionArchivo = "";
 		String nuevoNombreArchivo = "";
-		
-		if (nombreUsuario != null) {
-			Usuario chequearNombre = usuarioRepository.getByLoginName(nombreUsuario);
-			if (chequearNombre != null) {
-				H.setInfoModal("Error|El nombre de usuario ya existe|btn-hover btn-red", s);
-				return "redirect:/user/" + usuario.getLoginName() + "/opciones";
-			} else {
-				usuario.setLoginName(nombreUsuario);
-			}
-		}
 
 		if (idCiudad != null) {
 
@@ -855,7 +849,7 @@ public class UsuarioController {
 		}
 		return allComentarios;
 	}
-	
+
 	@GetMapping("/publicacion/{id}/reportar")
 	public String getReportar(@PathVariable("id") Long idPublicacion, ModelMap m, HttpSession s) {
 		Publicacion publicacion = publicacionRepository.getById(idPublicacion);
@@ -863,9 +857,10 @@ public class UsuarioController {
 		m.put("view", "usuario/reportar");
 		return "t/frameFeed";
 	}
-	
+
 	@PostMapping("/reportar")
-	public String postReportar(@RequestParam("idPublicacion") Long idPublicacion, @RequestParam("motivo") String motivo, HttpSession s) {
+	public String postReportar(@RequestParam("idPublicacion") Long idPublicacion, @RequestParam("motivo") String motivo,
+			HttpSession s) {
 		Usuario userLogged = (Usuario) s.getAttribute("userLogged");
 		Publicacion publicacion = publicacionRepository.getById(idPublicacion);
 		Reporte reporte = new Reporte();
@@ -873,12 +868,8 @@ public class UsuarioController {
 		reporte.setMotivo(motivo);
 		reporte.setPublicacionReportada(publicacion);
 		reporteRepository.save(reporte);
-		
+
 		return "redirect:/";
 	}
 
-	
-	
-	
-	
 }

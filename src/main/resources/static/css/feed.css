@@ -113,28 +113,32 @@ body{
 	height:27px;
 	border-radius: 50%;
 }
-.comentarioss::-webkit-scrollbar {
-    -webkit-appearance: none;
+.comentarioss {
+	height: 10em;
+	overflow: scroll; 
 }
+/* .comentarioss::-webkit-scrollbar { */
+/*     -webkit-appearance: none; */
+/* } */
 
-.comentarioss::-webkit-scrollbar:vertical {
-    width:10px;
-}
+/* .comentarioss::-webkit-scrollbar:vertical { */
+/*     width:10px; */
+/* } */
 
-.comentarioss::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
-    display: none;
-} 
+/* .comentarioss::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button { */
+/*     display: none; */
+/* }  */
 
-.comentarioss::-webkit-scrollbar:horizontal {
-    height: 10px;
-}
+/* .comentarioss::-webkit-scrollbar:horizontal { */
+/*     height: 10px; */
+/* } */
 
-.comentarioss::-webkit-scrollbar-thumb {
-    background-color: rgba(97, 97, 94, 0.40);
-    border-radius: 20px;
-    border: 2px solid #f1f2f3;
-}
+/* .comentarioss::-webkit-scrollbar-thumb { */
+/*     background-color: rgba(97, 97, 94, 0.40); */
+/*     border-radius: 20px; */
+/*     border: 2px solid #f1f2f3; */
+/* } */
 
-.comentarioss::-webkit-scrollbar-track {
-    border-radius: 10px;  
-}
+/* .comentarioss::-webkit-scrollbar-track { */
+/*     border-radius: 10px;   */
+/* } */
