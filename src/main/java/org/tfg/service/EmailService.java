@@ -22,39 +22,39 @@ public class EmailService {
 	private String templateId;
 	@Autowired
 	SendGrid sendGrid;
-	public String sendEmail(String email)  {
-		
+
+	public String sendEmail(String email) {
+
 		try {
-		Mail mail = prepareMail(email);
-		
-		Request request = new Request();
-		
-		request.setMethod(Method.POST);
-		request.setEndpoint("mail/send");
-		
-		request.setBody(mail.build());
-	
-		Response response = sendGrid.api(request);
-		
-		if(response!=null) {
-			
-			System.out.println("response code from sendgrid"+response.getHeaders());
-			
-		}
-		
-} catch (IOException e) {
-			
-			
+			Mail mail = prepareMail(email);
+
+			Request request = new Request();
+
+			request.setMethod(Method.POST);
+			request.setEndpoint("mail/send");
+
+			request.setBody(mail.build());
+
+			Response response = sendGrid.api(request);
+
+			if (response != null) {
+
+				System.out.println("response code from sendgrid" + response.getHeaders());
+
+			}
+
+		} catch (IOException e) {
+
 			e.printStackTrace();
 			return "error in sent mail!";
 		}
-		
+
 		return "mail has been sent check your inbox!";
-		
+
 	}
-	
+
 	public Mail prepareMail(String email) {
-		
+
 //		Mail mail = new Mail();
 //		
 //		Email fromEmail = new Email();
@@ -71,40 +71,22 @@ public class EmailService {
 //		mail.addPersonalization(personalization);
 //		
 //		mail.setTemplateId(templateId);
-		
-		Email from = new Email("yourname@yourhostname.de");
-        String subject = "Hello World!";
-        Email to = new Email("yourname@yourhostname.de");
-        String message="jajajajaj";
-        
-        Content content = new Content("text/html", "I'm replacing the <strong>body tag</strong>" + message);
- 
-        Mail mail = new Mail(from, subject, to, content);
- 
-        mail.setReplyTo(new Email("waveit.notification@gmail.com"));
-        mail.personalization.get(0).addSubstitution("-username-", "Some blog user");
-        mail.setTemplateId(templateId);
- 
-//        Request request = new Request();
-//        Response response = null;
-// 
-// 
-//        try {
-//            request.setMethod(Method.POST);
-//            request.setEndpoint("mail/send");
-//            request.setBody(mail.build());
-// 
-//            response = sendGrid.api(request);
-// 
-//            System.out.println(response.getStatusCode());
-//            System.out.println(response.getBody());
-//            System.out.println(response.getHeaders());
-//        } catch (IOException ex) {
-//            System.out.println(ex.getMessage());
-//        }
-// 
-        return mail;
-    }
-		
-	
+
+		Email from = new Email();
+		from.setEmail("waveit.notification@gmail.com");
+		String subject = "Hello World!";
+		Email to = new Email("waveit.notification@gmail.com");
+		String message = "jajajajaj";
+
+		Content content = new Content("text/html", "I'm replacing the <strong>body tag</strong>" + message);
+
+		Mail mail = new Mail(from, subject, to, content);
+
+		mail.setReplyTo(new Email("waveit.notification@gmail.com"));
+		// mail.personalization.get(0).addSubstitution("-username-", "Some blog user");
+		// mail.setTemplateId(templateId);
+
+		return mail;
+	}
+
 }
