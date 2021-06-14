@@ -24,9 +24,23 @@ public class EmailService {
 	SendGrid sendGrid;
 
 	public String sendEmail(String email) {
+		
+		Email from = new Email();
+		from.setEmail("waveit.notification@gmail.com");
+		String subject = "Hello World!";
+		Email to = new Email("waveit.notification@gmail.com");
+		String message = "jajajajaj";
+
+		Content content = new Content("text/html", "I'm replacing the <strong>body tag</strong><p style='color:red'></p>" + message);
+
+		Mail mail = new Mail(from, subject, to, content);
+
+		mail.setReplyTo(new Email("waveit.notification@gmail.com"));
+
 
 		try {
-			Mail mail = prepareMail(email);
+			//Mail mail = prepareMail(email);
+			
 
 			Request request = new Request();
 
@@ -53,7 +67,7 @@ public class EmailService {
 
 	}
 
-	public Mail prepareMail(String email) {
+	//public Mail prepareMail(String email) {
 
 //		Mail mail = new Mail();
 //		
@@ -71,22 +85,24 @@ public class EmailService {
 //		mail.addPersonalization(personalization);
 //		
 //		mail.setTemplateId(templateId);
-
-		Email from = new Email();
-		from.setEmail("waveit.notification@gmail.com");
-		String subject = "Hello World!";
-		Email to = new Email("waveit.notification@gmail.com");
-		String message = "jajajajaj";
-
-		Content content = new Content("text/html", "I'm replacing the <strong>body tag</strong><p style='color:red'></p>" + message);
-
-		Mail mail = new Mail(from, subject, to, content);
-
-		mail.setReplyTo(new Email("waveit.notification@gmail.com"));
+		
 		// mail.personalization.get(0).addSubstitution("-username-", "Some blog user");
 		// mail.setTemplateId(templateId);
 
-		return mail;
-	}
+//		Email from = new Email();
+//		from.setEmail("waveit.notification@gmail.com");
+//		String subject = "Hello World!";
+//		Email to = new Email("waveit.notification@gmail.com");
+//		String message = "jajajajaj";
+//
+//		Content content = new Content("text/html", "I'm replacing the <strong>body tag</strong><p style='color:red'></p>" + message);
+//
+//		Mail mail = new Mail(from, subject, to, content);
+//
+//		mail.setReplyTo(new Email("waveit.notification@gmail.com"));
+//		
+//
+//		return mail;
+//	}
 
 }
