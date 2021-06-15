@@ -17,22 +17,21 @@
 					</div>
 					<div th:if="${publicacion.tipoContenido}=='img'">
 						<img class="card-img feed-img"
-							th:src="|data:image;base64,${publicacion.contenido}|">
+							th:src="@{${publicacion.contenido}}">
 					</div>
 
 					<!-- 		Para video -->
 					<div th:if="${publicacion.tipoContenido}=='video'"
 						class="card-film feed-film">
-						<video width="500px" height="300px" controls poster>
-							<source th:src="|data:video;base64,${publicacion.contenido}|"
-								type="video/mp4" />
+						<video width="500px" height="300px" controls>
+							<source th:src="@{${publicacion.contenido}}" type="video/mp4" />
 						</video>
 					</div>
 
 					<div th:if="${publicacion.tipoContenido}=='audio'"
 						class="card-audio feed-audio">
-						<audio th:src="|data:audio/mp3;base64,${publicacion.contenido}|"
-							controls type="audio/mpeg">
+						<audio th:src="@{${publicacion.contenido}}" controls
+							type="audio/mpeg">
 						</audio>
 					</div>
 
@@ -40,7 +39,7 @@
 						<div class="card-body feed-body">
 							<div class="card-tittle feed-tittle p-0 mt-3 mb-1">
 								<img class="foto-post col-5"
-									th:src="|data:image;base64,${publicacion.duenioPublicacion.fotoPerfil}|">
+									th:src="@{${publicacion.duenioPublicacion.fotoPerfil}}">
 								<a
 									th:href="@{/user/{loginName}(loginName=${publicacion.duenioPublicacion.loginName})}"><b
 									th:text="${publicacion.duenioPublicacion.loginName}"></b></a> <small
@@ -58,15 +57,15 @@
 							<div class="card-footer text-right d-flexbox">
 								<div class="icons" th:if="${session.userLogged} != null">
 									<div class="row justify-content-end align-items-center"
-										th:if="${waved} != null">
+										th:if="${waved != null}">
 										<b th:text=${publicacion.cantidadWaves}
-											class="badge badge-danger"></b><i
+											class="badge badge-secondary"></b><i
 											th:id="|wave-${publicacion.id}|"
 											style="color: #f90d4e; font-size: 2em;"
 											class="bi bi-soundwave" role="button" onclick="wave(this)"></i>
 									</div>
 									<div class="row justify-content-end align-items-center"
-										th:unless="${waved} != null">
+										th:unless="${waved != null}">
 										<b th:text=${publicacion.cantidadWaves}
 											class="badge badge-secondary"></b><i
 											th:id="|wave-${publicacion.id}|"
@@ -84,14 +83,14 @@
 									</div>
 								</div>
 								<div class="form-group justify-content-end align-items-center">
-									<div class="d-flex justify-content-between pt-4 comentarios"
-										th:if="${session.userLogged != null}">
+									<div th:if="${session.userLogged != null}"
+										class="d-flex justify-content-between pt-4 comentarios">
 										<img class="foto-perfil col-2"
-											th:src="|data:image;base64,${session.userLogged.fotoPerfil}|">
-										<input type="text" class="form-control col-6"
-											placeholder="Comentar" name="comentario" id="comentario" />
-										<input type="hidden" th:value="${publicacion.id}" /> <input
-											type="button" class=" btn-hover btn-red" value="Comentar"
+											th:src="@{${session.userLogged.fotoPerfil}}"> <input
+											type="text" class="form-control col-6" placeholder="Comentar"
+											name="comentario" id="comentario" /> <input type="hidden"
+											th:value="${publicacion.id}" /> <input type="button"
+											class=" btn-hover btn-red" value="Comentar"
 											onclick="comentar(this)" />
 
 										<div th:id="|coment-${publicacion.id}|"
@@ -100,17 +99,22 @@
 												name="idPublicacionWave" />
 										</div>
 									</div>
-									<div class="d-flex justify-content-between pt-4 comentarios"
-										th:unless="${session.userLogged != null}">
-										<input type="text" class="form-control col-6"
-											placeholder="Comentar" name="comentario" id="comentario" />
-										<input
-											type="button" class=" btn-hover btn-red" value="Comentar"
+									<div th:unless="${session.userLogged != null}"
+										class="d-flex justify-content-between pt-4 comentarios">
+										<input type="hidden"> <input type="text"
+											class="form-control col-6" placeholder="Comentar"
+											name="comentario" id="comentario" /> <input type="hidden"
+											th:value="${publicacion.id}" /> <input type="button"
+											class=" btn-hover btn-red" value="Comentar"
 											data-toggle="modal" data-target="#loginModal" />
-										<input type="hidden" th:value="${publicacion.id}" /> 
+
+										<div th:id="|coment-${publicacion.id}|"
+											class="cargaComentarios">
+											<input type="hidden" th:value="${publicacion.id}"
+												name="idPublicacionWave" />
 										</div>
 									</div>
-									<div class="comentarioss mt-3 text-center">
+									<div class="comentarioss mt-3 text-center overflow-auto">
 										<span>No hay comentarios en esta publicación</span>
 									</div>
 								</div>
