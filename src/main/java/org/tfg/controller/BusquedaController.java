@@ -2,6 +2,9 @@ package org.tfg.controller;
 
 
 import java.util.Collection;
+
+import javax.sql.rowset.serial.SerialException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -40,7 +43,7 @@ public class BusquedaController {
 	
 	@PostMapping("/explorar")
 	@ResponseBody
-	private String busqueda(@RequestParam("busqueda") String busqueda, @RequestParam("tipo") String tipo,@RequestParam("id") String id) {
+	private String busqueda(@RequestParam("busqueda") String busqueda, @RequestParam("tipo") String tipo,@RequestParam("id") String id) throws SerialException {
 
 		Collection<Usuario> usuarios = usuarioRepository.findUsuariosByLoginNameBusqueda(busqueda);
 		String usuariosEncontrados = "";
@@ -50,7 +53,7 @@ public class BusquedaController {
 				for (Usuario usuario : usuarios) {
 
 					usuariosEncontrados += "<div class='d-block mx-auto card m-3 ' style='max-width: 540px;'>"
-							+ " <div class='row no-gutters'>" + "<div class='col-md-4'>" + " <img src="
+							+ " <div class='row no-gutters'>" + "<div class='col-md-4'>" + " <img src=data:image;base64,"
 							+ usuario.getFotoPerfil() + " class='img-fluid buscar-img' alt='...'>" + " </div>"
 							+ " <div class='col-md-8'>" + " <div class='card-body'>" + " <h5 class='card-title'>"+"<a href='/user/"+usuario.getLoginName()+"'>"
 							+ usuario.getLoginName() +"</a>"+ "</h5>"  + "  <p class='card-text'>"
@@ -72,7 +75,7 @@ public class BusquedaController {
 					for (Usuario usuario : usuariosCiudad) {
 
 						usuariosEncontrados += "<div class='d-block mx-auto card m-3 ' style='max-width: 540px;'>"
-								+ " <div class='row no-gutters'>" + "<div class='col-md-4'>" + " <img src="
+								+ " <div class='row no-gutters'>" + "<div class='col-md-4'>" + " <img src=data:image;base64,"
 								+ usuario.getFotoPerfil() + " class='img-fluid buscar-img' alt='...'>" + " </div>"
 								+ " <div class='col-md-8'>" + " <div class='card-body'>" + " <h5 class='card-title'>"
 								+"<a href='/user/"+usuario.getLoginName()+"'>"
@@ -95,7 +98,7 @@ public class BusquedaController {
 					for (Usuario usuario : usuariosInstrumentos) {
 
 						usuariosEncontrados += "<div class='d-block mx-auto card m-3 ' style='max-width: 540px;'>"
-								+ " <div class='row no-gutters'>" + "<div class='col-md-4'>" + " <img src="
+								+ " <div class='row no-gutters'>" + "<div class='col-md-4'>" + " <img src=data:image;base64,"
 								+ usuario.getFotoPerfil() + " class='img-fluid buscar-img' alt='...'>" + " </div>"
 								+ " <div class='col-md-8'>" + " <div class='card-body'>" + " <h5 class='card-title'>"
 								+"<a href='/user/"+usuario.getLoginName()+"'>"

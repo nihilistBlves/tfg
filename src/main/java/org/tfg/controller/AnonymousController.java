@@ -1,21 +1,26 @@
 package org.tfg.controller;
 
 import java.io.File;
-
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Calendar;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.sql.rowset.serial.SerialException;
 
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.multipart.MultipartFile;
 import org.tfg.domain.Usuario;
 import org.tfg.domain.VerificationToken;
 import org.tfg.exception.DangerException;
@@ -23,7 +28,6 @@ import org.tfg.helper.H;
 import org.tfg.repositories.RolRepository;
 import org.tfg.repositories.UsuarioRepository;
 import org.tfg.repositories.VerificationTokenRepository;
-//import org.tfg.service.EmailService;
 import org.tfg.service.EmailService;
 
 @Controller
@@ -162,7 +166,7 @@ public class AnonymousController {
 	}
 
 	@GetMapping("/registroConfirmado")
-	public String confirmarRegistro(ModelMap m, HttpSession s, @RequestParam("token") String token) {
+	public String confirmarRegistro(ModelMap m, HttpSession s, @RequestParam("token") String token) throws IOException, SerialException, SQLException {
 
 		VerificationToken verificationToken = verificationTokenRepository.getByToken(token);
 
@@ -189,28 +193,13 @@ public class AnonymousController {
 		}
 
 		usuario.setEnabled(true);
-		usuario.setFotoPerfil("/img/default_picture.jpeg");
+		
+		File file = new File("/img/default_picture.jpeg");
+        FileInputStream inputStream = new FileInputStream(file);
+        MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), ContentType.APPLICATION_OCTET_STREAM.toString(), inputStream);
+		usuario.setFotoPerfil(H.convertidorBlob(multipartFile));
 		usuarioRepository.save(usuario);
 
-		File directorio = new File("src//main//resources/static/users/" + usuario.getLoginName());
-		File directorioPerfil = new File("src//main//resources/static/users/" + usuario.getLoginName() + "/perfil");
-		File directorioPostsImgs = new File(
-				"src//main//resources/static/users/" + usuario.getLoginName() + "/posts/img");
-		File directorioPostsAudios = new File(
-				"src//main//resources/static/users/" + usuario.getLoginName() + "/posts/audio");
-		File directorioPostsFilms = new File(
-				"src//main//resources/static/users/" + usuario.getLoginName() + "/posts/video");
-
-		if (!directorio.exists()) {
-			directorio.mkdirs();
-			directorioPerfil.mkdirs();
-			directorioPostsImgs.mkdirs();
-			directorioPostsAudios.mkdirs();
-			directorioPostsFilms.mkdirs();
-			System.out.println("Directorio creado");
-		} else {
-			System.out.println("Error al crear directorio");
-		}
 
 		H.setInfoModal("Info|La cuenta se ha activado correctamente. Ya puedes hacer login|btn-hover btn-black", s);
 		return "redirect:/";

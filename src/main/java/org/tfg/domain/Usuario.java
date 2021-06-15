@@ -3,6 +3,7 @@ package org.tfg.domain;
 import java.time.LocalDate;
 
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.Collection;
 
 import javax.persistence.Column;
@@ -10,8 +11,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.sql.rowset.serial.SerialBlob;
+import javax.sql.rowset.serial.SerialException;
+
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -35,7 +40,8 @@ public class Usuario {
 	private boolean privada;
 
 	private String descripcionPerfil;
-	private String fotoPerfil;
+	@Lob
+	private SerialBlob fotoPerfil;
 
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@ManyToOne
@@ -50,7 +56,7 @@ public class Usuario {
 	private Collection<Instrumento> instrumentos;
 
 	public Usuario(String loginName, String email, String pass, LocalDate fechaNacimiento, boolean enabled,
-			boolean privada, LocalDate fechaCreacion, String descripcionPerfil, String fotoPerfil,
+			boolean privada, LocalDate fechaCreacion, String descripcionPerfil, SerialBlob fotoPerfil,
 			Collection<Instrumento> instrumentos, Ciudad ciudad, Rol rol) {
 		super();
 		this.loginName = loginName;
@@ -168,11 +174,12 @@ public class Usuario {
 		this.descripcionPerfil = descripcionPerfil;
 	}
 
-	public String getFotoPerfil() {
-		return fotoPerfil;
+	public String getFotoPerfil() throws SerialException {
+		String bytes = Base64.getEncoder().encodeToString(this.fotoPerfil.getBytes(1l, (int) this.fotoPerfil.length()));
+		return bytes;
 	}
 
-	public void setFotoPerfil(String fotoPerfil) {
+	public void setFotoPerfil(SerialBlob fotoPerfil) {
 		this.fotoPerfil = fotoPerfil;
 	}
 

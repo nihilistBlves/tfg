@@ -67,7 +67,7 @@ public class UsuarioController {
 
 	@Autowired
 	private CiudadRepository ciudadRepository;
-	
+
 	@Autowired
 	private ReporteRepository reporteRepository;
 
@@ -121,8 +121,9 @@ public class UsuarioController {
 		} else {
 			Usuario userLogged = (Usuario) s.getAttribute("userLogged");
 			Collection<Long> seguidosPorUserLogged = seguimientoRepository.findSeguidosByIdUsuario(userLogged.getId());
-			
-			if (Arrays.asList(waveRepository.idsPublicacionWavedByUser(userLogged.getId())).contains(userLogged.getId())) {
+
+			if (Arrays.asList(waveRepository.idsPublicacionWavedByUser(userLogged.getId()))
+					.contains(userLogged.getId())) {
 				m.put("waved", true);
 			}
 
@@ -201,7 +202,8 @@ public class UsuarioController {
 
 	@PostMapping("/tipoArchivo")
 	@ResponseBody
-	public String elegirArchivo(@RequestParam("tipo") String tipo, @RequestParam("nombre") String nombre) throws SerialException {
+	public String elegirArchivo(@RequestParam("tipo") String tipo, @RequestParam("nombre") String nombre)
+			throws SerialException {
 
 		System.out.println(tipo);
 
@@ -216,7 +218,8 @@ public class UsuarioController {
 
 				if (p.getTipoContenido().equals(tipo)) {
 
-					publicacionesTipo += "<div class=' publicacion bg-white ' width='200px' heigth='800px' data-id="+p.getId()+" onclick='irPublicacion(this)' role='button'>"
+					publicacionesTipo += "<div class=' publicacion bg-white ' width='200px' heigth='800px' data-id="
+							+ p.getId() + " onclick='irPublicacion(this)' role='button'>"
 							+ "	<p class='text-dark text-center text-uppercase font-weight-bold publicacion-text'>"
 							+ p.getDescripcion() + "</p>" + "</div>";
 				}
@@ -233,8 +236,10 @@ public class UsuarioController {
 
 				if (p.getTipoContenido().equals(tipo)) {
 
-					publicacionesTipo += "<div class='' width='200px' heigth='800px' data-id="+p.getId()+" onclick='irPublicacion(this)' role='button'>"
-							+ "<img class='publicacion-img' src='data:image;base64," + p.getContenido() + "'>" + "</div>";
+					publicacionesTipo += "<div class='' width='200px' heigth='800px' data-id=" + p.getId()
+							+ " onclick='irPublicacion(this)' role='button'>"
+							+ "<img class='publicacion-img' src='data:image;base64," + p.getContenido() + "'>"
+							+ "</div>";
 				}
 
 			}
@@ -247,7 +252,8 @@ public class UsuarioController {
 
 				if (p.getTipoContenido().equals(tipo)) {
 
-					publicacionesTipo += "<div class='publicacion' width='200px' heigth='800px' data-id="+p.getId()+" onclick='irPublicacion(this)' role='button'>" + "<audio src='data:audio;base64,"
+					publicacionesTipo += "<div class='publicacion' width='200px' heigth='800px' data-id=" + p.getId()
+							+ " onclick='irPublicacion(this)' role='button'>" + "<audio src='data:audio/mp3;base64,"
 							+ p.getContenido() + "' controls type='audio/mpeg'>" + "</audio>" + "</div>";
 
 				}
@@ -262,9 +268,10 @@ public class UsuarioController {
 
 				if (p.getTipoContenido().equals(tipo)) {
 
-					publicacionesTipo += "<div class='' width='200px' heigth='800px' data-id="+p.getId()+" onclick='irPublicacion(this)' role='button'>"
-							+ "<video class='publicacion-video' controls poster>" + "<source src='data:video;base64," + p.getContenido()
-							+ "' type='video/mp4' />" + "</video>" + "</div>";
+					publicacionesTipo += "<div class='' width='200px' heigth='800px' data-id=" + p.getId()
+							+ " onclick='irPublicacion(this)' role='button'>"
+							+ "<video class='publicacion-video' controls poster>" + "<source src='data:video;base64,"
+							+ p.getContenido() + "' type='video/mp4' />" + "</video>" + "</div>";
 
 				}
 
@@ -301,8 +308,8 @@ public class UsuarioController {
 	public String postDejarDeSeguir(@PathVariable("loginName") String username, ModelMap m, HttpSession s) {
 		Usuario usuarioSeguido = usuarioRepository.getByLoginName(username);
 		Usuario usuarioLogged = (Usuario) s.getAttribute("userLogged");
-		Seguimiento seguimientoParaBorrar = seguimientoRepository
-				.getSeguimientoParaBorrarSeguido(usuarioLogged.getId(), usuarioSeguido.getId());
+		Seguimiento seguimientoParaBorrar = seguimientoRepository.getSeguimientoParaBorrarSeguido(usuarioLogged.getId(),
+				usuarioSeguido.getId());
 		seguimientoRepository.delete(seguimientoParaBorrar);
 		return "redirect:/user/" + username;
 	}
@@ -329,28 +336,20 @@ public class UsuarioController {
 	public String getPublicar(@RequestParam("mensaje") String texto, @RequestParam("file") MultipartFile file,
 			RedirectAttributes attributes, HttpSession s, ModelMap m) throws IOException, SerialException, SQLException {
 
-		Path path = null;
 		String originalFilename = file.getOriginalFilename().toLowerCase();
-		;
-		String nuevoNombreRandom = UUID.randomUUID().toString();
-		String extensionArchivo = "";
-		String nuevoNombreArchivo = "";
 
 		Usuario usuario = (Usuario) s.getAttribute("userLogged");
 		Publicacion publicacion = new Publicacion();
 
 		if (!originalFilename.equals("")) {
 
-			extensionArchivo = originalFilename.substring(originalFilename.lastIndexOf("."));
-			nuevoNombreArchivo = nuevoNombreRandom + extensionArchivo;
-
 			if ((!originalFilename.endsWith(".png") && !originalFilename.endsWith(".jpg")
 					&& !originalFilename.endsWith(".jpeg"))
 					&& (!originalFilename.endsWith(".mov") && !originalFilename.endsWith(".mp4")
 							&& !originalFilename.endsWith(".mpg"))
-					&& (!originalFilename.endsWith(".ogg") && !originalFilename.endsWith(".mp3"))) {
+					&& !originalFilename.endsWith(".mp3")) {
 				H.setInfoModal(
-						"Error|Solo se permiten fotos con extension png,jpg,jpeg. Y para videos : mp4,mov,mpg|btn btn-danger",
+						"Error|Solo se permiten fotos con extension png, jpg o jpeg. Videos con extension mp4, mov o mpg. Audios con extension mp3.|btn btn-danger",
 						s);
 
 				return "redirect:/publicar";
@@ -397,7 +396,7 @@ public class UsuarioController {
 
 				}
 
-				if (originalFilename.endsWith(".mp3") || originalFilename.endsWith(".ogg")) {
+				if (originalFilename.endsWith(".mp3")) {
 
 					if (file.getSize() <= 10000000) {
 
@@ -479,18 +478,13 @@ public class UsuarioController {
 	}
 
 	@PostMapping("/editarPerfil")
-	public String editarPerfil(@RequestParam("file") MultipartFile file, RedirectAttributes attributes
-			, @RequestParam("idCiudad") Long idCiudad,
-			@RequestParam("descripcion") String descripcion,
+	public String editarPerfil(@RequestParam("file") MultipartFile file, RedirectAttributes attributes,
+			@RequestParam("idCiudad") Long idCiudad, @RequestParam("descripcion") String descripcion,
 			@RequestParam(value = "instrumentos", required = false) List<String> instrumentos, HttpSession s)
-			throws IOException {
+			throws IOException, SerialException, SQLException {
 
 		Usuario usuario = (Usuario) s.getAttribute("userLogged");
 		String originalFilename = file.getOriginalFilename().toLowerCase();
-		String nuevoNombreRandom = UUID.randomUUID().toString();
-		String extensionArchivo = "";
-		String nuevoNombreArchivo = "";
-		
 
 		if (idCiudad != null) {
 
@@ -509,9 +503,6 @@ public class UsuarioController {
 //		 comprobamos si esta vacio o nulo
 		if (!originalFilename.equals("")) {
 
-			extensionArchivo = originalFilename.substring(originalFilename.lastIndexOf("."));
-			nuevoNombreArchivo = nuevoNombreRandom + extensionArchivo;
-
 			// comprobamos el tamaño del archivo en bytes y aqui 2MB
 			if (file.getSize() <= 2000000) {
 
@@ -519,14 +510,7 @@ public class UsuarioController {
 				if (originalFilename.endsWith(".png") || originalFilename.endsWith(".jpg")
 						|| originalFilename.endsWith(".jpeg")) {
 
-					byte[] fileBytes = file.getBytes();
-
-					Path path = Paths.get("src//main//resources/static/users/" + usuario.getLoginName() + "/perfil");
-					String rutaRelativa = path.toFile().getAbsolutePath();
-					Path rutaCompleta = Paths.get(rutaRelativa + "//" + nuevoNombreArchivo);
-					Files.write(rutaCompleta, fileBytes);
-
-					usuario.setFotoPerfil("/users/" + usuario.getLoginName() + "/perfil/" + nuevoNombreArchivo);
+					usuario.setFotoPerfil(H.convertidorBlob(file));
 
 				} else {
 					H.setInfoModal("Error|Solo se permiten imagenes con extension png, jpg o jpeg|btn-hover btn-red",
@@ -773,7 +757,7 @@ public class UsuarioController {
 	@Transactional
 	@ResponseBody
 	public String comentar(@RequestParam("comentario") String comentario,
-			@RequestParam("idPublicacion") Long idPublicacion, HttpSession s) {
+			@RequestParam("idPublicacion") Long idPublicacion, HttpSession s) throws SerialException {
 
 		Publicacion publicacion = publicacionRepository.getOne(idPublicacion);
 		Usuario usuario = (Usuario) s.getAttribute("userLogged");
@@ -793,7 +777,7 @@ public class UsuarioController {
 		for (Comentario c : comentarios) {
 
 			allComentarios += "<div class='card'>" + "<div class='card-body'>" + "<span class='userComent'>"
-					+ "<img src='" + c.getComentador().getFotoPerfil() + "' class='fotoComent' />"
+					+ "<img src='|data:image;base64," + c.getComentador().getFotoPerfil() + "' class='fotoComent' />"
 					+ c.getComentador().getLoginName() + "</span>" + c.getTexto() + "</div></div>";
 
 		}
@@ -807,7 +791,7 @@ public class UsuarioController {
 	@GetMapping("verComentarios")
 	@Transactional
 	@ResponseBody
-	public String verComentarios(@RequestParam("idPublicacion") Long idPublicacion) {
+	public String verComentarios(@RequestParam("idPublicacion") Long idPublicacion) throws SerialException {
 
 		Publicacion publicacion = publicacionRepository.getById(idPublicacion);
 		Collection<Comentario> comentarios = comentarioRepository.getByPublicacionComentada(publicacion);
@@ -815,13 +799,13 @@ public class UsuarioController {
 		for (Comentario c : comentarios) {
 
 			allComentarios += "<div class='card'>" + "<div class='card-body'>" + "<span class='userComent'>"
-					+ "<img src='" + c.getComentador().getFotoPerfil() + "' class='fotoComent' />"
+					+ "<img src='|data:image;base64," + c.getComentador().getFotoPerfil() + "' class='fotoComent' />"
 					+ c.getComentador().getLoginName() + "</span>" + c.getTexto() + "</div></div>";
 
 		}
 		return allComentarios;
 	}
-	
+
 	@GetMapping("/publicacion/{id}/reportar")
 	public String getReportar(@PathVariable("id") Long idPublicacion, ModelMap m, HttpSession s) {
 		Publicacion publicacion = publicacionRepository.getById(idPublicacion);
@@ -829,9 +813,10 @@ public class UsuarioController {
 		m.put("view", "usuario/reportar");
 		return "t/frameFeed";
 	}
-	
+
 	@PostMapping("/reportar")
-	public String postReportar(@RequestParam("idPublicacion") Long idPublicacion, @RequestParam("motivo") String motivo, HttpSession s) {
+	public String postReportar(@RequestParam("idPublicacion") Long idPublicacion, @RequestParam("motivo") String motivo,
+			HttpSession s) {
 		Usuario userLogged = (Usuario) s.getAttribute("userLogged");
 		Publicacion publicacion = publicacionRepository.getById(idPublicacion);
 		Reporte reporte = new Reporte();
@@ -839,12 +824,8 @@ public class UsuarioController {
 		reporte.setMotivo(motivo);
 		reporte.setPublicacionReportada(publicacion);
 		reporteRepository.save(reporte);
-		
+
 		return "redirect:/";
 	}
 
-	
-	
-	
-	
 }
