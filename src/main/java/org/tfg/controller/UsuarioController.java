@@ -263,7 +263,7 @@ public class UsuarioController {
 				if (p.getTipoContenido().equals(tipo)) {
 
 					publicacionesTipo += "<div class='' width='200px' heigth='800px' data-id="+p.getId()+" onclick='irPublicacion(this)' role='button'>"
-							+ "<video class='publicacion-video'  controls>" + "<source src='data:video;base64," + p.getContenido()
+							+ "<video class='publicacion-video' controls poster>" + "<source src='data:video;base64," + p.getContenido()
 							+ "' type='video/mp4' />" + "</video>" + "</div>";
 
 				}
