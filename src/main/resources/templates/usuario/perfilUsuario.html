@@ -321,7 +321,7 @@
 		<div class="cabecera">
 			<div class="row d-flex justify-content-around">
 				<div class="foto my-5">
-					<img class="fotoPerfil" th:src="@{${usuario.fotoPerfil}}">
+					<img class="fotoPerfil" th:src="|data:image;base64,${usuario.fotoPerfil}|">
 				</div>
 				<div class="nombre">
 					<div class="row d-flex justify-content-around">
