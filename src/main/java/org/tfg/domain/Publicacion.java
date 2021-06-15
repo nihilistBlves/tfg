@@ -1,6 +1,7 @@
 package org.tfg.domain;
 
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.sql.rowset.serial.SerialBlob;
+import javax.sql.rowset.serial.SerialException;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -99,8 +101,9 @@ public class Publicacion implements Comparable<Publicacion> {
 		this.id = id;
 	}
 
-	public SerialBlob getContenido() {
-		return contenido;
+	public String getContenido() throws SerialException {
+		String bytes = Base64.getEncoder().encodeToString(this.contenido.getBytes(1l, (int) this.contenido.length()));
+		return bytes;
 	}
 
 	public void setContenido(SerialBlob contenido) {

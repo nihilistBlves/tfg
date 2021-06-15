@@ -201,7 +201,7 @@ public class UsuarioController {
 
 	@PostMapping("/tipoArchivo")
 	@ResponseBody
-	public String elegirArchivo(@RequestParam("tipo") String tipo, @RequestParam("nombre") String nombre) {
+	public String elegirArchivo(@RequestParam("tipo") String tipo, @RequestParam("nombre") String nombre) throws SerialException {
 
 		System.out.println(tipo);
 
@@ -234,7 +234,7 @@ public class UsuarioController {
 				if (p.getTipoContenido().equals(tipo)) {
 
 					publicacionesTipo += "<div class='' width='200px' heigth='800px' data-id="+p.getId()+" onclick='irPublicacion(this)' role='button'>"
-							+ "<img class='publicacion-img' src=" + p.getContenido() + ">" + "</div>";
+							+ "<img class='publicacion-img' src='data:image;base64," + p.getContenido() + "'>" + "</div>";
 				}
 
 			}
@@ -247,8 +247,8 @@ public class UsuarioController {
 
 				if (p.getTipoContenido().equals(tipo)) {
 
-					publicacionesTipo += "<div class='publicacion' width='200px' heigth='800px' data-id="+p.getId()+" onclick='irPublicacion(this)' role='button'>" + "<audio src="
-							+ p.getContenido() + " controls type='audio/mpeg'>" + "</audio>" + "</div>";
+					publicacionesTipo += "<div class='publicacion' width='200px' heigth='800px' data-id="+p.getId()+" onclick='irPublicacion(this)' role='button'>" + "<audio src='data:audio;base64,"
+							+ p.getContenido() + "' controls type='audio/mpeg'>" + "</audio>" + "</div>";
 
 				}
 
@@ -263,8 +263,8 @@ public class UsuarioController {
 				if (p.getTipoContenido().equals(tipo)) {
 
 					publicacionesTipo += "<div class='' width='200px' heigth='800px' data-id="+p.getId()+" onclick='irPublicacion(this)' role='button'>"
-							+ "<video class='publicacion-video'  controls>" + "<source src=" + p.getContenido()
-							+ " type='video/mp4' />" + "</video>" + "</div>";
+							+ "<video class='publicacion-video'  controls>" + "<source src='data:video;base64," + p.getContenido()
+							+ "' type='video/mp4' />" + "</video>" + "</div>";
 
 				}
 
