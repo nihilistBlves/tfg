@@ -15,7 +15,7 @@ public interface WaveRepository extends JpaRepository<Wave, Long> {
 
 	public Wave deleteByPublicacionWavedId(Long id);
 
-	public void deleteByDaWaveAndPublicacionWaved(Usuario attribute, Publicacion publicacion);
+	public Wave deleteByDaWaveAndPublicacionWaved(Usuario attribute, Publicacion publicacion);
 
 	@Query(value = "SELECT wave.publicacion_waved_id FROM wave WHERE wave.da_wave_id = :idUsuario", nativeQuery = true)
 	public Long[] idsPublicacionWavedByUser(@Param("idUsuario") Long idUsuario);

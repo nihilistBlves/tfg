@@ -43,11 +43,10 @@ public class WaveController {
 	}
 
 	@PostMapping("/borrarWave")
-	@Transactional
 	public String borrarWave(@RequestParam("idPublicacion") Long idPublicacion, HttpSession s, ModelMap m) {
-
+		Usuario usuario = (Usuario) s.getAttribute("userLogged");
 		Publicacion publicacion = publicacionRepository.getById(idPublicacion);
-		waveRepository.deleteByDaWaveAndPublicacionWaved((Usuario) s.getAttribute("userLogged"), publicacion);
+		waveRepository.deleteByDaWaveAndPublicacionWaved(usuario, publicacion);
 		publicacion.setCantidadWaves(publicacion.getCantidadWaves()-1);
 		publicacionRepository.save(publicacion);
 		return "redirect:/feed";
