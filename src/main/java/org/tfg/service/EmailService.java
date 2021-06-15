@@ -26,7 +26,7 @@ public class EmailService {
 	@Autowired
 	private VerificationTokenRepository verificationTokenRepository;
 
-	public void sendEmail(Usuario usuario, String appUrl) {
+	public void sendEmail(Usuario usuario) {
 		String token = UUID.randomUUID().toString();
 		VerificationToken nuevoToken = new VerificationToken(token, usuario);
 		verificationTokenRepository.save(nuevoToken);
@@ -37,7 +37,7 @@ public class EmailService {
 		Email to = new Email();
 		to.setEmail(usuario.getEmail());
 
-		String contentString = "Por favor, haz click en este link para activar tu cuenta: <a href='" + appUrl + "//registroConfirmado?token=" + token + "'></a>";
+		String contentString = "Por favor, haz click en este link para activar tu cuenta: <a href='https://waveit.herokuapp.com/registroConfirmado?token=" + token + "'>https://waveit.herokuapp.com/registroConfirmado?token=" + token + "</a>";
 
 		System.out.println(contentString);
 

@@ -4,14 +4,11 @@ import java.io.File;
 
 import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -21,11 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.tfg.domain.Usuario;
 import org.tfg.domain.VerificationToken;
-import org.tfg.events.EventoVerificacion;
 import org.tfg.exception.DangerException;
 import org.tfg.helper.H;
-import org.tfg.repositories.CiudadRepository;
-import org.tfg.repositories.InstrumentoRepository;
 import org.tfg.repositories.RolRepository;
 import org.tfg.repositories.UsuarioRepository;
 import org.tfg.repositories.VerificationTokenRepository;
@@ -36,23 +30,19 @@ public class AnonymousController {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-	
+
 	@Autowired
 	private RolRepository rolRepository;
 
 	@Autowired
-	private ApplicationEventPublisher eventPublisher;
+	private VerificationTokenRepository verificationTokenRepository;
 
 	@Autowired
-	private VerificationTokenRepository verificationTokenRepository;
-	
-	@Autowired
 	private EmailService emailService;
-	
-	
+
 	@GetMapping("/")
 	public String index(ModelMap m, HttpSession s) throws DangerException {
-		
+
 		if (s.getAttribute("userLogged") != null) {
 			return "redirect:/feed";
 		} else {
@@ -84,7 +74,6 @@ public class AnonymousController {
 
 				H.setInfoModal("Error|La cuenta no ha sido verificada|btn-hover btn-red", s);
 
-
 				returner = "redirect:/";
 			} else {
 				s.setAttribute("userLogged", usuario);
@@ -94,7 +83,6 @@ public class AnonymousController {
 		} else {
 
 			H.setInfoModal("Error|El usuario no existe o la contraseña es incorrecta|btn-hover btn-red", s);
-
 
 			returner = "redirect:/";
 		}
@@ -138,7 +126,7 @@ public class AnonymousController {
 			if (usuarioRepository.getByEmail(email) != null) {
 				H.setInfoModal("Error|El correo electrónico introducido ya está en uso|btn-hover btn-red", s);
 				return "redirect:/";
-			} else if (email.isEmpty()){
+			} else if (email.isEmpty()) {
 				H.setInfoModal("Error|El correo electrónico introducido ya está en uso|btn-hover btn-red", s);
 				return "redirect:/";
 			} else {
@@ -156,14 +144,15 @@ public class AnonymousController {
 
 			usuarioRepository.save(usuario);
 
-			String appUrl = request.getContextPath();
+			emailService.sendEmail(usuario);
 
-			emailService.sendEmail(usuario, appUrl);
-			
-			H.setInfoModal("Info|Te has registrado correctamente! Revisa tu bandeja de entrada para activar la cuenta antes de logear por primera vez|btn-hover btn-black", s);
+			H.setInfoModal(
+					"Info|Te has registrado correctamente! Revisa tu bandeja de entrada para activar la cuenta antes de logear por primera vez|btn-hover btn-black",
+					s);
 		} catch (Exception e) {
 			System.out.println(e);
-			H.setInfoModal("Error|Ha ocurrido un error en el registro. Por favor vuelva a intentarlo.|btn-hover btn-red",s);
+			H.setInfoModal(
+					"Error|Ha ocurrido un error en el registro. Por favor vuelva a intentarlo.|btn-hover btn-red", s);
 
 		}
 
@@ -177,13 +166,12 @@ public class AnonymousController {
 
 		if (verificationToken == null) {
 
-			H.setInfoModal("Error|El link al que has accedido no existe|btn-hover btn-red",s);
+			H.setInfoModal("Error|El link al que has accedido no existe|btn-hover btn-red", s);
 
 			return "redirect:/";
 		} else if ((verificationToken != null) && (verificationToken.getUsuario().isEnabled())) {
 
-			
-			H.setInfoModal("Error|Esta cuenta ya ha sido activada anteriormente|btn-hover btn-red",s);
+			H.setInfoModal("Error|Esta cuenta ya ha sido activada anteriormente|btn-hover btn-red", s);
 
 			return "redirect:/";
 		}
@@ -193,7 +181,7 @@ public class AnonymousController {
 
 		if ((verificationToken.getExpirationDate().getTime() - cal.getTime().getTime()) <= 0) {
 
-			H.setInfoModal("Error|El link de activación de la cuenta ha expirado|btn-hover btn-red",s);
+			H.setInfoModal("Error|El link de activación de la cuenta ha expirado|btn-hover btn-red", s);
 
 			return "redirect:/";
 		}
@@ -222,18 +210,9 @@ public class AnonymousController {
 			System.out.println("Error al crear directorio");
 		}
 
-		
-
-
-		
-		H.setInfoModal("Info|La cuenta se ha activado correctamente. Ya puedes hacer login|btn-hover btn-black",s);
+		H.setInfoModal("Info|La cuenta se ha activado correctamente. Ya puedes hacer login|btn-hover btn-black", s);
 		return "redirect:/";
 
 	}
-	
-
-
-
-	
 
 }
