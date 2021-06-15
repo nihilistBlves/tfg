@@ -1,38 +1,18 @@
 package org.tfg.helper;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
 import javax.servlet.http.HttpSession;
+import javax.sql.rowset.serial.SerialBlob;
+import javax.sql.rowset.serial.SerialException;
 
 import org.springframework.ui.ModelMap;
+import org.springframework.web.multipart.MultipartFile;
 import org.tfg.domain.Usuario;
 import org.tfg.exception.DangerException;
 
 public class H {
-	/**
-	 * 
-	 * @param 	rolExigido 			Tres posibilidades "anon", "auth", "admin"
-	 * @param 	s   				la sesión activa
-	 * @throws 	DangerException		si el rol no coincide con el del usuario activo
-	 */
-	public static void isRolOK(String rolExigido, HttpSession s) throws DangerException {
-		String rolActual = "anon";
-		
-		if (s.getAttribute("user") != null) {
-			rolActual = ((Usuario)s.getAttribute("user")).isAdmin() ? "admin" : "auth";
-		}
-		System.err.println("ROL="+rolActual);
-
-		if ((rolActual=="anon" || rolActual=="auth") && rolExigido=="admin") {
-			throw new DangerException("Rol inadecuado");
-		}
-		
-		if ((rolActual=="anon") && rolExigido=="auth") {
-			throw new DangerException("Rol inadecuado");
-		}
-		
-		if ((rolActual!="anon") && rolExigido=="anon") {
-			throw new DangerException("Rol inadecuado");
-		}
-	}
 	
 	public static void mPut(ModelMap m, HttpSession s) {
 		m.put("infoModal", s.getAttribute("infoModal"));
@@ -53,5 +33,9 @@ public class H {
 		s.setAttribute("infoEstado", cadenaSeparada[2]);
 	}
 	
-
+	public static SerialBlob convertidorBlob(MultipartFile file) throws IOException, SerialException, SQLException{
+		byte[] bytes = file.getBytes();
+		SerialBlob newBlob = new SerialBlob(bytes);
+		return newBlob;
+	}
 }

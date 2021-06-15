@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +13,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import javax.servlet.http.HttpSession;
+import javax.sql.rowset.serial.SerialException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -324,7 +327,7 @@ public class UsuarioController {
 
 	@PostMapping("/publicar")
 	public String getPublicar(@RequestParam("mensaje") String texto, @RequestParam("file") MultipartFile file,
-			RedirectAttributes attributes, HttpSession s, ModelMap m) throws IOException {
+			RedirectAttributes attributes, HttpSession s, ModelMap m) throws IOException, SerialException, SQLException {
 
 		Path path = null;
 		String originalFilename = file.getOriginalFilename().toLowerCase();
@@ -359,17 +362,7 @@ public class UsuarioController {
 
 					if (file.getSize() <= 2000000) {
 
-						byte[] fileBytes = file.getBytes();
-
-						path = Paths.get("src//main//resources/static/users/" + usuario.getLoginName() + "/posts/img");
-						String rutaRelativa = path.toFile().getAbsolutePath();
-						Path rutaCompleta = Paths.get(rutaRelativa + "//" + nuevoNombreArchivo);
-						Files.write(rutaCompleta, fileBytes);
-
-						if (path != null) {
-							publicacion.setContenido(
-									"/users/" + usuario.getLoginName() + "/posts/img" + "/" + nuevoNombreArchivo);
-						}
+						publicacion.setContenido(H.convertidorBlob(file));
 
 						publicacion.setTipoContenido("img");
 
@@ -388,18 +381,9 @@ public class UsuarioController {
 
 					if (file.getSize() <= 20000000) {
 
-						byte[] fileBytes = file.getBytes();
+						publicacion.setContenido(H.convertidorBlob(file));
 
-						path = Paths
-								.get("src//main//resources/static/users/" + usuario.getLoginName() + "/posts/video");
-						String rutaRelativa = path.toFile().getAbsolutePath();
-						Path rutaCompleta = Paths.get(rutaRelativa + "//" + nuevoNombreArchivo);
-						Files.write(rutaCompleta, fileBytes);
-
-						if (path != null) {
-							publicacion.setContenido(
-									"/users/" + usuario.getLoginName() + "/posts/video" + "/" + nuevoNombreArchivo);
-						}
+						publicacion.setTipoContenido("img");
 
 						publicacion.setTipoContenido("video");
 
@@ -417,18 +401,9 @@ public class UsuarioController {
 
 					if (file.getSize() <= 10000000) {
 
-						byte[] fileBytes = file.getBytes();
+						publicacion.setContenido(H.convertidorBlob(file));
 
-						path = Paths
-								.get("src//main//resources/static/users/" + usuario.getLoginName() + "/posts/audio");
-						String rutaRelativa = path.toFile().getAbsolutePath();
-						Path rutaCompleta = Paths.get(rutaRelativa + "//" + nuevoNombreArchivo);
-						Files.write(rutaCompleta, fileBytes);
-
-						if (path != null) {
-							publicacion.setContenido(
-									"/users/" + usuario.getLoginName() + "/posts/audio" + "/" + nuevoNombreArchivo);
-						}
+						publicacion.setTipoContenido("img");
 
 						publicacion.setTipoContenido("audio");
 

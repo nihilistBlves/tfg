@@ -130,14 +130,14 @@
 						<!-- 				img solo desde static -->
 						<div th:if="${publicacion.tipoContenido}=='img'">
 							<img class="card-img feed-img"
-								th:src="@{${publicacion.contenido}}">
+								th:src="|data:image;base64,${publicacion.contenido}|">
 						</div>
 
 						<!-- 		Para video -->
 						<div th:if="${publicacion.tipoContenido}=='video'"
 							class="card-film feed-film">
 							<video width="500px" height="300px" controls>
-								<source th:src="@{${publicacion.contenido}}" type="video/mp4" />
+								<source th:src="|data:video;base64,${publicacion.contenido}|" type="video/mp4" />
 							</video>
 						</div>
 
@@ -145,7 +145,7 @@
 
 						<div th:if="${publicacion.tipoContenido}=='audio'"
 							class="card-audio feed-audio">
-							<audio th:src="@{${publicacion.contenido}}" controls
+							<audio th:src="|data:audio;base64,${publicacion.contenido}|" controls
 								type="audio/mpeg">
 							</audio>
 						</div>

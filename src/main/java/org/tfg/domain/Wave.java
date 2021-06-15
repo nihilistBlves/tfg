@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 public class Wave {
 
@@ -19,10 +22,12 @@ public class Wave {
 
 	private LocalDateTime fechaLike;
 
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	private Usuario daWave;
 
-	@ManyToOne(cascade = CascadeType.REFRESH)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@ManyToOne(cascade = CascadeType.REMOVE)
 	private Publicacion publicacionWaved;
 
 	public Wave() {

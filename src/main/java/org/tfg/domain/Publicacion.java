@@ -9,8 +9,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.sql.rowset.serial.SerialBlob;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -22,7 +24,8 @@ public class Publicacion implements Comparable<Publicacion> {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String contenido;
+	@Lob
+	private SerialBlob contenido;
 	
 	private int cantidadWaves;
 
@@ -38,7 +41,7 @@ public class Publicacion implements Comparable<Publicacion> {
 	@ManyToOne
 	private Usuario duenioPublicacion;
 
-	public Publicacion(Long id, String contenido, String descripcion, String tipoContenido, Usuario duenioPublicacion) {
+	public Publicacion(Long id, SerialBlob contenido, String descripcion, String tipoContenido, Usuario duenioPublicacion) {
 		super();
 		this.id = id;
 		this.contenido = contenido;
@@ -96,11 +99,11 @@ public class Publicacion implements Comparable<Publicacion> {
 		this.id = id;
 	}
 
-	public String getContenido() {
+	public SerialBlob getContenido() {
 		return contenido;
 	}
 
-	public void setContenido(String contenido) {
+	public void setContenido(SerialBlob contenido) {
 		this.contenido = contenido;
 	}
 
