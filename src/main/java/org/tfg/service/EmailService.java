@@ -1,10 +1,14 @@
 package org.tfg.service;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.tfg.domain.Usuario;
+import org.tfg.domain.VerificationToken;
+import org.tfg.repositories.VerificationTokenRepository;
 
 import com.sendgrid.Method;
 import com.sendgrid.Request;
@@ -18,26 +22,28 @@ import com.sendgrid.helpers.mail.objects.Personalization;
 @Service
 public class EmailService {
 
-	@Value("${app.sendgrid.templateId}")
-	private String templateId;
 	@Autowired
-	SendGrid sendGrid;
+	private SendGrid sendGrid;
+	
+	@Autowired
+	private VerificationTokenRepository verificationTokenRepository;
 
-	public String sendEmail(String email) {
+	public String sendEmail(Usuario usuario, String appUrl) {
+		String token = UUID.randomUUID().toString();
+		VerificationToken nuevoToken = new VerificationToken(token, usuario);
+		verificationTokenRepository.save(nuevoToken);
 		
 		Email fromEmail = new Email();
 		fromEmail.setEmail("waveit.notification@gmail.com");
 		
-
-		
 		Email to = new Email();
-		to.setEmail(email);
+		to.setEmail(usuario.getEmail());
 		
 		Personalization personalization = new Personalization();
 		
 		personalization.addTo(to);
 
-		Content content = new Content("text/html","<h1>Hola esto es un ejemplo</h1><h2>Este es el seguundo parametro que no se para que es</h2>");	
+		Content content = new Content("text/html","<a href='"+appUrl+"//registroConfirmado?token="+token+"'></a>");	
 		
 
 		Mail mail = new Mail(fromEmail,"Notificacion WaveIt",to,content);
@@ -63,7 +69,7 @@ public class EmailService {
 
 		} catch (IOException e) {
 
-			e.printStackTrace();
+			System.out.println(e);
 			return "error in sent mail!";
 		}
 

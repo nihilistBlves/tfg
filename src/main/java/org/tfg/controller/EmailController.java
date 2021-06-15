@@ -18,8 +18,8 @@ public class EmailController {
 	public String sendEmail(@PathVariable(value = "email", required = true) String email)
 	{
 
-		return	emailService.sendEmail(email);
-	
+		//return	emailService.sendEmail(email);
+		return "";
 	
 	}
 }

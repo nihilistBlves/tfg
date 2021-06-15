@@ -9,7 +9,7 @@ import com.sendgrid.SendGrid;
 @Configuration
 public class SendGridConfig {
 
-	@Value("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")
+	@Value("${SENDGRID_KEY}")
 	private String appKey;
 	@Bean
 	public SendGrid getSendGrid() {

@@ -158,11 +158,11 @@ public class AnonymousController {
 
 			String appUrl = request.getContextPath();
 
-			emailService.sendEmail("waveit.notification@gmail.com");
+			emailService.sendEmail(usuario, appUrl);
 			
 			H.setInfoModal("Info|Te has registrado correctamente! Revisa tu bandeja de entrada para activar la cuenta antes de logear por primera vez|btn-hover btn-black", s);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e);
 			H.setInfoModal("Error|Ha ocurrido un error en el registro. Por favor vuelva a intentarlo.|btn-hover btn-red",s);
 
 		}
