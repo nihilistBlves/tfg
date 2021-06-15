@@ -194,7 +194,7 @@ public class AnonymousController {
 
 		usuario.setEnabled(true);
 		
-		File file = new File("/tfg-WaveIt/src/main/resources/static/img/default_picture.jpeg");
+		File file = new File("/app/src/main/resources/static/img/default_picture.jpeg");
         FileInputStream inputStream = new FileInputStream(file);
         MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), ContentType.APPLICATION_OCTET_STREAM.toString(), inputStream);
 		usuario.setFotoPerfil(H.convertidorBlob(multipartFile));
