@@ -58,7 +58,7 @@
 							<div class="card-footer text-right d-flexbox">
 								<div class="icons" th:if="${session.userLogged} != null">
 									<div class="row justify-content-end align-items-center"
-										th:if="${waved != null}">
+										th:if="${waved} != null">
 										<b th:text=${publicacion.cantidadWaves}
 											class="badge badge-danger"></b><i
 											th:id="|wave-${publicacion.id}|"
@@ -66,7 +66,7 @@
 											class="bi bi-soundwave" role="button" onclick="wave(this)"></i>
 									</div>
 									<div class="row justify-content-end align-items-center"
-										th:unless="${waved != null}">
+										th:unless="${waved} != null">
 										<b th:text=${publicacion.cantidadWaves}
 											class="badge badge-secondary"></b><i
 											th:id="|wave-${publicacion.id}|"
@@ -104,14 +104,10 @@
 										th:unless="${session.userLogged != null}">
 										<input type="text" class="form-control col-6"
 											placeholder="Comentar" name="comentario" id="comentario" />
-										<input type="hidden" th:value="${publicacion.id}" /> <input
+										<input
 											type="button" class=" btn-hover btn-red" value="Comentar"
 											data-toggle="modal" data-target="#loginModal" />
-
-										<div th:id="|coment-${publicacion.id}|"
-											class="cargaComentarios">
-											<input type="hidden" th:value="${publicacion.id}"
-												name="idPublicacionWave" />
+										<input type="hidden" th:value="${publicacion.id}" /> 
 										</div>
 									</div>
 									<div class="comentarioss mt-3 text-center">

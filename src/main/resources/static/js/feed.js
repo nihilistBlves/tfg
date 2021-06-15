@@ -1,4 +1,3 @@
-
 function wave(w) {
 
 	var idPublicacion = w.id.slice(5,);
