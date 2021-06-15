@@ -29,6 +29,7 @@ import org.tfg.repositories.InstrumentoRepository;
 import org.tfg.repositories.RolRepository;
 import org.tfg.repositories.UsuarioRepository;
 import org.tfg.repositories.VerificationTokenRepository;
+import org.tfg.service.EmailService;
 
 @Controller
 public class AnonymousController {
@@ -44,6 +45,9 @@ public class AnonymousController {
 
 	@Autowired
 	private VerificationTokenRepository verificationTokenRepository;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	
 	@GetMapping("/")
@@ -154,11 +158,13 @@ public class AnonymousController {
 
 			String appUrl = request.getContextPath();
 
-			eventPublisher.publishEvent(new EventoVerificacion(usuario, request.getLocale(), appUrl));
+			emailService.sendEmail("waveit.notification@gmail.com");
 			
 			H.setInfoModal("Info|Te has registrado correctamente! Revisa tu bandeja de entrada para activar la cuenta antes de logear por primera vez|btn-hover btn-black", s);
 		} catch (Exception e) {
-			H.setInfoModal("Error|Ha ocurrido un error en el registro. Por favor vuelva a intentarlo.|btn-hover btn-red", s);
+			e.printStackTrace();
+			H.setInfoModal("Error|Ha ocurrido un error en el registro. Por favor vuelva a intentarlo.|btn-hover btn-red",s);
+
 		}
 
 		return "redirect:/";
@@ -170,7 +176,6 @@ public class AnonymousController {
 		VerificationToken verificationToken = verificationTokenRepository.getByToken(token);
 
 		if (verificationToken == null) {
-
 
 			H.setInfoModal("Error|El link al que has accedido no existe|btn-hover btn-red",s);
 
