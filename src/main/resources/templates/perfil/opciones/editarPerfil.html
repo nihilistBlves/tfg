@@ -29,6 +29,16 @@
 				nuevoInstrumentoAgregado);
 		document.getElementById(optionSeleccionada).after(label);
 	}
+	
+	function borrarInstrumento(label) {
+		var optionReset = document.createElement("option");
+		optionReset.value = label.text;
+		optionReset.text = label.text;
+		label.remove;
+		label.previousSibling.remove;
+		var select = document.getElementById("instrumentos");
+		select.insertBefore(optionReset, select.options[0]);
+	}
 </script>
 <div class="container d-flex justify-content-center">
 	<div class="row d-flex justify-content-center">
@@ -75,12 +85,12 @@
 				<div class="form-group p-2  d-flexbox">
 					<label for="listaInstrumentos">Lista de Instrumentos:</label>
 					<div class="d-inline-flex">
-					 <select class="form-control"id="instrumentos" th:if="${instrumentosActuales != null}">
+					 <select class="form-control" id="instrumentos" th:if="${instrumentosActuales != null}">
 						<option class="options" th:each="instrumento : 	${instrumentos}"
-							th:if="${!#arrays.contains(instrumentosActuales, instrumento)}"
+							th:if="${!#arrays.contains(instrumentosActuales, instrumento.nombre)}"
 							th:value="${instrumento.nombre}" th:text="${instrumento.nombre}">
 					</select>
-					 <select class="form-control"id="instrumentos" th:unless="${instrumentosActuales != null}">
+					 <select class="form-control" id="instrumentos" th:unless="${instrumentosActuales != null}">
 						<option class="options" th:each="instrumento : 	${instrumentos}"
 							th:value="${instrumento.nombre}" th:text="${instrumento.nombre}">
 					</select>
@@ -90,7 +100,7 @@
 						</div>
 					<div class="d-flexbox" id="divInstrumentos" style="height: auto;width: 25em;">
 						<input th:each="instrumento : ${instrumentosActuales}" type="checkbox" name="instrumentos" th:id="${instrumento.nombre}" th:value="${instrumento.nombre}" hidden="hidden">
-						<label th:each="instrumento : ${instrumentosActuales}" th:for="${instrumento.nombre}" class="instrumentoLabel" th:text="${instrumento.nombre}"></label>
+						<label th:each="instrumento : ${instrumentosActuales}" th:for="${instrumento.nombre}" class="instrumentoLabel" th:text="${instrumento.nombre}" onclick="borrarInstrumento(this)"></label>
 					</div>
 				</div>
 

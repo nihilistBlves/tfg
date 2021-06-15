@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.tfg.domain.Ciudad;
 import org.tfg.domain.Comentario;
+import org.tfg.domain.Instrumento;
 import org.tfg.domain.Publicacion;
 import org.tfg.domain.Reporte;
 import org.tfg.domain.Seguimiento;
@@ -140,7 +141,11 @@ public class UsuarioController {
 	public String editarPerfil(ModelMap m, HttpSession s) {
 		Usuario userLogged = (Usuario) s.getAttribute("userLogged");
 		if (!userLogged.getInstrumentos().isEmpty()) {
-			m.put("instrumentosActuales", userLogged.getInstrumentos());
+			ArrayList<String> instrumentosArray = new ArrayList<String>();
+			for (Instrumento instrumento: userLogged.getInstrumentos()) {
+				instrumentosArray.add(instrumento.getNombre());
+			}
+			m.put("instrumentosActuales", instrumentosArray);
 		}
 		if (userLogged.getCiudad() != null) {
 			m.put("ciudadActual", userLogged.getCiudad());
