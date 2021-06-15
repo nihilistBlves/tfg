@@ -48,22 +48,21 @@
 </script>
 
 <div class="container">
-	<div class="row">
+	<div class="row justify-conten-center">
 		<div class="col-12">
-			<h2 class="h1">Peticiones de amistad</h2>
+			<h4 class="titulo mt-4">Peticiones de amistad</h4>
 		</div>
 		<div class="col-12">
 			<ul class="list-group">
 				<div th:if="${seguidores} != false">
 					<div th:each="seguidor:${seguidores}">
-						<li class="list-group-item">
-							<img class="foto-perfil" th:src="@{${seguidor.fotoPerfil}}">
-							<a th:href="@{/user/{seg}(seg=${seguidor.loginName})}">
-								<p th:text="${seguidor.loginName}"></p>
+						<li class="list-group-item d-inline-flex justify-content-around border align-items-center personas p-2 mt-2">
+							<img class=" foto-post " th:src="@{${seguidor.fotoPerfil}}">
+							<a class=" my-auto  pr-5" th:href="@{/user/{seg}(seg=${seguidor.loginName})}" th:text="${seguidor.loginName}">
 							</a>
 							<button type="button" class="btn btn-success" th:id="|agregar-${seguidor.id}|"
 								onclick='aceptarPeticion(this)'><i class="bi bi-check"></i></button>
-							<button type="button" class="btn btn-danger" th:id="|eliminar-${seguidor.id}|"
+							<button type="button" class="btn btn-danger ml-3 mr-2" th:id="|eliminar-${seguidor.id}|"
 								onclick='eliminarPeticion(this)'><i class="bi bi-x"></i></button>
 						</li>
 					</div>

@@ -11,10 +11,10 @@ public class SendGridConfig {
 
 	@Value("${SENDGRID_KEY}")
 	private String appKey;
+
 	@Bean
 	public SendGrid getSendGrid() {
 		return new SendGrid(appKey);
-		
+
 	}
 }
-

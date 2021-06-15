@@ -113,6 +113,10 @@ body{
 	height:27px;
 	border-radius: 50%;
 }
+.comentarioss{
+	overflow-y:scroll;
+	height:200px;
+}
 .comentarioss::-webkit-scrollbar {
     -webkit-appearance: none;
 }

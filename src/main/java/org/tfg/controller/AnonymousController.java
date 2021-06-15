@@ -23,6 +23,7 @@ import org.tfg.helper.H;
 import org.tfg.repositories.RolRepository;
 import org.tfg.repositories.UsuarioRepository;
 import org.tfg.repositories.VerificationTokenRepository;
+//import org.tfg.service.EmailService;
 import org.tfg.service.EmailService;
 
 @Controller
@@ -149,6 +150,7 @@ public class AnonymousController {
 			H.setInfoModal(
 					"Info|Te has registrado correctamente! Revisa tu bandeja de entrada para activar la cuenta antes de logear por primera vez|btn-hover btn-black",
 					s);
+
 		} catch (Exception e) {
 			System.out.println(e);
 			H.setInfoModal(
