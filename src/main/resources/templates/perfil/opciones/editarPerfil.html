@@ -48,14 +48,21 @@
 				<div class="form-group p-2">
 					<label for="ciudad">Ciudad</label>
 					 <select class="form-control select" id="ciudades" name="idCiudad" data-style="btn-primary">
-						<option class="options" th:each="ciudad : ${ciudades}"  th:text="${ciudad.CiudadName}" th:value="${ciudad.id}"></option>
+					 	<option>---</option>
+						<option class="options" th:each="ciudad : ${ciudades}" th:if="${ciudadActual != null} and ${ciudad.CiudadName == ciudadActual.CiudadName}" selected="selected" th:text="${ciudad.CiudadName}" th:value="${ciudad.id}"></option>
+						<option class="options" th:each="ciudad : ${ciudades}" th:if="${ciudadActual != null} and ${ciudad.CiudadName != ciudadActual.CiudadName}" th:text="${ciudad.CiudadName}" th:value="${ciudad.id}"></option>
+						<option class="options" th:each="ciudad : ${ciudades}" th:if="${ciudadActual == null}" th:text="${ciudad.CiudadName}" th:value="${ciudad.id}"></option>
 					</select>
 				</div>
 
 
 				<div class="form-group p-2">
 					<label for="descripcion">Descripción:</label>
-					<textarea class="form-control" id="descripcion" maxlength="150" style="resize: none"
+					<textarea th:if="${descripcionActual != null}" th:text="${descripcionActual}" class="form-control" id="descripcion" maxlength="150" style="resize: none"
+						onkeyup="validarLimite(this)"
+						placeholder="Descripci�n de tu perfil de usuario..." cols="50"
+						rows="5" name="descripcion"></textarea>
+					<textarea th:unless="${descripcionActual != null}" class="form-control" id="descripcion" maxlength="150" style="resize: none"
 						onkeyup="validarLimite(this)"
 						placeholder="Descripci�n de tu perfil de usuario..." cols="50"
 						rows="5" name="descripcion"></textarea>
@@ -68,7 +75,12 @@
 				<div class="form-group p-2  d-flexbox">
 					<label for="listaInstrumentos">Lista de Instrumentos:</label>
 					<div class="d-inline-flex">
-					 <select class="form-control"id="instrumentos">
+					 <select class="form-control"id="instrumentos" th:if="${instrumentosActuales != null}">
+						<option class="options" th:each="instrumento : 	${instrumentos}"
+							th:if="${!#arrays.contains(instrumentosActuales, instrumento)}"
+							th:value="${instrumento.nombre}" th:text="${instrumento.nombre}">
+					</select>
+					 <select class="form-control"id="instrumentos" th:unless="${instrumentosActuales != null}">
 						<option class="options" th:each="instrumento : 	${instrumentos}"
 							th:value="${instrumento.nombre}" th:text="${instrumento.nombre}">
 					</select>
@@ -76,7 +88,10 @@
 						id="botonAgregarInstrumento" onclick="agregarInstrumento(this)"
 						>+</button>
 						</div>
-					<div class="d-flexbox" id="divInstrumentos" style="height: auto;width: 25em;"></div>
+					<div class="d-flexbox" id="divInstrumentos" style="height: auto;width: 25em;">
+						<input th:each="instrumento : ${instrumentosActuales}" type="checkbox" name="instrumentos" th:id="${instrumento.nombre}" th:value="${instrumento.nombre}" hidden="hidden">
+						<label th:each="instrumento : ${instrumentosActuales}" th:for="${instrumento.nombre}" class="instrumentoLabel" th:text="${instrumento.nombre}"></label>
+					</div>
 				</div>
 
 				<div class="form-group p-2 text-center">

@@ -60,91 +60,7 @@ public class UsuarioController {
 	private PublicacionRepository publicacionRepository;
 
 	@Autowired
-	private WaveRepository waveRepository;
-
-	@Autowired
-	private ComentarioRepository comentarioRepository;
-
-	@Autowired
 	private CiudadRepository ciudadRepository;
-
-	@Autowired
-	private ReporteRepository reporteRepository;
-
-	@GetMapping("/feed")
-	public String getFeed(ModelMap m, HttpSession s) {
-
-		if (s.getAttribute("userLogged") != null) {
-
-			if (s.getAttribute("infoModal") != null) {
-				H.mPut(m, s);
-			}
-
-			Usuario usuario = (Usuario) s.getAttribute("userLogged");
-
-			ArrayList<Publicacion> publicacionesSeguidos = (ArrayList<Publicacion>) publicacionRepository
-					.feedDelUsuarioLogeado(usuario.getId());
-			Collections.sort(publicacionesSeguidos, Collections.reverseOrder());
-
-			Long[] publicacionesWavedByUserLogged = waveRepository.idsPublicacionWavedByUser(usuario.getId());
-
-			m.put("nombre", usuario.getLoginName());
-			m.put("publicacionesWaved", publicacionesWavedByUserLogged);
-			m.put("publicaciones", publicacionesSeguidos);
-			m.put("view", "usuario/feed");
-			return "t/frameFeed";
-
-		} else {
-
-			H.setInfoModal("Error|Para acceder a este apartado debe estar logueado|btn-hover btn-red", s);
-
-			return "redirect:/";
-		}
-
-	}
-
-	@GetMapping("/publicacion/{id}")
-	public String getPublicacion(@PathVariable("id") Long idPublicacion, ModelMap m, HttpSession s) {
-		Publicacion publicacion = publicacionRepository.getById(idPublicacion);
-
-		if (s.getAttribute("userLogged") == null) {
-			if (publicacion.getDuenioPublicacion().isPrivada()) {
-				H.setInfoModal(
-						"Error|Debes hacer login y seguir al dueño de la publicación para poder ver su contenido|btn-hover btn-red",
-						s);
-				return "redirect:/user/" + publicacion.getDuenioPublicacion().getLoginName();
-			} else {
-				m.put("publicacion", publicacion);
-				m.put("view", "usuario/publicacion");
-				return "t/frameFeed";
-			}
-		} else {
-			Usuario userLogged = (Usuario) s.getAttribute("userLogged");
-			Collection<Long> seguidosPorUserLogged = seguimientoRepository.findSeguidosByIdUsuario(userLogged.getId());
-
-			if (Arrays.asList(waveRepository.idsPublicacionWavedByUser(userLogged.getId()))
-					.contains(userLogged.getId())) {
-				m.put("waved", true);
-			}
-
-			if (publicacion.getDuenioPublicacion().isPrivada()) {
-				if (!seguidosPorUserLogged.contains(publicacion.getDuenioPublicacion().getId())) {
-					H.setInfoModal(
-							"Error|Debes seguir al dueño de la publicación para poder ver su contenido|btn-hover btn-red",
-							s);
-					return "redirect:/user/" + publicacion.getDuenioPublicacion().getLoginName();
-				} else {
-					m.put("publicacion", publicacion);
-					m.put("view", "usuario/publicacion");
-					return "t/frameFeed";
-				}
-			} else {
-				m.put("publicacion", publicacion);
-				m.put("view", "usuario/publicacion");
-				return "t/frameFeed";
-			}
-		}
-	}
 
 	@PostMapping("/logout")
 	public String postLogout(ModelMap m, HttpSession s) {
@@ -200,257 +116,7 @@ public class UsuarioController {
 		}
 	}
 
-	@PostMapping("/tipoArchivo")
-	@ResponseBody
-	public String elegirArchivo(@RequestParam("tipo") String tipo, @RequestParam("nombre") String nombre)
-			throws SerialException {
-
-		System.out.println(tipo);
-
-		String publicacionesTipo = "";
-		Usuario usuario = usuarioRepository.getByLoginName(nombre);
-
-		Collection<Publicacion> publicaciones = publicacionRepository.getByDuenioPublicacion(usuario);
-
-		if (tipo.equals("texto")) {
-
-			for (Publicacion p : publicaciones) {
-
-				if (p.getTipoContenido().equals(tipo)) {
-
-					publicacionesTipo += "<div class=' publicacion bg-white ' width='200px' heigth='800px' data-id="
-							+ p.getId() + " onclick='irPublicacion(this)' role='button'>"
-							+ "	<p class='text-dark text-center text-uppercase font-weight-bold publicacion-text'>"
-							+ p.getDescripcion() + "</p>" + "</div>";
-				}
-
-			}
-
-			return publicacionesTipo;
-
-		}
-
-		if (tipo.equals("img")) {
-
-			for (Publicacion p : publicaciones) {
-
-				if (p.getTipoContenido().equals(tipo)) {
-
-					publicacionesTipo += "<div class='' width='200px' heigth='800px' data-id=" + p.getId()
-							+ " onclick='irPublicacion(this)' role='button'>"
-							+ "<img class='publicacion-img' src='data:image;base64," + p.getContenido() + "'>"
-							+ "</div>";
-				}
-
-			}
-			return publicacionesTipo;
-		}
-
-		if (tipo.equals("audio")) {
-
-			for (Publicacion p : publicaciones) {
-
-				if (p.getTipoContenido().equals(tipo)) {
-
-					publicacionesTipo += "<div class='publicacion' width='200px' heigth='800px' data-id=" + p.getId()
-							+ " onclick='irPublicacion(this)' role='button'>" + "<audio src='data:audio/mp3;base64,"
-							+ p.getContenido() + "' controls type='audio/mpeg'>" + "</audio>" + "</div>";
-
-				}
-
-			}
-			return publicacionesTipo;
-		}
-
-		if (tipo.equals("video")) {
-
-			for (Publicacion p : publicaciones) {
-
-				if (p.getTipoContenido().equals(tipo)) {
-
-					publicacionesTipo += "<div class='' width='200px' heigth='800px' data-id=" + p.getId()
-							+ " onclick='irPublicacion(this)' role='button'>"
-							+ "<video class='publicacion-video' controls poster>" + "<source src='data:video;base64,"
-							+ p.getContenido() + "' type='video/mp4' />" + "</video>" + "</div>";
-
-				}
-
-			}
-			return publicacionesTipo;
-		}
-
-		return publicacionesTipo;
-
-	}
-
-	@PostMapping("/user/{loginName}/seguir")
-	public String postSeguir(@PathVariable("loginName") String username, ModelMap m, HttpSession s) {
-		if (s.getAttribute("userLogged") != null) {
-			Usuario usuarioAlQueSeguir = usuarioRepository.getByLoginName(username);
-			Seguimiento nuevoSeguimiento = new Seguimiento();
-			nuevoSeguimiento.setSeguido(usuarioAlQueSeguir);
-			nuevoSeguimiento.setSeguidor((Usuario) s.getAttribute("userLogged"));
-			if (!usuarioAlQueSeguir.isPrivada()) {
-				nuevoSeguimiento.setAceptado(true);
-			} else {
-				nuevoSeguimiento.setAceptado(false);
-			}
-			seguimientoRepository.save(nuevoSeguimiento);
-			return "redirect:/user/" + username;
-		} else {
-			H.setInfoModal("Error|Debes estar logueado para realizar esta acción|btn-hover btn-red", s);
-			return "redirect:/user/" + username;
-		}
-
-	}
-
-	@PostMapping("/user/{loginName}/dejarDeSeguir")
-	public String postDejarDeSeguir(@PathVariable("loginName") String username, ModelMap m, HttpSession s) {
-		Usuario usuarioSeguido = usuarioRepository.getByLoginName(username);
-		Usuario usuarioLogged = (Usuario) s.getAttribute("userLogged");
-		Seguimiento seguimientoParaBorrar = seguimientoRepository.getSeguimientoParaBorrarSeguido(usuarioLogged.getId(),
-				usuarioSeguido.getId());
-		seguimientoRepository.delete(seguimientoParaBorrar);
-		return "redirect:/user/" + username;
-	}
-
-	// ===========================================================================
-	// ============================================================================
-
-	@GetMapping("/publicar")
-	public String getPublicar(ModelMap m, HttpSession s) {
-		if (s.getAttribute("userLogged") != null) {
-			if (s.getAttribute("infoModal") != null) {
-				H.mPut(m, s);
-			}
-			m.put("view", "usuario/publicar");
-			return "t/frameFeed";
-		} else {
-			H.setInfoModal("Error|Para acceder a este apartado debe estar logueado|btn-hover btn-red", s);
-			return "redirect:/";
-		}
-
-	}
-
-	@PostMapping("/publicar")
-	public String getPublicar(@RequestParam("mensaje") String texto, @RequestParam("file") MultipartFile file,
-			RedirectAttributes attributes, HttpSession s, ModelMap m) throws IOException, SerialException, SQLException {
-
-		String originalFilename = file.getOriginalFilename().toLowerCase();
-
-		Usuario usuario = (Usuario) s.getAttribute("userLogged");
-		Publicacion publicacion = new Publicacion();
-
-		if (!originalFilename.equals("")) {
-
-			if ((!originalFilename.endsWith(".png") && !originalFilename.endsWith(".jpg")
-					&& !originalFilename.endsWith(".jpeg"))
-					&& (!originalFilename.endsWith(".mov") && !originalFilename.endsWith(".mp4")
-							&& !originalFilename.endsWith(".mpg"))
-					&& !originalFilename.endsWith(".mp3")) {
-				H.setInfoModal(
-						"Error|Solo se permiten fotos con extension png, jpg o jpeg. Videos con extension mp4, mov o mpg. Audios con extension mp3.|btn btn-danger",
-						s);
-
-				return "redirect:/publicar";
-
-			} else {
-
-				if (originalFilename.endsWith(".png") || originalFilename.endsWith(".jpg")
-						|| originalFilename.endsWith(".jpeg")) {
-
-					if (file.getSize() <= 2000000) {
-
-						publicacion.setContenido(H.convertidorBlob(file));
-
-						publicacion.setTipoContenido("img");
-
-					} else {
-
-						H.setInfoModal("Error|La imagen excede el tamaño permitido (2 MB)|btn-hover btn-red", s);
-
-						return "redirect:/publicar";
-
-					}
-
-				}
-
-				if (originalFilename.endsWith(".mp4") || originalFilename.endsWith(".mov")
-						|| originalFilename.endsWith(".mpg")) {
-
-					if (file.getSize() <= 20000000) {
-
-						publicacion.setContenido(H.convertidorBlob(file));
-
-						publicacion.setTipoContenido("img");
-
-						publicacion.setTipoContenido("video");
-
-					} else {
-
-						H.setInfoModal("Error|El video excede el tamaño permitido (20 MB)|btn-hover btn-red", s);
-
-						return "redirect:/publicar";
-
-					}
-
-				}
-
-				if (originalFilename.endsWith(".mp3")) {
-
-					if (file.getSize() <= 10000000) {
-
-						publicacion.setContenido(H.convertidorBlob(file));
-
-						publicacion.setTipoContenido("img");
-
-						publicacion.setTipoContenido("audio");
-
-					} else {
-
-						H.setInfoModal("Error|El audio excede el tamaño permitido (10 MB)|btn-hover btn-red", s);
-
-						return "redirect:/publicar";
-
-					}
-
-				}
-
-				if (!texto.equals("")) {
-					publicacion.setDescripcion(texto);
-				}
-
-				publicacion.setDuenioPublicacion(usuario);
-				publicacionRepository.save(publicacion);
-
-				H.setInfoModal("Info|Publicación creada correctamente|btn-hover btn-black", s);
-				return "redirect:/feed";
-			}
-
-		} else {
-
-			if (texto.equals("")) {
-				H.setInfoModal(
-						"Error|Para crear una publicación sin archivo se requiere mínimo un texto|btn-hover btn-red",
-						s);
-				return "redirect:/publicar";
-			} else {
-				publicacion.setDescripcion(texto);
-				publicacion.setTipoContenido("texto");
-				publicacion.setDuenioPublicacion(usuario);
-				publicacionRepository.save(publicacion);
-
-				H.setInfoModal("Info|Publicación creada correctamente|btn-hover btn-black", s);
-
-				return "redirect:/feed";
-			}
-		}
-	}
-
-	// ============================================================================
-	// ============================================================================
-
-	// Opciones de perfil controller
+	// Opciones de perfil
 
 	@GetMapping("/user/{loginName}/opciones")
 	public String opcionesPerfil(@PathVariable("loginName") String username,
@@ -471,7 +137,17 @@ public class UsuarioController {
 	}
 
 	@GetMapping("/editarPerfil")
-	public String editarPerfil(ModelMap m) {
+	public String editarPerfil(ModelMap m, HttpSession s) {
+		Usuario userLogged = (Usuario) s.getAttribute("userLogged");
+		if (!userLogged.getInstrumentos().isEmpty()) {
+			m.put("instrumentosActuales", userLogged.getInstrumentos());
+		}
+		if (userLogged.getCiudad() != null) {
+			m.put("ciudadActual", userLogged.getCiudad());
+		}
+		if ((userLogged.getDescripcionPerfil() != null) || (!userLogged.getDescripcionPerfil().equals(""))) {
+			m.put("descripcionActual", userLogged.getDescripcionPerfil());
+		}
 		m.put("instrumentos", instrumentoRepository.findAll());
 		m.put("ciudades", ciudadRepository.findAll());
 		return "perfil/opciones/editarPerfil";
@@ -601,37 +277,6 @@ public class UsuarioController {
 		return "perfil/opciones/seguidoresSeguidos";
 	}
 
-	@PostMapping("eliminarSeguido")
-	public String eliminarSeguido(@RequestParam("idSeguido") Long id, HttpSession s) {
-		Usuario usuarioLogged = (Usuario) s.getAttribute("userLogged");
-		Seguimiento seguimientoEliminar = seguimientoRepository.getSeguimientoParaBorrarSeguido(usuarioLogged.getId(),
-				id);
-
-		System.out.println(seguimientoEliminar);
-		seguimientoRepository.delete(seguimientoEliminar);
-
-//		H.setInfoModal("Info|Seguidor eleminado correctamente|btn-hover btn-black", s);
-
-		return "redirect:/editarPerfil";
-
-	}
-
-	@PostMapping("eliminarSeguidor")
-	public String eliminarSeguidor(@RequestParam("idSeguidor") Long id, HttpSession s) {
-
-		Usuario usuarioLogged = (Usuario) s.getAttribute("userLogged");
-		Seguimiento seguimientoEliminar = seguimientoRepository.getSeguimientoParaBorrarSeguidor(usuarioLogged.getId(),
-				id);
-
-		System.out.println(seguimientoEliminar);
-		seguimientoRepository.delete(seguimientoEliminar);
-
-//		H.setInfoModal("Info|Seguidor eleminado correctamente|btn-hover btn-black", s);
-
-		return "redirect:/opciones";
-
-	}
-
 	@GetMapping("tasaWaves")
 	public String tasaWaves() {
 
@@ -644,9 +289,6 @@ public class UsuarioController {
 		return "perfil/opciones/publicacionesFavoritas";
 	}
 
-	// =============================================================================
-	// ================================EDITAR=PERFIL================================
-	// =============================================================================
 	@GetMapping("editarCuenta")
 	public String seleccionTipoCuenta(ModelMap m, HttpSession s) {
 		Usuario usuario = (Usuario) s.getAttribute("userLogged");
@@ -699,9 +341,6 @@ public class UsuarioController {
 		return "redirect:/";
 	}
 
-	// =========================================================================
-	// Notificaciones
-	// =========================================================================
 	@GetMapping("notificaciones")
 	public String notificaciones(HttpSession s, ModelMap m) {
 
@@ -720,112 +359,7 @@ public class UsuarioController {
 		return "perfil/opciones/notificaciones";
 	}
 
-	@PostMapping("/eliminarPeticion")
-	@Transactional
-	@ResponseBody
-	public String eliminarPeticion(@RequestParam("id_seguidor") Long id_seguidor, HttpSession s) {
 
-		Usuario seguidor = usuarioRepository.getOne(id_seguidor);
-		Usuario seguido = (Usuario) s.getAttribute("userLogged");
 
-		Seguimiento seguimientoParaBorrar = seguimientoRepository.getBySeguidoAndSeguidor(seguido, seguidor);
-		seguimientoRepository.delete(seguimientoParaBorrar);
-
-		return "";
-	}
-
-	@PostMapping("/aceptarPeticion")
-	@Transactional
-	@ResponseBody
-	public String aceptarPeticion(@RequestParam("id_seguidor") Long id_seguidor, HttpSession s) {
-
-		Usuario seguidor = usuarioRepository.getOne(id_seguidor);
-		Usuario seguido = (Usuario) s.getAttribute("userLogged");
-
-		Seguimiento seguimiento = seguimientoRepository.getBySeguidoAndSeguidor(seguido, seguidor);
-		seguimiento.setAceptado(true);
-		seguimientoRepository.save(seguimiento);
-
-		return "";
-	}
-
-	// =========================================================================
-	// COMENTARIOS
-	// =========================================================================
-
-	@PostMapping("crearComentario")
-	@Transactional
-	@ResponseBody
-	public String comentar(@RequestParam("comentario") String comentario,
-			@RequestParam("idPublicacion") Long idPublicacion, HttpSession s) throws SerialException {
-
-		Publicacion publicacion = publicacionRepository.getOne(idPublicacion);
-		Usuario usuario = (Usuario) s.getAttribute("userLogged");
-		Comentario coment = new Comentario();
-
-		coment.setTexto(comentario);
-		coment.setPublicacionComentada(publicacion);
-		coment.setComentador(usuario);
-		comentarioRepository.save(coment);
-
-		ArrayList<Comentario> comentarios = (ArrayList<Comentario>) comentarioRepository
-				.getByPublicacionComentada(publicacion);
-
-		Collections.sort(comentarios, Collections.reverseOrder());
-
-		String allComentarios = "";
-		for (Comentario c : comentarios) {
-
-			allComentarios += "<div class='card'>" + "<div class='card-body'>" + "<span class='userComent'>"
-					+ "<img src='|data:image;base64," + c.getComentador().getFotoPerfil() + "' class='fotoComent' />"
-					+ c.getComentador().getLoginName() + "</span>" + c.getTexto() + "</div></div>";
-
-		}
-		return allComentarios;
-
-		// return "redirect:/feed";
-
-		// return "redirect:/feed";
-	}
-
-	@GetMapping("verComentarios")
-	@Transactional
-	@ResponseBody
-	public String verComentarios(@RequestParam("idPublicacion") Long idPublicacion) throws SerialException {
-
-		Publicacion publicacion = publicacionRepository.getById(idPublicacion);
-		Collection<Comentario> comentarios = comentarioRepository.getByPublicacionComentada(publicacion);
-		String allComentarios = "";
-		for (Comentario c : comentarios) {
-
-			allComentarios += "<div class='card'>" + "<div class='card-body'>" + "<span class='userComent'>"
-					+ "<img src='data:image;base64," + c.getComentador().getFotoPerfil() + "' class='fotoComent' />"
-					+ c.getComentador().getLoginName() + "</span>" + c.getTexto() + "</div></div>";
-
-		}
-		return allComentarios;
-	}
-
-	@GetMapping("/publicacion/{id}/reportar")
-	public String getReportar(@PathVariable("id") Long idPublicacion, ModelMap m, HttpSession s) {
-		Publicacion publicacion = publicacionRepository.getById(idPublicacion);
-		m.put("publicacion", publicacion);
-		m.put("view", "usuario/reportar");
-		return "t/frameFeed";
-	}
-
-	@PostMapping("/reportar")
-	public String postReportar(@RequestParam("idPublicacion") Long idPublicacion, @RequestParam("motivo") String motivo,
-			HttpSession s) {
-		Usuario userLogged = (Usuario) s.getAttribute("userLogged");
-		Publicacion publicacion = publicacionRepository.getById(idPublicacion);
-		Reporte reporte = new Reporte();
-		reporte.setDenunciante(userLogged);
-		reporte.setMotivo(motivo);
-		reporte.setPublicacionReportada(publicacion);
-		reporteRepository.save(reporte);
-
-		return "redirect:/";
-	}
 
 }
