@@ -61,6 +61,7 @@ function llamada(divsComentarios, idPublicacion, contador) {
 					divsComentarios[contador].style.height = "70px";
 					divsComentarios[contador].innerHTML = "No hay comentarios en esta publicación";
 				} else {
+					divsComentarios[contador].style.height = "210px";
 					divsComentarios[contador].innerHTML = comentarios;
 				}
 
