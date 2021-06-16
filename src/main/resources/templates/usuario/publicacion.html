@@ -8,7 +8,7 @@
 					class="card card-feed d-flex justify-content-center align-items-center">
 					<!-- 				img solo desde static -->
 					<div th:if="${session.userLogged != null}">
-						<form th:if="${session.userLogged.rol.id == 2}"
+						<form th:if="${session.userLogged.rol.id == 2} or ${session.userLogged.id == publicacion.duenioPublicacion.id}"
 							th:action="@{/eliminarPublicacion}" method="post">
 							<input type="hidden" name="idPublicacionEliminar"
 								th:value="${publicacion.id}">

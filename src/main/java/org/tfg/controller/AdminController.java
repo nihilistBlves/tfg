@@ -44,9 +44,19 @@ public class AdminController {
 	
 	@PostMapping("/eliminarPublicacion")
 	public String postEliminarPublicacion(@RequestParam("idPublicacionEliminar") Long id, HttpSession s) {
-		Publicacion publicacionEliminar = publicacionRepository.getById(id);
-		publicacionRepository.delete(publicacionEliminar);
-		return "redirect:/admin";
+		Publicacion publicacion = publicacionRepository.getById(id);
+		if (s.getAttribute("userLogged") != null) {
+			if ((((Usuario) s.getAttribute("userLogged")).getRol().getId() == 2) || (((Usuario) s.getAttribute("userLogged")).getId() == publicacion.getDuenioPublicacion().getId())) {
+				publicacionRepository.delete(publicacion);
+				return "redirect:/admin";
+			} else {
+				H.setInfoModal("Error|La acción que deseas realizar no existe o no tiene permisos para realizarla|btn-hover btn-red", s);
+				return "redirect:/";
+			}
+		} else {
+			H.setInfoModal("Error|La acción que deseas realizar no existe o no tiene permisos para realizarla|btn-hover btn-red", s);
+			return "redirect:/";
+		}
 	}
 	
 }
