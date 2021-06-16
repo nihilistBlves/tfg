@@ -69,3 +69,29 @@
 	border:none;
 	
 }
+.passPerfil{
+   padding-bottom: 1px;
+   position: relative;
+   top:-25px;
+ 
+}
+@media (max-width: 375px) {
+	#opt{
+	width:100%;
+	overflow-x:scroll;
+	margin-bottom:10px;
+	}
+	.opcion:hover {
+	color: #FFFFFF;
+	background-color: #272636;
+	border-top: white 4px solid;
+	border-left:none;
+}
+	#opciones{
+	height:300px;
+		overflow-y:scroll;
+	}
+	.opcionesPerfil{
+	flex-direction:row;
+	}
+}

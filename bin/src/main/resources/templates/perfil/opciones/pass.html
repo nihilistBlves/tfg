@@ -1,56 +1,69 @@
-<div class="container">
-	<div class="row  justify-content-center">
-		<div class="col-7">
-			<h2 class="h2 mb-4">Cambiar contrase�a</h2>
-		</div>
-		<form method="post" name="formu" action="editarPass" onsubmit="return comprobarPass(document.formu.passActual,document.formu.pass,document.formu.repass)">
-
-			<div class="col-7">
-				<div class="form-floating mb-3">
-					<label for="passActual">Contrase�a actual:</label>
-					<input type="password" class="form-control" id="passActual" name="passActual"><br />
-				</div>
+<div class="container  d-flex justify-content-center">
+	<div class="row">
+		<div class="form">
+			<div class="pt-3">
+				<h2>Cambiar contraseña</h2>
 			</div>
-			<div class="col-7">
-				<div class="form-floating mb-3">
-					<label class="text-secondary" for="pass">Contrase�a</label> <input type="password"
-						class="form-control" name="pass" id="pass" placeholder="Escriba su contrase�a..."
-						> <span id="ver" onmouseover="ver(document.formulario.pass)"
-						onmouseout="ocultar(document.formulario.pass)"><i class="bi bi-eye-fill"></i></span>
+			<form method="post" name="formu" action="/editarPass"
+				onsubmit="return comprobarPass(document.formu.passActual,document.formu.pass,document.formu.repass)">
+
+
+				<div class="form-group p-2">
+					<label for="passActual">Contraseña actual:</label> <input
+						type="password" class="form-control" id="passActual"
+						name="passActual"
+						placeholder="Escriba aquí su contraseña ">
+				</div>
+
+
+				<div class="form-group p-2">
+					<label class="text-secondary" for="pass">Nueva Contraseña</label> <input
+						type="password" class="form-control" name="pass" id="pass"
+						placeholder="Escriba su nueva contraseña"> <span id="ver"
+						onmouseover="ver(document.formulario.pass)"
+						onmouseout="ocultar(document.formulario.pass)"><i
+						class="bi bi-eye-fill"></i></span>
 					<div class="invalid-feedback passWrong text-white"></div>
 					<div class="valid-feedback passSuccess text-white"></div>
 					<div class="container">
 						<div class="progress barra">
-							<div class="progress-bar" name="progreso" id="progreso" role="progressbar" aria-valuenow="0"
+							<div class="progress-bar" name="progreso" id="progreso"
+								role="progressbar" aria-valuenow="0" aria-valuemin="0"
+								aria-valuemax="100">|</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="form-group p-2">
+					<label class="text-secondary" for="repass">Repita
+						Contrase�a</label> <input type="password" class="form-control"
+						name="repass" id="repass" placeholder="Repita su nueva contraseña">
+					<span id="ver" onmouseover="ver(document.formulario.repass)"
+						onmouseout="ocultar(document.formulario.repass)"> <i
+						class="bi bi-eye-fill"></i></span>
+					<div class="invalid-feedback passWrong text-white"></div>
+					<div class="valid-feedback passSuccess text-white"></div>
+					<div class="container">
+						<div class="progress barra">
+							<div class="progress-bar" name="progresoRepass"
+								id="progresoRepass" role="progressbar" aria-valuenow="0"
 								aria-valuemin="0" aria-valuemax="100">|</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="col-7">
-				<div class="form-floating mb-3">
-					<label class="text-secondary" for="repass">Repita
-						Contrase�a</label> <input type="password" class="form-control" name="repass" id="repass"
-						placeholder="Repita su contrase�a..."
-						>
-					<span id="ver" onmouseover="ver(document.formulario.repass)"
-						onmouseout="ocultar(document.formulario.repass)"> <i class="bi bi-eye-fill"></i></span>
-					<div class="invalid-feedback passWrong text-white"></div>
-					<div class="valid-feedback passSuccess text-white"></div>
-					<div class="container">
-						<div class="progress barra">
-							<div class="progress-bar" name="progresoRepass" id="progresoRepass" role="progressbar"
-								aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">|</div>
+
+
+				<div class="form-group p-2 text-center">
+					<input type="submit" class="btn btn-dark"
+						value="Cambiar Contraseña">
+						
+					<div class="p-5 text-center"><a href="#olvidado">¿Por
+						casualidad, has olvidado tu contraseña?</a>
 						</div>
-					</div>
 				</div>
-			</div> 
-			<div class="col-7">
-				<div class="form-floating mb-3">
-					<input type="submit" class="btn btn-dark" value="Cambiar Contrase�a"><br />
-					<a href="#olvidado">�Por casualidad, has olvidado tu contrase�a?</a>
-				</div>
-			</div>
-		</form>
+
+			</form>
+		</div>
 	</div>
 </div>

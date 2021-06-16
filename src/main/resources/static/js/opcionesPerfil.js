@@ -33,12 +33,6 @@ $(document).ready(function() {
 
 	});
 
-	$("#favs").on("click", function() {
-
-		$("#opciones").load("/publicacionesFavoritas");
-
-	});
-
 	$("#cuenta").on("click", function() {
 
 		$("#opciones").load("/editarCuenta");

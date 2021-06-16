@@ -1,10 +1,10 @@
-<<<<<<< HEAD
 body{
     background-color: #f90d4e;
     background-attachment: fixed;
 }
 #perfiles{
-    width: 40rem;
+    width: 100%;
+    max-width:40rem;
     height: 40rem;
     box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
     border-radius: 5px;
@@ -17,23 +17,23 @@ body{
     height: auto;
 
 }
-/* 
-#perfiles:before {
-    content: "";
-    position: absolute;
-    background: inherit;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    box-shadow: inset 0 0 2000px rgba(255, 255, 255, 0.5);
-    filter: blur(10px);
-    margin: -20px;
-  } */
+
+/* #perfiles:before { */
+/*     content: ""; */
+/*     position: absolute; */
+/*     background: inherit; */
+/*     z-index: -1; */
+/*     top: 0; */
+/*     left: 0; */
+/*     right: 0; */
+/*     bottom: 0; */
+/*     box-shadow: inset 0 0 2000px rgba(255, 255, 255, 0.5); */
+/*     filter: blur(10px); */
+/*     margin: -20px; */
+/*   } */
 
 
-.card{
+.card-feed{
     margin-top: 10px;
     padding-bottom: 10px;
     background-color: inherit;
@@ -41,128 +41,104 @@ body{
     width: 40vw;
     height: auto;
 }
-.card-img{
-
+.feed-img{
+	max-width:300px;
     width: auto;
     height: 300px;
     margin-top: 10px;
 }
-.card-audio{
+.feed-audio{
     margin-top:25%;
     margin-bottom: 20%;
    
 }
-.card-film{
+.feed-film{
 
     margin-top: 0.4em;
 }
-.card-body{
-  
+.feed-body{
+  	min-width:300px;
+  	max-width:422px;
     box-shadow:black;
     padding: 0px;
     
 }
-.card-tittle{
+.feed-tittle{
    
     font-size: 22px;
     border-radius: 22px;
    padding: 10px;
    
 }
-.card-text{
-   padding: 10px;
-    font-weight: bold;
-    font-size: 1rem;
-    height: 200px;
+.feed-text{
+   max-width:500px;
+/*    padding: 10px; */
+   font-weight: bold;
+   font-size: 1rem;
+   height: 200px;
    background-color: rgba(226, 231, 231, 0.349);
-   overflow: hidden;
-}
-=======
-body{
-    background-color: #f90d4e;
-    background-attachment: fixed;
-}
-#perfiles{
-    width: 40rem;
-    height: 40rem;
-    box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    position: relative;
-    z-index: 1;
-    background-color:rgb(247, 248, 248);
-    overflow: hidden;
-    margin: 0 auto;
-    margin-top: 10px;
-    height: auto;
-
-}
-/* 
-#perfiles:before {
-    content: "";
-    position: absolute;
-    background: inherit;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    box-shadow: inset 0 0 2000px rgba(255, 255, 255, 0.5);
-    filter: blur(10px);
-    margin: -20px;
-  } */
-
-
-.card{
-    margin-top: 10px;
-    padding-bottom: 10px;
-    background-color: inherit;
-    border:none;
-    width: 40vw;
-    height: auto;
-}
-.card-img{
-
-    width: auto;
-    height: 300px;
-    margin-top: 10px;
-}
-.card-audio{
-    margin-top:25%;
-    margin-bottom: 20%;
-   
-}
-.card-film{
-
-    margin-top: 0.4em;
-}
-.card-body{
-  
-    box-shadow:black;
-    padding: 0px;
-    
-}
-.card-tittle{
-   
-    font-size: 22px;
-    border-radius: 22px;
-   padding: 10px;
-   
-}
-.card-text{
-   padding: 10px;
-    font-weight: bold;
-    font-size: 1rem;
-    height: 200px;
-   background-color: rgba(226, 231, 231, 0.349);
-   overflow: hidden;
+/*    overflow: hidden; */
 }
 .comentarios{
 	border-top: 2px solid #ffa000;
 	margin-top:5px;
+}.foto-post{
+	 width:15%;
+	 height:3em;
+	 border-radius: 50%;
+	 padding:0;
 }
 .foto-perfil{
-	width:100px;
-	 height:50px;
+	 width:4em;
+	 height:4em;
 	 border-radius: 50%;
+	 padding:0;
 }
->>>>>>> master
+
+/*Cargar comentarios*/
+.cargaComentarios{
+	
+	height: 190px;
+	overflow-y: auto;
+	
+}
+
+.userComent{
+	font-weight: bold;
+	float: left;
+}
+
+.fotoComent{
+	width:27px;
+	height:27px;
+	border-radius: 50%;
+}
+.comentarioss{
+	overflow-y:scroll;
+	height:200px;
+}
+.comentarioss::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.comentarioss::-webkit-scrollbar:vertical {
+    width:10px;
+}
+
+.comentarioss::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
+    display: none;
+} 
+
+.comentarioss::-webkit-scrollbar:horizontal {
+    height: 10px;
+}
+
+.comentarioss::-webkit-scrollbar-thumb {
+    background-color: rgba(97, 97, 94, 0.40);
+    border-radius: 20px;
+    border: 2px solid #f1f2f3;
+}
+
+.comentarioss::-webkit-scrollbar-track {
+    border-radius: 10px;  
+}

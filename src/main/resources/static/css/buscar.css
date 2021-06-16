@@ -60,3 +60,14 @@ max-width: 540px;
 /* 	background-color: rgb(252, 244, 246); */
 /* 	border-radius: 10px; */
 /* } */
+@media (max-width: 375px) {
+	.boxes{
+		flex-direction:column;
+		width:90%;
+		left:0;
+		right:0;
+	}
+	.busqueda{
+	margin-left:50px;
+	}
+}

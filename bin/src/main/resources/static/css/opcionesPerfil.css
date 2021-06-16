@@ -1,100 +1,71 @@
- ul {
+.opcionesPerfil {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
 
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
+.opcion {
+	color: #FFFFFF;
+	background-color: #272636;
+}
 
-        li {
-       
+.opcion:hover {
+	color: #FFFFFF;
+	background-color: #272636;
+	border-left: white 4px solid;
+}
 
-            /*border: solid black 1px;*/
-            color: #FFFFFF;
-            padding: 10px;
-            background-color: #272636;
-        }
+#opciones {
+	/*             overflow: scroll; */
+	/*             overflow-x: hidden; */
+	height: auto;
+	background-color: white;
+}
 
-        li:hover {
-            font-size: 19px;
-            background-color: #bb0e3e;
-            border-left: solid #272636 5px;
-        }
+/*         #opciones::-webkit-scrollbar { */
+/*             width: 1em; */
+/*         } */
 
+/*         #opciones::-webkit-scrollbar-track { */
+/*             -webkit-box-shadow: inset 0 0 6px rgba(187,187,187,0.6); */
+/*             border-radius: 10px; */
+/*         } */
 
-        #opt {
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-            margin: 0;
-            background-color: #272636;
-        }
-
-        #opciones {
-
-
-            background-color: #f90d4e;
-        }
-
-        a {
-            color: #272636;
-        }
-
-        label {
-
-            color: white;
-            font-weight: 200;
-        }
-
-        p {
-            color: white;
-            font-weight: 200;
-        }
-
-        .toggle.ios,
-        .toggle-on.ios,
-        .toggle-off.ios {
-            border-radius: 20px;
-        }
-
-        .toggle.ios .toggle-handle {
-            border-radius: 20px;
-        }
-
-        .container {
-
-            margin-top: 5%;
-        }
-
-        textarea {
-
-            resize: none;
-        }
-
-        #opciones {
-            overflow: scroll;
-            overflow-x: hidden;
-            height: 400px;
-           
-        }
-
-        #opciones::-webkit-scrollbar {
-            width: 1em;
-        }
-
-        #opciones::-webkit-scrollbar-track {
-            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-        }
-
-        #opciones::-webkit-scrollbar-thumb {
-            background-color: rgb(252, 244, 246);
-            border-radius: 10px;
-        }
-
-        .contador{
-            color:grey;
-            position:relative;
-            bottom:32px;
-            right:-355px;
-
-        }
+/*         #opciones::-webkit-scrollbar-thumb { */
+/*             background-color: rgba(221,221,221,0.6); */
+/*             border-radius: 10px; */
+/*         } */
+.form-control {
+	border: none;
+}
+#descripcion{
+/* 	width:100%; */
+}
+.contador {
+	color: grey;
+	position: relative;
+	top: -32px;
+	left: -4%;
+}
+.instrumentoLabel {
+	margin: 0.5em;
+	padding: 0.3em;
+	border: #f90d4e 0.1em solid;
+	border-radius: 0.3em;
+}
+.instrumentoLabel:hover {
+	background-color: #f90d4e;
+	color: white;
+}
+.personas{
+	border:2px solid black;
+	border-radius:22px;
+}
+.titulo{
+	border-bottom:1px solid orange;
+}
+.seguidos{
+	list-style:none;
+	border:none;
+	
+}

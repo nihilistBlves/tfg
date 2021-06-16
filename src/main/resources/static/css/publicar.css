@@ -1,4 +1,7 @@
-
+.container{
+	 padding:0;
+        margin:0;
+}
       #contenedor {
         width: 60rem;
         height: 34rem;
@@ -8,6 +11,11 @@
         z-index: 1;
       	background-color: white;
         overflow: hidden;
+       
+      }
+      .container-fluid{
+      	padding:0;
+        margin:0;
       }
      
       textarea {
@@ -97,5 +105,23 @@
   border-radius: 0;
   margin-bottom: 0;
 }
-
+@media (max-width: 375px) {
+	#contenedor{
+		width:370px;
+		height:500px;
+	}
+/* 	.elements{ */
+/* 	height:500px; */
+/* 	} */
+	#mensaje{
+	height:200px;
+	}
+/* 	.archivo{ */
+/* 	height:500px; */
+/* 	} */
+	.dropzone-desc>p{
+	font-size: 10px;
+	
+	}
+}
 

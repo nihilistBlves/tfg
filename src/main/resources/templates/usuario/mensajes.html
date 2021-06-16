@@ -25,18 +25,18 @@
 	}
 </script>
 <div class="container bg-white mt-4" id="menuChat">
-	<div class="row my-5 d-flexbox justify-content-between ">
-	<div class="col-12 d-flex">
+	<div class="row my-5 d-flexbox justify-content-between" id="boxChat">
+	<div class="col-12 d-flex pl-4">
 	<h3 class="text-center" id="tituloChat">Conversaciones</h3>
 	</div>
-		<div class="col-5 text-left d-flex" id="conversaciones">
-			<ul class="list-group d-flexbox">
+		<div class="col-auto text-left d-flex m-0 pl-4" id="conversaciones">
+			<ul class="list-group d-flexbox conversaciones">
 				<li th:each="usuario: ${usuariosConChatAbierto}" class="list-group-item opcion-chat mt-3 d-inline-flex" th:attr="data-id=${usuario.id}" onclick="cargarChat(this)">
 					<img  th:src="|data:image;base64,${usuario.fotoPerfil}|" height="40px" width="40px">
 					<span class="ml-8" th:text="${usuario.loginName}"></span>
 				</li>
 			</ul>
 		</div>
-		<div id="chat" class="col-7"></div>
+		<div id="chat" class="col m-0 p-0"></div>
 	</div>
 </div>

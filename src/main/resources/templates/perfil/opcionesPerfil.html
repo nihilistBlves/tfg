@@ -1,7 +1,7 @@
-<div class="container my-auto" id="menu">
+<div class="container mt-3 mx-auto m-0 p-0" id="menu">
 	<div class="row my-5 ">
-		<div class="col-3 text-center" id="opt">
-			<ul class="list-group-flush opcionesPerfil">
+		<div class="col-auto text-center p-0" id="opt">
+			<ul class="list-group opcionesPerfil">
 				<li class="list-group-item-action opcion p-3" id="perfil">Editar
 					Perfil</li>
 				<li class="list-group-item-action opcion p-3" id="pass">Contraseña</li>
@@ -10,24 +10,23 @@
 				<li class="list-group-item-action opcion p-3" id="notificaciones">Peticiones</li>
 				<li class="list-group-item-action opcion p-3" id="seg">Seguidores/seguidos</li>
 				<li class="list-group-item-action opcion p-3" id="waves">Waves</li>
-				<li class="list-group-item-action opcion p-3" id="favs">Publicaciones</li>
 			</ul>
 
 
 		</div>
-		<div id="opciones" class="col-9 "></div>
+		<div id="opciones" class="col-9 col-md-12"></div>
 	</div>
 </div>
 <script th:inline="javascript">
-    	window.onload = function(){
-			
-			var solicitud = /*[[${solicitud}]]*/"";
-			
-			if(solicitud == true){
-				$("#opciones").load("/notificaciones");
-			} else {
-				$("#opciones").load("/editarPerfil");
-			}
-	
-}
-    </script>
+	window.onload = function() {
+
+		var solicitud = /*[[${solicitud}]]*/"";
+
+		if (solicitud == true) {
+			$("#opciones").load("/notificaciones");
+		} else {
+			$("#opciones").load("/editarPerfil");
+		}
+
+	}
+</script>

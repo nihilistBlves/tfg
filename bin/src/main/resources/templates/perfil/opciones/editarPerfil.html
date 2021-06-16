@@ -1,61 +1,115 @@
-<div class="container">
-	<div class="row  justify-content-center">
-	<div class="col-7">
-		<h2 class="h2 mb-4">Editar perfil</h2>
-	</div>
-<<<<<<< HEAD
-		<form method="post" action="editarPerfil" enctype="multipart/form-data">
-=======
-		<form method="post" action="/editarPerfil" enctype="multipart/form-data">
->>>>>>> master
-			<div class="col-7">
-				<div class="form-floating mb-3">
-					<label for="file">Foto de perfil</label>
-					<input type="file" class="form-control" id="file" name="file" placeholder="Escoja una foto...">
+<script>
+	function agregarInstrumento(button) {
+		var select = button.previousSibling.previousSibling;
+		var optionSeleccionada = select.options[select.selectedIndex].value;
+		select.remove(select.selectedIndex);
+
+		var nuevoInstrumentoAgregado = document.createElement("input");
+		nuevoInstrumentoAgregado.type = "checkbox";
+		nuevoInstrumentoAgregado.checked = true;
+		nuevoInstrumentoAgregado.name = "instrumentos";
+		nuevoInstrumentoAgregado.id = optionSeleccionada;
+		nuevoInstrumentoAgregado.value = optionSeleccionada;
+		nuevoInstrumentoAgregado.hidden = "hidden";
+
+		var label = document.createElement("label");
+		label.htmlFor = optionSeleccionada;
+		label.className = "instrumentoLabel";
+		label.innerHTML = optionSeleccionada;
+		label.onclick = function() {
+			label.remove();
+			nuevoInstrumentoAgregado.remove();
+			var optionReset = document.createElement("option");
+			optionReset.value = optionSeleccionada;
+			optionReset.text = optionSeleccionada;
+			select.insertBefore(optionReset, select.options[0]);
+		};
+
+		document.getElementById("divInstrumentos").append(
+				nuevoInstrumentoAgregado);
+		document.getElementById(optionSeleccionada).after(label);
+	}
+	
+	function borrarInstrumento(label) {
+		var optionReset = document.createElement("option");
+		optionReset.value = label.innerHTML;
+		optionReset.text = label.innerHTML;
+		label.previousSibling.remove();
+		label.remove();
+		var select = document.getElementById("instrumentos");
+		select.insertBefore(optionReset, select.options[0]);
+	}
+</script>
+<div class="container d-flex justify-content-center">
+	<div class="row d-flex justify-content-center">
+		<div class="col-8 form">
+			<div class="pt-3">
+				<h2>Editar Perfil</h2>
+			</div>
+			<form method="post" action="/editarPerfil"
+				enctype="multipart/form-data">
+
+				<div class="form-group p-2">
+					<label for="file">Foto de perfil</label> <input type="file"
+						class="form-control" id="file" name="file">
 
 				</div>
-			</div>
-			<div class="col-7">
-				<div class="form-floating mb-3">
-					<label for="nombreUsuario">Nombre de usuario</label>
-					<input type="text" class="form-control" id="nombre" name="nombre"
-						placeholder="Nuevo nombre de usuario...">
 
+				<div class="form-group p-2">
+					<label for="ciudad">Ciudad</label>
+					 <select class="form-control select" id="ciudades" name="idCiudad" data-style="btn-primary">
+					 	<option>---</option>
+						<option class="options" th:each="ciudad : ${ciudades}" th:if="${ciudadActual != null} and ${ciudad.CiudadName == ciudadActual.CiudadName}" selected="selected" th:text="${ciudad.CiudadName}" th:value="${ciudad.id}"></option>
+						<option class="options" th:each="ciudad : ${ciudades}" th:if="${ciudadActual != null} and ${ciudad.CiudadName != ciudadActual.CiudadName}" th:text="${ciudad.CiudadName}" th:value="${ciudad.id}"></option>
+						<option class="options" th:each="ciudad : ${ciudades}" th:if="${ciudadActual == null}" th:text="${ciudad.CiudadName}" th:value="${ciudad.id}"></option>
+					</select>
 				</div>
-			</div>
-			<div class="col-7">
-				<div class="form-floating mb-3">
-					<label for="apellidos">Apellidos</label>
-					<input type="text" class="form-control" id="apellidos" name="apellidos"
-						placeholder="Nuevos apellidos...">
-				</div>
-			</div>
-			<div class="col-7">
-				<div class="form-floating mb-3">
-					<label for="edad">Edad</label>
-					<input type="date" class="form-control" id="edad" name="edad">
-				</div>
-			</div>
-			<div class="col-7">
-				<div class="form-floating mb-3">
+
+
+				<div class="form-group p-2">
 					<label for="descripcion">Descripción:</label>
-					<textarea id="descripcion" maxlength="150" style="resize:none" onkeyup="validarLimite(this)"
-						placeholder="Descripci�n de tu perfil de usuario..." cols="50" rows="5" name="descripcion"></textarea>
-					<span class="contador">0/150</span>
+					<textarea th:if="${descripcionActual != null}" th:text="${descripcionActual}" class="form-control" id="descripcion" maxlength="150" style="resize: none"
+						onkeyup="validarLimite(this)"
+						placeholder="Descripci�n de tu perfil de usuario..." cols="50"
+						rows="5" name="descripcion"></textarea>
+					<textarea th:unless="${descripcionActual != null}" class="form-control" id="descripcion" maxlength="150" style="resize: none"
+						onkeyup="validarLimite(this)"
+						placeholder="Descripci�n de tu perfil de usuario..." cols="50"
+						rows="5" name="descripcion"></textarea>
+					<div class="row  p-1 d-flex justify-content-end">
+						<span class=" contador ">0/150</span>
+					</div>
 				</div>
-			</div>
-			<div class="col-7">
-				<div class="form-floating mb-3">
+ 
+				<div class="form-group p-2  d-flexbox">
 					<label for="listaInstrumentos">Lista de Instrumentos:</label>
-					<textarea id="listaInstrumentos" maxlength="300" style="resize:none"
-						placeholder="Lista de instrumentos..." cols="50" rows="5"></textarea>
+					<div class="d-inline-flex">
+					<!-- ERROR CON INSTRUMENTO.NOMBRE EN EL FOREACH -->
+					 <select class="form-control" id="instrumentos" th:if="${instrumentosActuales != null}">
+						<option class="options" th:each="instrumento : 	${instrumentos}"
+							th:if="${!#arrays.contains(instrumentosActuales, instrumento.nombre)}"
+							th:value="${instrumento.nombre}" th:text="${instrumento.nombre}">
+					</select>
+					 <select class="form-control" id="instrumentos" th:unless="${instrumentosActuales != null}">
+						<option class="options" th:each="instrumento : 	${instrumentos}"
+							th:value="${instrumento.nombre}" th:text="${instrumento.nombre}">
+					</select>
+					<button type="button" class="btn btn-outline-danger ml-4"
+						id="botonAgregarInstrumento" onclick="agregarInstrumento(this)"
+						>+</button>
+						</div>
+					<div class="d-flexbox" id="divInstrumentos" style="height: auto;width: 25em;">
+						<span th:each="instrumento : ${instrumentosActuales}">
+							<input type="checkbox" name="instrumentos" th:id="${instrumento}" th:value="${instrumento}" hidden="hidden">
+							<label th:for="${instrumento}" class="instrumentoLabel" th:text="${instrumento}" onclick="borrarInstrumento(this)"></label>
+						</span>
+					</div>
 				</div>
-			</div>
 
-			<div class="col-7">
-				<input type="submit" class="btn btn-dark" value="Guardar">
-			</div>
-		</form>
+				<div class="form-group p-2 text-center">
+					<input type="submit" class="btn btn-dark" value="Guardar">
+				</div>
+			</form>
+		</div>
 	</div>
-
 </div>

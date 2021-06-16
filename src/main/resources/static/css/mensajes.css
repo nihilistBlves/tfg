@@ -31,7 +31,11 @@
 	height:300px;
 }
 .chatbox{
-	width:auto;
+	width:95%;
+	overflow-x:hidden;
+}
+#enviar{
+	width:95%;
 }
 .chatbox::-webkit-scrollbar,#conversaciones::-webkit-scrollbar {
     -webkit-appearance: none;
@@ -58,4 +62,41 @@
 
 .chatbox::-webkit-scrollbar-track,#conversaciones::-webkit-scrollbar-track {
     border-radius: 10px;  
+}
+
+@media (max-width: 375px) {
+	#menuChat{
+		flex-direction:column;
+		margin:auto;
+		width:90%;
+	}
+	#boxChat{
+	flex-direction:row;
+	margin:auto;
+	}
+	#conversaciones{
+	height:100px;
+	}
+	.conversaciones{
+		flex-direction: row;
+		width:100%;
+		overflow-x:scroll;
+		height:80px;
+		width:90%;
+		margin-left:22px;
+		margin-right:22px;
+	}
+	#chat{
+		flex-direction:row;
+	}
+	#chatbox{
+	height:260px;
+	width:auto;
+	}
+	#enviar{
+	position:relative;
+	top:-20px;
+	width:90%;
+	left:20px;
+	}
 }
