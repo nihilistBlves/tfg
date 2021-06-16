@@ -1,3 +1,21 @@
+<style>
+.comentarioPublicacion{
+margin-left:20%;
+	flex-direction:column;
+
+}
+.comentarioPublicacion>img{
+	margin-bottom:20px;
+	margin-left:20%;
+}
+.comentarioPublicacion>input{
+margin-left:20%;
+	margin-bottom:20px;
+}
+.comentarioss{
+	max-width:330px;
+}	
+</style>
 <div class="col-lg">
 	<div id="centro" class=" justify-content-center align-items-center">
 		<!-- 			cargar publicaciones -->
@@ -119,7 +137,7 @@
 										</div>
 									</div>
 									<div th:unless="${session.userLogged != null}"
-										class="d-flex justify-content-between pt-4 comentarios">
+										class="d-flex justify-content-between pt-4 comentarios comentarioPubicacion">
 										<input type="hidden"> <input type="text"
 											class="form-control col-6" placeholder="Comentar"
 											name="comentario" id="comentario" /> <input type="hidden"
