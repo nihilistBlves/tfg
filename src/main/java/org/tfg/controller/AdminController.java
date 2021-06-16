@@ -48,7 +48,7 @@ public class AdminController {
 		if (s.getAttribute("userLogged") != null) {
 			if ((((Usuario) s.getAttribute("userLogged")).getRol().getId() == 2) || (((Usuario) s.getAttribute("userLogged")).getId() == publicacion.getDuenioPublicacion().getId())) {
 				publicacionRepository.delete(publicacion);
-				return "redirect:/admin";
+				return "redirect:/user/"+publicacion.getDuenioPublicacion().getLoginName();
 			} else {
 				H.setInfoModal("Error|La acción que deseas realizar no existe o no tiene permisos para realizarla|btn-hover btn-red", s);
 				return "redirect:/";

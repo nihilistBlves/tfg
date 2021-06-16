@@ -8,7 +8,8 @@
 					class="card card-feed d-flex justify-content-center align-items-center">
 					<!-- 				img solo desde static -->
 					<div th:if="${session.userLogged != null}">
-						<form th:if="${session.userLogged.rol.id == 2} or ${session.userLogged.id == publicacion.duenioPublicacion.id}"
+						<form
+							th:if="${session.userLogged.rol.id == 2} or ${session.userLogged.id == publicacion.duenioPublicacion.id}"
 							th:action="@{/eliminarPublicacion}" method="post">
 							<input type="hidden" name="idPublicacionEliminar"
 								th:value="${publicacion.id}">
@@ -24,14 +25,15 @@
 					<div th:if="${publicacion.tipoContenido}=='video'"
 						class="card-film feed-film">
 						<video width="500px" height="300px" controls poster>
-							<source th:src="|data:video;base64,${publicacion.contenido}|" type="video/mp4" />
+							<source th:src="|data:video;base64,${publicacion.contenido}|"
+								type="video/mp4" />
 						</video>
 					</div>
 
 					<div th:if="${publicacion.tipoContenido}=='audio'"
 						class="card-audio feed-audio">
-						<audio th:src="|data:audio/mp3;base64,${publicacion.contenido}|" controls
-							type="audio/mpeg">
+						<audio th:src="|data:audio/mp3;base64,${publicacion.contenido}|"
+							controls type="audio/mpeg">
 						</audio>
 					</div>
 
@@ -56,6 +58,13 @@
 
 							<div class="card-footer text-right d-flexbox">
 								<div class="icons" th:if="${session.userLogged} != null">
+									<form
+										th:action="@{/publicacion/{id}/reportar(id=${publicacion.id})}"
+										method="get">
+										<button class="btn btn-outline-danger  m-2 btn-sm">
+											<i class="bi bi-exclamation-triangle"></i>
+										</button>
+									</form>
 									<div class="row justify-content-end align-items-center"
 										th:if="${#arrays.contains(publicacionesWaved, publicacion.id)}">
 										<b th:text=${publicacion.cantidadWaves}
@@ -86,11 +95,11 @@
 									<div th:if="${session.userLogged != null}"
 										class="d-flex justify-content-between pt-4 comentarios">
 										<img class="foto-perfil col-2"
-											th:src="|data:image;base64,${session.userLogged.fotoPerfil}|"> <input
-											type="text" class="form-control col-6" placeholder="Comentar"
-											name="comentario" id="comentario" /> <input type="hidden"
-											th:value="${publicacion.id}" /> <input type="button"
-											class=" btn-hover btn-red" value="Comentar"
+											th:src="|data:image;base64,${session.userLogged.fotoPerfil}|">
+										<input type="text" class="form-control col-6"
+											placeholder="Comentar" name="comentario" id="comentario" />
+										<input type="hidden" th:value="${publicacion.id}" /> <input
+											type="button" class=" btn-hover btn-red" value="Comentar"
 											onclick="comentar(this)" />
 
 										<div th:id="|coment-${publicacion.id}|"
