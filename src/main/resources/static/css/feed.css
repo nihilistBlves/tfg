@@ -185,6 +185,9 @@ body{
 .comentarios>input{
 	margin-bottom:20px;
 }
+.comentarioss{
+	max-width:340px;
+}
 .comentado{
 	max-width:280px;
 	margin-left:20%;
