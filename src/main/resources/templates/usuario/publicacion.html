@@ -59,7 +59,7 @@
 									<div class="row justify-content-end align-items-center"
 										th:if="${#arrays.contains(publicacionesWaved, publicacion.id)}">
 										<b th:text=${publicacion.cantidadWaves}
-											class="badge badge-secondary"></b><i
+											class="badge badge-badge"></b><i
 											th:id="|wave-${publicacion.id}|"
 											style="color: #f90d4e; font-size: 2em;"
 											class="bi bi-soundwave" role="button" onclick="wave(this)"></i>

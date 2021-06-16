@@ -99,10 +99,10 @@
 						>+</button>
 						</div>
 					<div class="d-flexbox" id="divInstrumentos" style="height: auto;width: 25em;">
-						<div th:each="instrumento : ${instrumentosActuales}">
+						<span th:each="instrumento : ${instrumentosActuales}">
 							<input type="checkbox" name="instrumentos" th:id="${instrumento}" th:value="${instrumento}" hidden="hidden">
 							<label th:for="${instrumento}" class="instrumentoLabel" th:text="${instrumento}" onclick="borrarInstrumento(this)"></label>
-						</div>
+						</span>
 					</div>
 				</div>
 

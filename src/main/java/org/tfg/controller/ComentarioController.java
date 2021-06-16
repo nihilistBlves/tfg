@@ -53,15 +53,11 @@ public class ComentarioController {
 		for (Comentario c : comentarios) {
 
 			allComentarios += "<div class='card'>" + "<div class='card-body'>" + "<span class='userComent'>"
-					+ "<img src='|data:image;base64," + c.getComentador().getFotoPerfil() + "' class='fotoComent' />"
+					+ "<img src='data:image;base64," + c.getComentador().getFotoPerfil() + "' class='fotoComent' />"
 					+ c.getComentador().getLoginName() + "</span>" + c.getTexto() + "</div></div>";
 
 		}
 		return allComentarios;
-
-		// return "redirect:/feed";
-
-		// return "redirect:/feed";
 	}
 
 	@GetMapping("verComentarios")
