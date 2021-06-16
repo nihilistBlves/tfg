@@ -2,6 +2,7 @@ package org.tfg.controller;
 
 import java.util.Collection;
 
+import javax.servlet.http.HttpSession;
 import javax.sql.rowset.serial.SerialException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.tfg.domain.Ciudad;
 import org.tfg.domain.Instrumento;
 import org.tfg.domain.Usuario;
+import org.tfg.helper.H;
 import org.tfg.repositories.CiudadRepository;
 import org.tfg.repositories.InstrumentoRepository;
+import org.tfg.repositories.SeguimientoRepository;
 import org.tfg.repositories.UsuarioRepository;
 
 @Controller
@@ -29,9 +32,13 @@ public class BusquedaController {
 
 	@Autowired
 	private InstrumentoRepository instrumentoRepository;
+	
+	@Autowired
+	private SeguimientoRepository seguimientoRepository;
 
 	@GetMapping("/explorar")
-	public String explorar(ModelMap m) {
+	public String explorar(ModelMap m, HttpSession s) {
+		H.actualizarPeticiones(s, seguimientoRepository);
 
 		m.put("ciudades", ciudadRepository.findAll());
 		m.put("instrumentos", instrumentoRepository.findAll());

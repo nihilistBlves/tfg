@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.tfg.domain.Publicacion;
 import org.tfg.domain.Reporte;
 import org.tfg.domain.Usuario;
+import org.tfg.helper.H;
 import org.tfg.repositories.PublicacionRepository;
 import org.tfg.repositories.ReporteRepository;
+import org.tfg.repositories.SeguimientoRepository;
 
 @Controller
 public class ReporteController {
@@ -24,8 +26,13 @@ public class ReporteController {
 	@Autowired
 	private PublicacionRepository publicacionRepository;
 	
+	@Autowired
+	private SeguimientoRepository seguimientoRepository;
+	
 	@GetMapping("/publicacion/{id}/reportar")
 	public String getReportar(@PathVariable("id") Long idPublicacion, ModelMap m, HttpSession s) {
+		H.actualizarPeticiones(s, seguimientoRepository);
+
 		Publicacion publicacion = publicacionRepository.getById(idPublicacion);
 		m.put("publicacion", publicacion);
 		m.put("view", "usuario/reportar");

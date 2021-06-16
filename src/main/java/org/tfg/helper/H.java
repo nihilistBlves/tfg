@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
 import org.tfg.domain.Usuario;
 import org.tfg.exception.DangerException;
+import org.tfg.repositories.SeguimientoRepository;
 
 public class H {
 	
@@ -31,6 +32,10 @@ public class H {
 		s.setAttribute("infoTitulo", cadenaSeparada[0]);
 		s.setAttribute("infoTexto", cadenaSeparada[1]);
 		s.setAttribute("infoEstado", cadenaSeparada[2]);
+	}
+	
+	public static void actualizarPeticiones (HttpSession s, SeguimientoRepository sr) {
+		s.setAttribute("numPeticiones", sr.findSeguidoresNoAceptadosByIdUsuario(((Usuario) s.getAttribute("userLogged")).getId()));
 	}
 	
 	public static SerialBlob convertidorBlob(MultipartFile file) throws IOException, SerialException, SQLException{

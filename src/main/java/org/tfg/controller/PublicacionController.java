@@ -45,6 +45,7 @@ public class PublicacionController {
 	
 	@GetMapping("/feed")
 	public String getFeed(ModelMap m, HttpSession s) {
+		H.actualizarPeticiones(s, seguimientoRepository);
 
 		if (s.getAttribute("userLogged") != null) {
 
@@ -77,6 +78,7 @@ public class PublicacionController {
 
 	@GetMapping("/publicacion/{id}")
 	public String getPublicacion(@PathVariable("id") Long idPublicacion, ModelMap m, HttpSession s) {
+		H.actualizarPeticiones(s, seguimientoRepository);
 		Publicacion publicacion = publicacionRepository.getById(idPublicacion);
 
 		if (s.getAttribute("userLogged") == null) {
@@ -128,10 +130,8 @@ public class PublicacionController {
 	
 	@PostMapping("/tipoArchivo")
 	@ResponseBody
-	public String elegirArchivo(@RequestParam("tipo") String tipo, @RequestParam("nombre") String nombre)
+	public String elegirArchivo(@RequestParam("tipo") String tipo, @RequestParam("nombre") String nombre, HttpSession s)
 			throws SerialException {
-
-		System.out.println(tipo);
 
 		String publicacionesTipo = "";
 		Usuario usuario = usuarioRepository.getByLoginName(nombre);
@@ -211,6 +211,7 @@ public class PublicacionController {
 	
 	@GetMapping("/publicar")
 	public String getPublicar(ModelMap m, HttpSession s) {
+		H.actualizarPeticiones(s, seguimientoRepository);
 		if (s.getAttribute("userLogged") != null) {
 			if (s.getAttribute("infoModal") != null) {
 				H.mPut(m, s);

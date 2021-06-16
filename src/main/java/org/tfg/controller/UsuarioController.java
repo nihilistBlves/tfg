@@ -75,6 +75,7 @@ public class UsuarioController {
 
 	@GetMapping("/user/{loginName}")
 	public String getPerfil(@PathVariable("loginName") String username, ModelMap m, HttpSession s) {
+		H.actualizarPeticiones(s, seguimientoRepository);
 
 		if (usuarioRepository.getByLoginName(username) == null) {
 
@@ -122,6 +123,8 @@ public class UsuarioController {
 	@GetMapping("/user/{loginName}/opciones")
 	public String opcionesPerfil(@PathVariable("loginName") String username,
 			@RequestParam(value = "solicitud", required = false) String solicitud, ModelMap m, HttpSession s) {
+		H.actualizarPeticiones(s, seguimientoRepository);
+
 		if (s.getAttribute("userLogged") != null) {
 			if (username.equals(((Usuario) s.getAttribute("userLogged")).getLoginName())) {
 				H.mPut(m, s);

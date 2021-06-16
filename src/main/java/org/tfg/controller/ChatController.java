@@ -18,6 +18,7 @@ import org.tfg.domain.Mensaje;
 import org.tfg.domain.Usuario;
 import org.tfg.helper.H;
 import org.tfg.repositories.MensajeRepository;
+import org.tfg.repositories.SeguimientoRepository;
 import org.tfg.repositories.UsuarioRepository;
 
 @Controller
@@ -29,8 +30,13 @@ public class ChatController {
 	@Autowired
 	private MensajeRepository mensajeRepository;
 	
+	@Autowired
+	private SeguimientoRepository seguimientoRepository;
+	
 	@GetMapping("/user/{loginName}/messages")
 	public String getListaChat(@PathVariable("loginName") String username, @RequestParam(value = "idPerfil", required = false) Long idPerfil, HttpSession s, ModelMap m) {
+		H.actualizarPeticiones(s, seguimientoRepository);
+
 		if (s.getAttribute("userLogged") == null || !username.equals(((Usuario) s.getAttribute("userLogged")).getLoginName())) {
 			H.setInfoModal("Error|No tienes permisos para acceder a este apartado|btn-hover btn-red", s);
 			return "redirect:/user/"+username;

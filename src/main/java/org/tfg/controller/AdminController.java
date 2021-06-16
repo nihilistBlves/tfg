@@ -13,13 +13,11 @@ import org.tfg.domain.Usuario;
 import org.tfg.helper.H;
 import org.tfg.repositories.PublicacionRepository;
 import org.tfg.repositories.ReporteRepository;
+import org.tfg.repositories.SeguimientoRepository;
 import org.tfg.repositories.UsuarioRepository;
 
 @Controller
 public class AdminController {
-
-	@Autowired
-	private UsuarioRepository usuarioRepository;
 	
 	@Autowired
 	private PublicacionRepository publicacionRepository;
@@ -27,8 +25,13 @@ public class AdminController {
 	@Autowired
 	private ReporteRepository reporteRepository;
 	
+	@Autowired
+	private SeguimientoRepository seguimientoRepository;
+	
 	@GetMapping("/admin")
 	public String getPanelAdmin(ModelMap m, HttpSession s) {
+		H.actualizarPeticiones(s, seguimientoRepository);
+
 		if ((s.getAttribute("userLogged") != null) && (((Usuario) s.getAttribute("userLogged")).getRol().getId() == 2)) {
 			m.put("reportes", reporteRepository.findAll());
 			m.put("view", "admin/panel");
