@@ -35,7 +35,7 @@ public class H {
 	}
 	
 	public static void actualizarPeticiones (HttpSession s, SeguimientoRepository sr) {
-		s.setAttribute("numPeticiones", sr.findSeguidoresNoAceptadosByIdUsuario(((Usuario) s.getAttribute("userLogged")).getId()));
+		s.setAttribute("numPeticiones", sr.findSeguidoresNoAceptadosByIdUsuario(((Usuario) s.getAttribute("userLogged")).getId()).size());
 	}
 	
 	public static SerialBlob convertidorBlob(MultipartFile file) throws IOException, SerialException, SQLException{
