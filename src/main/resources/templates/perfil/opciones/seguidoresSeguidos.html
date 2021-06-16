@@ -4,7 +4,7 @@
 		<ul class="seguidos mt-5">
 			<h4 class="text-center mb-5 titulo">Seguidos</h4>
 			<li class="col d-inline-flex justify-content-around border align-items-center personas p-2 mt-2" th:each="seguido: ${seguidos}" th:id="${seguido.id}">
-			<img class="foto-post col-2" th:src="@{${seguido.fotoPerfil}}">
+			<img class="foto-post col-2" th:src="|data:image;base64,${seguido.fotoPerfil}|">
 			<a class=" my-auto pr-5" th:href="@{/user/{loginName}(loginName=${seguido.loginName})}" th:text="${seguido.loginName}"></a>
 				<form action="/eliminarSeguido" method="POST">
 					<input type="hidden" th:value="${seguido.id}" name="idSeguido">
@@ -17,7 +17,7 @@
 	<ul class="seguidores mt-5">
 		<h4 class="text-center mb-5 titulo">Seguidores</h4>
 		<li class="col d-inline-flex justify-content-around border align-items-center personas p-2 mt-2" th:each="seguidor: ${seguidores}" th:id="${seguidor.id}">
-		<img class="foto-post col-2" th:src="@{${seguidor.fotoPerfil}}">
+		<img class="foto-post col-2" th:src="|data:image;base64,${seguidor.fotoPerfil}|">
 		<a class=" my-auto pr-5" th:href="@{/user/{loginName}(loginName=${seguidor.loginName})}" th:text="${seguidor.loginName}"></a>
 			<form action="/eliminarSeguidor" method="POST">
 					<input type="hidden" th:value="${seguidor.id}" name="idSeguidor">
