@@ -58,7 +58,7 @@ function llamada(divsComentarios, idPublicacion, contador) {
 			type: "get",
 			success: function(comentarios) {
 				if (comentarios == "") {
-					divsComentarios[contador].style.height = "30px";
+					divsComentarios[contador].style.height = "70px";
 					divsComentarios[contador].innerHTML = "No hay comentarios en esta publicación";
 				} else {
 					divsComentarios[contador].innerHTML = comentarios;
