@@ -29,7 +29,7 @@
 	<div class="col-12 d-flex pl-4">
 	<h3 class="text-center" id="tituloChat">Conversaciones</h3>
 	</div>
-		<div class="col-auto text-left d-flex m-0 pl-4" id="conversaciones">
+		<div class="col-lg-12 col-md-auto text-left d-flex m-0 pl-4" id="conversaciones">
 			<ul class="list-group d-flexbox conversaciones">
 				<li th:each="usuario: ${usuariosConChatAbierto}" class="list-group-item opcion-chat mt-3 d-inline-flex" th:attr="data-id=${usuario.id}" onclick="cargarChat(this)">
 					<img  th:src="|data:image;base64,${usuario.fotoPerfil}|" height="40px" width="40px">
