@@ -155,7 +155,7 @@ public class UsuarioController {
 			m.put("ciudadActual", userLogged.getCiudad());
 		}
 		if ((userLogged.getDescripcionPerfil() != null)) {
-			if((!userLogged.getDescripcionPerfil().equals(""))) {
+			if(!userLogged.getDescripcionPerfil().equals("")) {
 				m.put("descripcionActual", userLogged.getDescripcionPerfil());
 			}
 		}
