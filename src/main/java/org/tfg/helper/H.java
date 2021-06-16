@@ -10,7 +10,6 @@ import javax.sql.rowset.serial.SerialException;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
 import org.tfg.domain.Usuario;
-import org.tfg.exception.DangerException;
 import org.tfg.repositories.SeguimientoRepository;
 
 public class H {
