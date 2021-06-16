@@ -54,7 +54,7 @@ public class ComentarioController {
 
 			allComentarios += "<div class='card'>" + "<div class='card-body'>" + "<span class='userComent'>"
 					+ "<img src='data:image;base64," + c.getComentador().getFotoPerfil() + "' class='fotoComent' />"
-					+ c.getComentador().getLoginName() + "</span>" + c.getTexto() + "</div></div>";
+					+"<a href='https://waveit.herokuapp.com/user/"+ c.getComentador().getLoginName() + "'>"+c.getComentador().getLoginName() +"</a></span>" + c.getTexto() + "</div></div>";
 
 		}
 		return allComentarios;
@@ -72,7 +72,7 @@ public class ComentarioController {
 
 			allComentarios += "<div class='card'>" + "<div class='card-body'>" + "<span class='userComent'>"
 					+ "<img src='data:image;base64," + c.getComentador().getFotoPerfil() + "' class='fotoComent' />"
-					+ c.getComentador().getLoginName() + "</span>" + c.getTexto() + "</div></div>";
+					+"<a href='https://waveit.herokuapp.com/user/"+ c.getComentador().getLoginName() + "'>"+c.getComentador().getLoginName() +"</a></span>" + c.getTexto() + "</div></div>";
 
 		}
 		return allComentarios;
