@@ -98,17 +98,27 @@ public class PublicacionController {
 			m.put("publicacionesWaved", publicacionesWavedByUserLogged);
 
 			if (publicacion.getDuenioPublicacion().isPrivada()) {
-				if ((!seguidosPorUserLogged.contains(publicacion.getDuenioPublicacion().getId())) || (userLogged.getRol().getId() != 2) || (!publicacion.getDuenioPublicacion().getLoginName().equals(userLogged.getLoginName()))) {
+				if (seguidosPorUserLogged.contains(publicacion.getDuenioPublicacion().getId())) {
+					m.put("publicacion", publicacion);
+					m.put("view", "usuario/publicacion");
+					return "t/frameFeed";
+				} else if (userLogged.getRol().getId() == 2) {
+					m.put("publicacion", publicacion);
+					m.put("view", "usuario/publicacion");
+					return "t/frameFeed";
+				}else if (publicacion.getDuenioPublicacion().getLoginName().equals(userLogged.getLoginName())) {
+					m.put("publicacion", publicacion);
+					m.put("view", "usuario/publicacion");
+					return "t/frameFeed";
+				} else {
 					H.setInfoModal(
 							"Error|Debes seguir al dueño de la publicación para poder ver su contenido|btn-hover btn-red",
 							s);
 					return "redirect:/user/" + publicacion.getDuenioPublicacion().getLoginName();
-				} else {
-					m.put("publicacion", publicacion);
-					m.put("view", "usuario/publicacion");
-					return "t/frameFeed";
+					
 				}
 			} else {
+				
 				m.put("publicacion", publicacion);
 				m.put("view", "usuario/publicacion");
 				return "t/frameFeed";
