@@ -116,8 +116,8 @@
 	}
 
 </script>
-<div class="col-lg">
-	<div id="centro" class=" justify-content-center align-items-center">
+
+	<div  id="centro" class="col-12 justify-content-center align-items-center">
 		<!-- 			cargar publicaciones -->
 		<div th:each="publicacion: ${publicaciones}">
 			<div class="d-flex justify-content-center" id="perfiles">
@@ -162,7 +162,7 @@
 									<small class=" text-muted float-right mt-3 " id="fecha"
 										th:text="${publicacion.fechaPublicacion.toLocalDate}"></small>
 								</div>
-								<div class="card-text feed-text">
+								<div class="card-text feed-text mx-auto">
 									<p class="text-break p-4" th:id="${publicacion.id}"
 										th:text="${publicacion.descripcion}"></p>
 								</div>
@@ -172,6 +172,7 @@
 
 								<div class="card-footer text-right d-flexbox">
 									<div class=" col-12 icons d-inline-flex justify-content-between aligns-items-center">
+										<div class="reportar">
 										<form
 										th:action="@{/publicacion/{id}/reportar(id=${publicacion.id})}"
 										method="get">
@@ -179,7 +180,8 @@
 											<i class="bi bi-exclamation-triangle"></i>
 										</button>
 									</form>
-										<div class="row justify-content-end align-items-center"
+									</div>
+										<div class="row justify-content-end align-items-center wave"
 											th:if="${#arrays.contains(publicacionesWaved, publicacion.id)}">
 											<b th:text=${publicacion.cantidadWaves}
 												class="badge badge-secondary"></b><i
@@ -187,7 +189,7 @@
 												style="color: #f90d4e; font-size: 2em;"
 												class="bi bi-soundwave" role="button" onclick="wave(this)"></i>
 										</div>
-										<div class="row justify-content-end align-items-center"
+										<div class="row justify-content-end align-items-center wave"
 											th:unless="${#arrays.contains(publicacionesWaved, publicacion.id)}">
 											<b th:text=${publicacion.cantidadWaves}
 												class="badge badge-secondary"></b><i
@@ -198,13 +200,13 @@
 									</div>
 
 									<div class="form-group justify-content-end align-items-center">
-										<div class="d-flex justify-content-between aligns-items-center pt-4 comentarios">
+										<div class="d-flex justify-content-between align-items-center pt-4 comentarios">
 											<img class="foto-perfil col-2"
 												th:src="@{${session.userLogged.fotoPerfil}}"> <input
 												type="text" class="form-control col-6"
 												placeholder="Comentar" name="comentario" id="comentario" />
 											<input type="hidden" th:value="${publicacion.id}" /> <input
-												type="button" class=" btn-hover btn-red" value="Comentar"
+												type="button" class=" btn-hover btn-red boton" value="Comentar"
 												onClick="comentar(this)" />
 
 											<!-- 											<div th:id="|coment-${publicacion.id}|" -->
@@ -233,4 +235,4 @@
 			</div>
 		</div>
 	</div>
-</div>
+

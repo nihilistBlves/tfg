@@ -14,8 +14,24 @@ nav * {
 
 .logOut{
 	color:white;
+	font-size:20px;
 }
 
 .bi-inbox-fill{
 	font-size: 1.35em;
+}
+@media ( max-width : 375px) {
+	
+.title{
+	display:none;
+}
+#logOut{
+	
+	width:50px;
+	height:50px;
+	
+}
+	.logOut{
+	 font-size:15px;
+	}
 }

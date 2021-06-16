@@ -1,6 +1,6 @@
 body{
     background-color: #f90d4e;
-    background-attachment: fixed;
+
 }
 #perfiles{
     width: 100%;
@@ -57,7 +57,7 @@ body{
     margin-top: 0.4em;
 }
 .feed-body{
-  	min-width:300px;
+  	min-width:500px;
   	max-width:422px;
     box-shadow:black;
     padding: 0px;
@@ -141,4 +141,53 @@ body{
 
 .comentarioss::-webkit-scrollbar-track {
     border-radius: 10px;  
+}
+
+@media (max-width: 375px) {
+	.feed-tittle{
+	width:300px;
+	margin-left:20%;
+	}
+	.feed-tittle>.foto-post{
+	margin-right:20px;
+	 width:15%;
+	 height:2em;
+	}
+	.feed-tittle>.small{
+	padding-left:-20px;
+	}
+ .feed-text{
+   max-width:300px;
+   font-weight: bold;
+   font-size: 1rem;
+   height: 200px;
+   overflow-y:auto;
+   background-color: rgba(226, 231, 231, 0.349);
+
+}
+.icons{
+	width:300px;
+	left:-80px;
+}
+.reportar{
+	width:50px;
+}
+.wave{
+	width:50px;
+}
+.comentarios{
+	flex-direction:column;
+
+}
+.comentarios>img{
+	margin-bottom:20px;
+}
+.comentarios>input{
+	margin-bottom:20px;
+}
+.comentado{
+	max-width:280px;
+	margin-left:20%;
+}
+
 }

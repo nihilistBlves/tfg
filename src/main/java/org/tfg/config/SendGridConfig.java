@@ -6,15 +6,15 @@ import org.springframework.context.annotation.Configuration;
 
 import com.sendgrid.SendGrid;
 
-@Configuration
-public class SendGridConfig {
-
-	@Value("${SENDGRID_KEY}")
-	private String appKey;
-
-	@Bean
-	public SendGrid getSendGrid() {
-		return new SendGrid(appKey);
-
-	}
-}
+//@Configuration
+//public class SendGridConfig {
+//
+//	@Value("${SENDGRID_KEY}")
+//	private String appKey;
+//
+//	@Bean
+//	public SendGrid getSendGrid() {
+//		return new SendGrid(appKey);
+//
+//	}
+//}

@@ -244,8 +244,8 @@ public class UsuarioController {
 
 				if (p.getTipoContenido().equals(tipo)) {
 
-					publicacionesTipo += "<div class='publicacion' width='200px' heigth='800px' data-id="+p.getId()+" onclick='irPublicacion(this)' role='button'>" + "<audio src="
-							+ p.getContenido() + " controls type='audio/mpeg'>" + "</audio>" + "</div>";
+					publicacionesTipo += "<div class='publicacion' width='200px' heigth='800px' data-id="+p.getId()+" onclick='irPublicacion(this)' role='button'>" 
+					+ "<audio class='publicacion-audio'"+" src="+ p.getContenido() + " controls type='audio/mpeg'>" + "</audio>" + "</div>";
 
 				}
 
@@ -679,12 +679,6 @@ public class UsuarioController {
 		return "perfil/opciones/tasaWaves";
 	}
 
-	@GetMapping("publicacionesFavoritas")
-	public String publicacionesFavoritas() {
-
-		return "perfil/opciones/publicacionesFavoritas";
-	}
-
 	// =============================================================================
 	// ================================EDITAR=PERFIL================================
 	// =============================================================================
@@ -839,9 +833,9 @@ public class UsuarioController {
 		String allComentarios = "";
 		for (Comentario c : comentarios) {
 
-			allComentarios += "<div class='card'>" + "<div class='card-body'>" + "<span class='userComent'>"
+			allComentarios += "<div class='card comentado'>" + "<div class='card-body'>" + "<span class='userComent'>"
 					+ "<img src='" + c.getComentador().getFotoPerfil() + "' class='fotoComent' />"
-					+ c.getComentador().getLoginName() + "</span>" + c.getTexto() + "</div></div>";
+					+ "<span class='ml-3'>"+ c.getComentador().getLoginName() + "</span>"+ "</span> "+ c.getTexto() + "</div></div>";
 
 		}
 		return allComentarios;

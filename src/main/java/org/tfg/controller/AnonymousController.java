@@ -2,6 +2,7 @@ package org.tfg.controller;
 
 import java.io.File;
 
+
 import java.time.LocalDate;
 import java.util.Calendar;
 
@@ -24,7 +25,7 @@ import org.tfg.repositories.RolRepository;
 import org.tfg.repositories.UsuarioRepository;
 import org.tfg.repositories.VerificationTokenRepository;
 //import org.tfg.service.EmailService;
-import org.tfg.service.EmailService;
+//import org.tfg.service.EmailService;
 
 @Controller
 public class AnonymousController {
@@ -38,8 +39,8 @@ public class AnonymousController {
 	@Autowired
 	private VerificationTokenRepository verificationTokenRepository;
 
-	@Autowired
-	private EmailService emailService;
+//	@Autowired
+//	private EmailService emailService;
 
 	@GetMapping("/")
 	public String index(ModelMap m, HttpSession s) throws DangerException {
@@ -145,7 +146,7 @@ public class AnonymousController {
 
 			usuarioRepository.save(usuario);
 
-			emailService.sendEmail(usuario);
+//			emailService.sendEmail(usuario);
 
 			H.setInfoModal(
 					"Info|Te has registrado correctamente! Revisa tu bandeja de entrada para activar la cuenta antes de logear por primera vez|btn-hover btn-black",

@@ -53,20 +53,20 @@
 	}
 	
 </script>
-	<div class="col chatbox mb-3 d-flexbox" id="chatbox">
+	<div class="col chatbox mb-0 d-flexbox" id="chatbox">
 		<div th:each="mensaje: ${mensajes}" th:attr="data-id=${mensaje.id}"
 			class="row">
 			<div th:if="${mensaje.remitente.id} == ${usuarioChat.id}"
-				class="col  d-flex justify-content-start ">
-				<p id="remitente" class="text-left" th:text="${mensaje.texto}"></p>
+				class="col-lg-12 col-md-12 col-xs-2 d-flex justify-content-start ">
+				<p id="remitente" class="text-left text-break" th:text="${mensaje.texto}"></p>
 			</div>
 			<div th:unless="${mensaje.remitente.id} == ${usuarioChat.id}"
-				class="col d-flex justify-content-end">
-				<p id="destinatario" class="text-right  " th:text="${mensaje.texto}"></p>
+				class="col-lg-12 col-md-12 col-xs-2  d-flex justify-content-end">
+				<p id="destinatario" class="text-right text-break" th:text="${mensaje.texto}"></p>
 			</div>
 		</div>
 	</div>
-	<div class="col d-flex justify-content-end p-0 bg-info">
+	<div class="col d-flex justify-content-end p-0 bg-info" id="enviar">
 		<input class="form-control" type="text" name="mensajeador"
 			placeholder="Escribe aqui tu mensaje...">
 		<button class="btn btn-info" onclick="mandarMensaje()">
