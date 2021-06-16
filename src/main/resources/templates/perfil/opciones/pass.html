@@ -9,7 +9,7 @@
 
 
 				<div class="form-group p-2">
-					<label for="passActual">Contraseña actual:</label> <input
+					<label class="text-secondary" for="passActual">Contraseña actual:</label> <input
 						type="password" class="form-control" id="passActual"
 						name="passActual"
 						placeholder="Escriba aquí su contraseña ">
@@ -17,11 +17,11 @@
 
 
 				<div class="form-group p-2">
-					<label class="text-secondary" for="pass">Nueva Contraseña</label> <input
+					<label class="text-secondary" for="pass">Nueva Contrase&ntilde;a</label> <input
 						type="password" class="form-control" name="pass" id="pass"
-						placeholder="Escriba su nueva contraseña"> <span id="ver"
-						onmouseover="ver(document.formulario.pass)"
-						onmouseout="ocultar(document.formulario.pass)"><i
+						placeholder="Escriba su nueva contraseña"> <span class="col-2 d-flex justify-content-end align-items-center iconos passPerfil"
+						onmouseover="ver(document.formu.pass)"
+						onmouseout="ocultar(document.formu.pass)"><i
 						class="bi bi-eye-fill"></i></span>
 					<div class="invalid-feedback passWrong text-white"></div>
 					<div class="valid-feedback passSuccess text-white"></div>
@@ -37,10 +37,10 @@
 
 				<div class="form-group p-2">
 					<label class="text-secondary" for="repass">Repita
-						Contrase�a</label> <input type="password" class="form-control"
+						Contrase&ntilde;a</label> <input type="password" class="form-control"
 						name="repass" id="repass" placeholder="Repita su nueva contraseña">
-					<span id="ver" onmouseover="ver(document.formulario.repass)"
-						onmouseout="ocultar(document.formulario.repass)"> <i
+					<span class="col-2 d-flex justify-content-end align-items-center iconos passPerfil" onmouseover="ver(document.formulario.repass)"
+						onmouseout="ocultar(document.formu.repass)"> <i
 						class="bi bi-eye-fill"></i></span>
 					<div class="invalid-feedback passWrong text-white"></div>
 					<div class="valid-feedback passSuccess text-white"></div>
