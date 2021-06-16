@@ -67,13 +67,14 @@
 												<i class="bi bi-exclamation-triangle"></i>
 											</button>
 										</form>
-										</div>
+										
 										<div class="row justify-content-end align-items-center wave">
 										<b th:text=${publicacion.cantidadWaves}
 											class="badge badge-danger"></b><i
 											th:id="|wave-${publicacion.id}|"
 											style="color: #f90d4e; font-size: 2em;"
 											class="bi bi-soundwave" role="button" onclick="wave(this)"></i>
+									</div>
 									</div>
 									<div class="row justify-content-end align-items-center"
 										th:unless="${#arrays.contains(publicacionesWaved, publicacion.id)}">
