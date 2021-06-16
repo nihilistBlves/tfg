@@ -57,7 +57,7 @@
 							<div class="card-footer text-right d-flexbox">
 								<div class="icons" th:if="${session.userLogged} != null">
 									<div class="row justify-content-end align-items-center"
-										th:if="${waved != null}">
+										th:if="${#arrays.contains(publicacionesWaved, publicacion.id)}">
 										<b th:text=${publicacion.cantidadWaves}
 											class="badge badge-secondary"></b><i
 											th:id="|wave-${publicacion.id}|"
@@ -65,7 +65,7 @@
 											class="bi bi-soundwave" role="button" onclick="wave(this)"></i>
 									</div>
 									<div class="row justify-content-end align-items-center"
-										th:unless="${waved != null}">
+										th:unless="${#arrays.contains(publicacionesWaved, publicacion.id)}">
 										<b th:text=${publicacion.cantidadWaves}
 											class="badge badge-secondary"></b><i
 											th:id="|wave-${publicacion.id}|"

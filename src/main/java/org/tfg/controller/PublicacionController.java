@@ -94,13 +94,11 @@ public class PublicacionController {
 			Usuario userLogged = (Usuario) s.getAttribute("userLogged");
 			Collection<Long> seguidosPorUserLogged = seguimientoRepository.findSeguidosByIdUsuario(userLogged.getId());
 
-			if (Arrays.asList(waveRepository.idsPublicacionWavedByUser(userLogged.getId()))
-					.contains(userLogged.getId())) {
-				m.put("waved", true);
-			}
+			Long[] publicacionesWavedByUserLogged = waveRepository.idsPublicacionWavedByUser(userLogged.getId());
+			m.put("publicacionesWaved", publicacionesWavedByUserLogged);
 
 			if (publicacion.getDuenioPublicacion().isPrivada()) {
-				if (!seguidosPorUserLogged.contains(publicacion.getDuenioPublicacion().getId()) || userLogged.getRol().getId() != 2) {
+				if (!seguidosPorUserLogged.contains(publicacion.getDuenioPublicacion().getId()) || userLogged.getRol().getId() != 2 || !publicacion.getDuenioPublicacion().getLoginName().equals(userLogged.getLoginName())) {
 					H.setInfoModal(
 							"Error|Debes seguir al dueño de la publicación para poder ver su contenido|btn-hover btn-red",
 							s);

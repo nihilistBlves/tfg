@@ -32,10 +32,10 @@
 	
 	function borrarInstrumento(label) {
 		var optionReset = document.createElement("option");
-		optionReset.value = label.text;
-		optionReset.text = label.text;
-		label.previousSibling.remove;
-		label.remove;
+		optionReset.value = label.innerHTML;
+		optionReset.text = label.innerHTML;
+		label.previousSibling.remove();
+		label.remove();
 		var select = document.getElementById("instrumentos");
 		select.insertBefore(optionReset, select.options[0]);
 	}
@@ -99,8 +99,10 @@
 						>+</button>
 						</div>
 					<div class="d-flexbox" id="divInstrumentos" style="height: auto;width: 25em;">
-						<input th:each="instrumento : ${instrumentosActuales}" type="checkbox" name="instrumentos" th:id="${instrumento}" th:value="${instrumento}" hidden="hidden">
-						<label th:each="instrumento : ${instrumentosActuales}" th:for="${instrumento}" class="instrumentoLabel" th:text="${instrumento}" onclick=borrarInstrumento(this)></label>
+						<div th:each="instrumento : ${instrumentosActuales}">
+							<input type="checkbox" name="instrumentos" th:id="${instrumento}" th:value="${instrumento}" hidden="hidden">
+							<label th:for="${instrumento}" class="instrumentoLabel" th:text="${instrumento}" onclick="borrarInstrumento(this)"></label>
+						</div>
 					</div>
 				</div>
 
