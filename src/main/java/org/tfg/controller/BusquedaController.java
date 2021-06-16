@@ -50,10 +50,14 @@ public class BusquedaController {
 	@PostMapping("/explorar")
 	@ResponseBody
 	private String busqueda(@RequestParam("busqueda") String busqueda, @RequestParam("tipo") String tipo,
-			@RequestParam("id") String id) throws SerialException {
+			@RequestParam("id") String id, HttpSession s) throws SerialException {
 
 		Collection<Usuario> usuarios = usuarioRepository.findUsuariosByLoginNameBusqueda(busqueda);
 		String usuariosEncontrados = "";
+		
+		if (s.getAttribute("userLogged") != null) {
+			usuarios.remove((Usuario )s.getAttribute("userLogged"));
+		}
 
 		if (tipo.equals("usuario")) {
 

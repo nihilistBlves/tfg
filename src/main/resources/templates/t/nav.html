@@ -6,8 +6,8 @@
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item"><a class="nav-link" href="/"><i
 						class="bi bi-house-door"></i></a></li>
-				<li class="nav-item"><a class="nav-link" href="/publicar"><i
-						class="bi bi-plus-square"></i></a></li>
+				<li th:if="${session.userLogged} != null" class="nav-item"><a
+					class="nav-link" href="/publicar"><i class="bi bi-plus-square"></i></a></li>
 				<li class="nav-item"><a class="nav-link" href="/explorar"><i
 						class="bi bi-search"></i></a></li>
 				<li th:if="${session.userLogged} != null" class="nav-item"><a
@@ -20,7 +20,8 @@
 						class="bi bi-person-circle"></i></a></li>
 				<li
 					th:if="${session.userLogged != null} and ${session.userLogged.rol.id == 2}"
-					class="nav-item"><a class="nav-link" th:href="@{/admin}"><i class="bi bi-exclamation-square"></i></a></li>
+					class="nav-item"><a class="nav-link" th:href="@{/admin}"><i
+						class="bi bi-exclamation-square"></i></a></li>
 				<div
 					th:if="${session.userLogged != null && session.userLogged.privada == true}">
 					<li class="nav-item" id="solicitudes">
@@ -30,7 +31,9 @@
 							<input type="hidden" value="true" name="solicitud">
 							<button
 								style="background-color: transparent; border: none !important;">
-								<i class="bi bi-inbox-fill"></i><span style="font-size: 0.4em;background-color: white; color: #f90d4e" class="badge badge-dark" th:text="${session.numPeticiones}"></span>
+								<i class="bi bi-inbox-fill"></i><span
+									style="font-size: 0.4em; background-color: white; color: #f90d4e"
+									class="badge badge-dark" th:text="${session.numPeticiones}"></span>
 							</button>
 						</form>
 					</li>
