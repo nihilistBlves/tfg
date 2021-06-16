@@ -1,6 +1,7 @@
 package org.tfg.controller;
 
 import java.io.IOException;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -153,8 +154,10 @@ public class UsuarioController {
 		if (userLogged.getCiudad() != null) {
 			m.put("ciudadActual", userLogged.getCiudad());
 		}
-		if ((userLogged.getDescripcionPerfil() != null) || (!userLogged.getDescripcionPerfil().equals(""))) {
-			m.put("descripcionActual", userLogged.getDescripcionPerfil());
+		if ((userLogged.getDescripcionPerfil() != null)) {
+			if((!userLogged.getDescripcionPerfil().equals(""))) {
+				m.put("descripcionActual", userLogged.getDescripcionPerfil());
+			}
 		}
 		m.put("instrumentos", instrumentoRepository.findAll());
 		m.put("ciudades", ciudadRepository.findAll());
