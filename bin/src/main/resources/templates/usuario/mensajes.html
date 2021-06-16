@@ -1,0 +1,42 @@
+<script th:inline="javascript">
+	window.onload = function() {
+		var mensajeDirecto = /*[[${mensajeDirecto}]]*/"";
+		if (mensajeDirecto == true) {
+			var parametros = {
+					"idUsuario" : /*[[${idPerfil}]]*/"",
+			}
+			$(document).ready(function() {
+				$("#chat").load("/cargarChat", parametros);
+			});
+		}
+	};
+
+	function cargarChat(obj) {
+		var id = parseInt(obj.dataset.id);
+		
+		var parametros = {
+				"idUsuario" : id,
+			}
+
+		$(document).ready(function() {
+			$("#chat").load("/cargarChat", parametros);
+			setTimeout(function(){ $('#chatbox').scrollTop( $('#chatbox').prop('scrollHeight') );}, 100);
+		});
+	}
+</script>
+<div class="container bg-white mt-4" id="menuChat">
+	<div class="row my-5 d-flexbox justify-content-between ">
+	<div class="col-12 d-flex">
+	<h3 class="text-center" id="tituloChat">Conversaciones</h3>
+	</div>
+		<div class="col-5 text-left d-flex" id="conversaciones">
+			<ul class="list-group d-flexbox">
+				<li th:each="usuario: ${usuariosConChatAbierto}" class="list-group-item opcion-chat mt-3 d-inline-flex" th:attr="data-id=${usuario.id}" onclick="cargarChat(this)">
+					<img  th:src="|data:image;base64,${usuario.fotoPerfil}|" height="40px" width="40px">
+					<span class="ml-8" th:text="${usuario.loginName}"></span>
+				</li>
+			</ul>
+		</div>
+		<div id="chat" class="col-7"></div>
+	</div>
+</div>

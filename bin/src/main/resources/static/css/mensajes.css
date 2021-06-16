@@ -1,0 +1,61 @@
+#tituloChat { 
+ 	padding: 5px; 
+ 	background-color: white; 
+ 	border-radius: 10px; 
+ 	border-bottom:orange 1px solid;
+ }
+#menuChat{
+	border-radius:22px;
+	height:500px;
+}
+#conversaciones{
+	height:350px;
+	overflow-y:scroll;
+	overflow-x:hidden;
+}
+
+#remitente{
+	border-radius:22px;
+	background-color:rgba(186, 186, 183, 1);
+	color:white;
+	padding:3px 10px 3px 10px;
+}
+#destinatario{
+	border-radius:22px;
+	color:white;
+	background-color:rgba(255, 27, 90);
+	padding:3px 10px 3px 10px;
+}
+.chatbox ,#conversaciones{
+	overflow-y: scroll;
+	height:300px;
+}
+.chatbox{
+	width:auto;
+}
+.chatbox::-webkit-scrollbar,#conversaciones::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.chatbox::-webkit-scrollbar:vertical,#conversaciones::-webkit-scrollbar:vertical {
+    width:10px;
+}
+
+.chatbox::-webkit-scrollbar-button:increment,.chatbox::-webkit-scrollbar-button ,#conversaciones::-webkit-scrollbar-button:increment,
+#conversaciones::-webkit-scrollbar-button{
+    display: none;
+} 
+
+.chatbox::-webkit-scrollbar:horizontal,#conversaciones::-webkit-scrollbar:horizontal {
+    height: 10px;
+}
+
+.chatbox::-webkit-scrollbar-thumb,#conversaciones::-webkit-scrollbar-thumb {
+    background-color: rgba(97, 97, 94, 0.40);
+    border-radius: 20px;
+    border: 2px solid #f1f2f3;
+}
+
+.chatbox::-webkit-scrollbar-track,#conversaciones::-webkit-scrollbar-track {
+    border-radius: 10px;  
+}

@@ -1,0 +1,27 @@
+<div class="container-fluid">
+<div class="col-4 justify-content-center" style="background-color: white">
+
+		<form th:action="@{/reportar}" method="post">
+			<h4 class="text-dark mt-4">Reportar esta publicación</h4>
+			<div class="form-group col-10 grupo">
+				<label class="text-secondary label" for="selectReporte">Motivo</label>
+				<select class="form-control" name="motivo" id="selectReporte">
+					<option selected="selected">Lenguaje ofensivo</option>
+					<option>Acoso</option>
+					<option>Incitación al odio hacia algún colectivo</option>
+					<option>Publicación obscena/sexual</option>
+					<option>Organización criminal</option>
+					<option>Spam</option>
+				</select>
+			</div>
+
+		<div class="row justify-content-center">
+			<div class="form-group grupo">
+				<input type="hidden" name="idPublicacion"
+					th:value="${publicacion.id}">
+				<button class="btn-hover btn-red">Reportar</button>
+			</div>
+		</div>
+		</form>
+</div>
+</div>

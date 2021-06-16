@@ -1,0 +1,59 @@
+<div class="col-lg">
+	<nav class="navbar navbar-expand  bg-transparent mx-auto">
+		<a class="navbar-brand title" href="/"><img id="logotipo-nav"
+			src="/img/logotipo.png"><b>Wave it!</b></a>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link" href="/"><i
+						class="bi bi-house-door"></i></a></li>
+				<li th:if="${session.userLogged} != null" class="nav-item"><a
+					class="nav-link" href="/publicar"><i class="bi bi-plus-square"></i></a></li>
+				<li class="nav-item"><a class="nav-link" href="/explorar"><i
+						class="bi bi-search"></i></a></li>
+				<li th:if="${session.userLogged} != null" class="nav-item"><a
+					class="nav-link"
+					th:href="@{/user/{userLogged}/messages(userLogged=${session.userLogged.loginName})}"><i
+						class="bi bi-chat-dots"></i></a></li>
+				<li th:if="${session.userLogged} != null" class="nav-item"><a
+					class="nav-link"
+					th:href="@{/user/{userLogged}(userLogged=${session.userLogged.loginName})}"><i
+						class="bi bi-person-circle"></i></a></li>
+				<li
+					th:if="${session.userLogged != null} and ${session.userLogged.rol.id == 2}"
+					class="nav-item"><a class="nav-link" th:href="@{/admin}"><i
+						class="bi bi-exclamation-square"></i></a></li>
+				<div
+					th:if="${session.userLogged != null && session.userLogged.privada == true}">
+					<li class="nav-item" id="solicitudes">
+						<form
+							th:action="@{/user/{userLogged}/opciones(userLogged=${session.userLogged.loginName})}"
+							method="get">
+							<input type="hidden" value="true" name="solicitud">
+							<button
+								style="background-color: transparent; border: none !important;">
+								<i class="bi bi-inbox-fill"></i><span
+									style="font-size: 0.4em; background-color: white; color: #f90d4e"
+									class="badge badge-dark" th:text="${session.numPeticiones}"></span>
+							</button>
+						</form>
+					</li>
+				</div>
+
+			</ul>
+			<div th:if="${session.userLogged} != null">
+				<form method="post" name="logout" action="/logout"
+					class="form-inline my-2 my-lg-0">
+					<button class="btn " id="logOut" type="submit">
+						<i class="bi bi-box-arrow-right"></i> <span class="logOut">
+							Cerrar sesión</span>
+					</button>
+				</form>
+			</div>
+			<div th:unless="${session.userLogged} != null">
+				<button type="button" class=" text-light mr-3   btn-hover btn-black"
+					data-toggle="modal" data-target="#loginModal" id="btnlog">Login</button>
+
+			</div>
+		</div>
+	</nav>
+</div>
