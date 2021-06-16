@@ -80,11 +80,11 @@
 						<span class=" contador ">0/150</span>
 					</div>
 				</div>
-
-
+ 
 				<div class="form-group p-2  d-flexbox">
 					<label for="listaInstrumentos">Lista de Instrumentos:</label>
 					<div class="d-inline-flex">
+					<!-- ERROR CON INSTRUMENTO.NOMBRE EN EL FOREACH -->
 					 <select class="form-control" id="instrumentos" th:if="${instrumentosActuales != null}">
 						<option class="options" th:each="instrumento : 	${instrumentos}"
 							th:if="${!#arrays.contains(instrumentosActuales, instrumento.nombre)}"
@@ -99,8 +99,8 @@
 						>+</button>
 						</div>
 					<div class="d-flexbox" id="divInstrumentos" style="height: auto;width: 25em;">
-						<input th:each="instrumento : ${instrumentosActuales}" type="checkbox" name="instrumentos" th:id="${instrumento.nombre}" th:value="${instrumento.nombre}" hidden="hidden">
-						<label th:each="instrumento : ${instrumentosActuales}" th:for="${instrumento.nombre}" class="instrumentoLabel" th:text="${instrumento.nombre}" onclick="borrarInstrumento(this)"></label>
+						<input th:each="instrumento : ${instrumentosActuales}" type="checkbox" name="instrumentos" th:id="${instrumento}" th:value="${instrumento}" hidden="hidden">
+						<label th:each="instrumento : ${instrumentosActuales}" th:for="${instrumento}" class="instrumentoLabel" th:text="${instrumento}" onclick="borrarInstrumento(this)"></label>
 					</div>
 				</div>
 
