@@ -89,12 +89,10 @@ function comentar(btn) {
 	var idPublicacion = btn.previousSibling.previousSibling.value;
 
 	var divReal = btn.parentNode.parentNode.lastElementChild;
-	if(comentario!=""){
 	var parametros = {
 		"comentario": comentario,
-		"idPublicacion": idPublicacion
+		"idPublicacion": idPublicacion,
 	}
-
 	console.log(divReal);
 
 	$(document).ready(function() {
@@ -112,4 +110,4 @@ function comentar(btn) {
 		});
 	});
 }
-}
+
