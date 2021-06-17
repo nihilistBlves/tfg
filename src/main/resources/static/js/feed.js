@@ -87,7 +87,7 @@ function comentar(btn) {
 	console.log(comentario);
 	btn.previousSibling.previousSibling.value = "";
 
-	var idPublicacion = btn.previousSibling.previousSibling.value;
+	var idPublicacion = btn.previousSibling.id;
 
 	var divReal = btn.parentNode.parentNode.lastElementChild;
 	var parametros = {
