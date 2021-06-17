@@ -84,6 +84,7 @@ window.onload = function() {
 
 function comentar(btn) {
 	var comentario = btn.previousSibling.previousSibling.previousSibling.previousSibling.value;
+	console.log(comentario);
 	btn.previousSibling.previousSibling.previousSibling.previousSibling.value = "";
 
 	var idPublicacion = btn.previousSibling.previousSibling.value;
